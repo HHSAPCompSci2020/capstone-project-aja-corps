@@ -31,7 +31,7 @@ public class GamePanel extends JPanel implements Runnable, NetworkListener {
 	private NetworkMessenger nm;
 
 	private KeyHandler keyControl;
-	private ArrayList<Mario> entities = new ArrayList<>();
+	private ArrayList<Player> entities = new ArrayList<>();
 
 	public GamePanel() {
 		super();
@@ -82,7 +82,7 @@ public class GamePanel extends JPanel implements Runnable, NetworkListener {
 	    g.drawImage(backgroundImage, 0, 0, this);
 	    
 	    if (entities.size() > 0) {
-		    for (Mario e: entities) {
+		    for (Player e: entities) {
 		    	e.draw(g2, this);
 		    }
 	    }
@@ -97,13 +97,13 @@ public class GamePanel extends JPanel implements Runnable, NetworkListener {
 	}
 
 	public void spawnNewMario(String host) {
-		Mario mario = new Mario(DRAWING_WIDTH / 2 - Mario.MARIO_WIDTH / 2, 50, host);
+		Player mario = new Player(DRAWING_WIDTH / 2 - Player.MARIO_WIDTH / 2, 50, host);
     	System.out.println(host);
 		entities.add(mario);
 	}
 	
 	public void spawnNewBall() {
-		ball = new Ball(DRAWING_WIDTH / 2 - Mario.MARIO_WIDTH / 2, 250);
+		ball = new Ball(DRAWING_WIDTH / 2 - Player.MARIO_WIDTH / 2, 250);
 	}
 
 	public KeyHandler getKeyHandler() {
@@ -115,13 +115,13 @@ public class GamePanel extends JPanel implements Runnable, NetworkListener {
 			if (nm != null) {
 				nm.sendMessage(NetworkDataObject.MESSAGE, "hello");
 			}
-			((Mario) entities.get(0)).walk(-1);
+			((Player) entities.get(0)).walk(-1);
 		}
 
 		if (keyControl.isPressed(KeyEvent.VK_RIGHT))
-			((Mario) entities.get(0)).walk(-1);
+			((Player) entities.get(0)).walk(-1);
 		if (keyControl.isPressed(KeyEvent.VK_UP))
-			((Mario) entities.get(0)).walk(-1);
+			((Player) entities.get(0)).walk(-1);
 	}
 	
 
@@ -134,7 +134,7 @@ public class GamePanel extends JPanel implements Runnable, NetworkListener {
 			enableKeys();
 			
 			if (entities.size() > 0) {
-				((Mario) entities.get(0)).act(obstacles);
+				((Player) entities.get(0)).act(obstacles);
 			}
 
 //			ball.act(obstacles);
@@ -177,7 +177,7 @@ public class GamePanel extends JPanel implements Runnable, NetworkListener {
 			if (ndo.messageType.equals(NetworkDataObject.MESSAGE)) {
 //				System.out.println(host);
 			} else if (ndo.messageType.equals(NetworkDataObject.CLIENT_LIST)) {
-				for (Mario c : entities) {
+				for (Player c : entities) {
 //					System.out.println(c.host);
 					if (c.host.equals(host))
 						return;
