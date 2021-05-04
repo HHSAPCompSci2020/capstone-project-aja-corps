@@ -4,6 +4,8 @@ import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.util.*;
 
+import processing.core.PShape;
+
 public class Player extends MovingImage {
 
 	public static final int MARIO_WIDTH = 40;
@@ -15,9 +17,18 @@ public class Player extends MovingImage {
 	private double gravity;
 	private double jumpStrength;
 	
-	public String host;
+//	public String host;
+	
+	private String uniqueID;
+	
+	private String username;
+	private double x, y;
+	
+	private PShape shape;
+	
+	private boolean dataUpdated;
 
-	public Player(int x, int y, String host) {
+	public Player(int x, int y, String username, String uniqueID) {
 		super("mario.png", x, y, MARIO_WIDTH, MARIO_HEIGHT);
 		xVelocity = 0;
 		yVelocity = 0;
@@ -25,7 +36,9 @@ public class Player extends MovingImage {
 		gravity = 0.7;
 		friction = .85;
 		jumpStrength = 15;
-		this.host = host;
+		this.username = username;
+		this.uniqueID = uniqueID;
+		dataUpdated = false;
 	}
 
 	// METHODS
@@ -122,9 +135,51 @@ public class Player extends MovingImage {
 
 		if (Math.abs(xVelocity) < .2)
 			xVelocity = 0;
+		
+		this.x = xCoord2;
+		this.y = yCoord2;
+		
+		dataUpdated = true;
+
 
 		moveToLocation(xCoord2,yCoord2);
 
+	}
+	
+	public PlayerData getDataObject() {
+		dataUpdated = false;
+		PlayerData p = new PlayerData();
+		p.username = username;
+		p.x = x;
+		p.y = y;
+		return p;
+	}
+	
+	public void syncWithDataObject(PlayerData data) {
+		dataUpdated = false;
+		this.x = data.x;
+		this.y = data.y;
+		this.username = data.username;
+	}
+	
+	public boolean idMatch(String uid) {
+		return this.uniqueID.equals(uid);
+	}
+	
+	public boolean isDataChanged() {
+		return dataUpdated;
+	}
+	
+	public String getUsername() {
+		return username;
+	}
+
+	public double getX() {
+		return x;
+	}
+
+	public double getY() {
+		return y;
 	}
 	
 	

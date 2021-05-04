@@ -7,33 +7,41 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
-//import gui.DrawingSurface.Cursor;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.DatabaseReference.CompletionListener;
 
 import java.util.*;
-
-import networking.frontend.NetworkDataObject;
-import networking.frontend.NetworkListener;
-import networking.frontend.NetworkMessenger;
 
 import java.util.Queue;
 import java.io.Serializable;
 
-public class GamePanel extends JPanel implements Runnable, NetworkListener {
+public class GamePanel extends JPanel implements Runnable {
 	public static final int DRAWING_WIDTH = 800;
 	public static final int DRAWING_HEIGHT = 322;
 
 	private Rectangle screenRect;
 
-	// private Mario mario;
 	private Ball ball;
 	private Image backgroundImage;
 	private ArrayList<Shape> obstacles;
-	private NetworkMessenger nm;
 
 	private KeyHandler keyControl;
 	private ArrayList<Player> entities = new ArrayList<>();
+	
+	private Player me;
+	private ArrayList<Player> players;
+	
+	// Database stuff
+	private DatabaseReference roomRef;  // This is the database entry for the whole room
+	private DatabaseReference myUserRef;  // This is the database entry for just our user's data. This allows us to more easily update ourselves.
+	
+	private boolean currentlySending;  // These field allows us to limit database writes by only sending data once we've received confirmation the previous data went through.
+	
 
-	public GamePanel() {
+	public GamePanel(DatabaseReference roomRef) {
 		super();
 
 		try {
@@ -43,19 +51,25 @@ public class GamePanel extends JPanel implements Runnable, NetworkListener {
 			e.printStackTrace();
 		}
 
-		// JFrame window = new JFrame("Peer Chat");
-		// window.setBounds(300, 300, 800, 600);
-		// window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		// window.add(this);
-		// window.setVisible(true);
-
 		keyControl = new KeyHandler();
 		setBackground(Color.CYAN);
 		screenRect = new Rectangle(0, 0, DRAWING_WIDTH, DRAWING_HEIGHT);
 		obstacles = new ArrayList<Shape>();
 		obstacles.add(new Rectangle(0, 300, 800, 22));
-		// spawnNewMario("me!");
-		// spawnNewBall();
+		
+		this.roomRef = roomRef;
+		currentlySending = false;
+		
+		roomRef.child("users").addChildEventListener(new UserChangeListener());
+		myUserRef = roomRef.child("users").push();
+		players = new ArrayList<Player>();
+		
+		me = new Player(DRAWING_WIDTH / 2 - Player.MARIO_WIDTH / 2, 50, "TestPlayer", myUserRef.getKey());
+		System.out.println(me.getDataObject().getX());
+		System.out.println(me.getDataObject().getY());
+
+		myUserRef.setValueAsync(me.getDataObject());
+		
 		new Thread(this).start();
 	}
 
@@ -80,25 +94,18 @@ public class GamePanel extends JPanel implements Runnable, NetworkListener {
 
 		g.drawImage(backgroundImage, 0, 0, this);
 
-		if (entities.size() > 0) {
-			for (Player e : entities) {
-				e.draw(g2, this);
-			}
+
+		for (int i = 0; i < players.size(); i++) {
+			players.get(i).draw(g2, this);
 		}
-
-		// entities.get(0).draw(g2, this);
-		// mario.draw(g2, this);
-		// ball.draw(g2, this);
-
+		
+		me.draw(g2, this);
 		g2.setTransform(at);
 
 		// TODO Add any custom drawings here
 	}
 
 	public void spawnNewMario(String host) {
-		Player mario = new Player(DRAWING_WIDTH / 2 - Player.MARIO_WIDTH / 2, 50, host);
-		System.out.println(host);
-		entities.add(mario);
 	}
 
 	public void spawnNewBall() {
@@ -111,36 +118,41 @@ public class GamePanel extends JPanel implements Runnable, NetworkListener {
 
 	public void enableKeys() {
 		if (keyControl.isPressed(KeyEvent.VK_LEFT)) {
-			if (nm != null) {
-				nm.sendMessage(NetworkDataObject.MESSAGE, "hello");
-			}
-			((Player) entities.get(0)).walk(-1);
+			me.walk(-1);
 		}
 
-		if (keyControl.isPressed(KeyEvent.VK_RIGHT))
-			((Player) entities.get(0)).walk(-1);
-		if (keyControl.isPressed(KeyEvent.VK_UP))
-			((Player) entities.get(0)).walk(-1);
+		if (keyControl.isPressed(KeyEvent.VK_RIGHT)) {
+			me.walk(1);
+		}
+		if (keyControl.isPressed(KeyEvent.VK_UP)) {
+			me.jump();
+		}
 	}
 
 	public void run() {
 		while (true) { // Modify this to allow quitting
 			long startTime = System.currentTimeMillis();
 
-			// nm.sendMessage(NetworkDataObject.MESSAGE, "hello world");
-
 			enableKeys();
-
-			if (entities.size() > 0) {
-				((Player) entities.get(0)).act(obstacles);
+			
+			for (Player c: players) {
+				c.act(obstacles);
 			}
 
-			// ball.act(obstacles);
+			me.act(obstacles);
+			
+			if (!currentlySending && me.isDataChanged()) {
+				currentlySending = true;
+				myUserRef.setValue(me.getDataObject(), new CompletionListener() {
 
-			// if (!screenRect.intersects((Mario) entities.get(0)))
-			// spawnNewMario();
-
-			processNetworkMessages();
+					@Override
+					public void onComplete(DatabaseError arg0, DatabaseReference arg1) {
+						currentlySending = false;
+					}
+					
+				});
+			}
+			
 			repaint();
 
 			long waitTime = 17 - (System.currentTimeMillis() - startTime);
@@ -152,39 +164,6 @@ public class GamePanel extends JPanel implements Runnable, NetworkListener {
 			} catch (InterruptedException e) {
 			}
 		}
-	}
-
-	@Override
-	public void connectedToServer(NetworkMessenger nm) {
-		this.nm = nm;
-	}
-
-	public void processNetworkMessages() {
-
-		if (nm == null)
-			return;
-
-		Queue<NetworkDataObject> queue = nm.getQueuedMessages();
-
-		while (!queue.isEmpty()) {
-			NetworkDataObject ndo = queue.poll();
-			System.out.println(ndo.messageType);
-
-			String host = ndo.getSourceIP();
-
-			if (ndo.messageType.equals(NetworkDataObject.MESSAGE)) {
-				// System.out.println(host);
-			} else if (ndo.messageType.equals(NetworkDataObject.CLIENT_LIST)) {
-				for (Player c : entities) {
-					// System.out.println(c.host);
-					if (c.host.equals(host))
-						return;
-				}
-				// System.out.println(host);
-
-			}
-		}
-
 	}
 
 	public class KeyHandler implements KeyListener {
@@ -214,10 +193,54 @@ public class GamePanel extends JPanel implements Runnable, NetworkListener {
 		}
 	}
 
-	@Override
-	public void networkMessageReceived(NetworkDataObject ndo) {
-		// TODO Auto-generated method stub
+	
+	class UserChangeListener implements ChildEventListener {
 
+		@Override
+		public void onCancelled(DatabaseError arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void onChildAdded(DataSnapshot arg0, String arg1) {
+			if (me.idMatch(arg0.getKey()))
+				return;
+			Player p = new Player(DRAWING_WIDTH / 2 - Player.MARIO_WIDTH / 2, 50, null, arg0.getKey());
+			p.syncWithDataObject(arg0.getValue(PlayerData.class));
+			players.add(p);
+		}
+
+		@Override
+		public void onChildChanged(DataSnapshot arg0, String arg1) {
+			if (me.idMatch(arg0.getKey()))
+				return;
+			for (int i = 0; i < players.size(); i++) {
+				Player p = players.get(i);
+				if (p.idMatch(arg0.getKey())) {
+					p.syncWithDataObject(arg0.getValue(PlayerData.class));
+				}
+			}
+		}
+
+		@Override
+		public void onChildMoved(DataSnapshot arg0, String arg1) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void onChildRemoved(DataSnapshot arg0) {
+			if (me.idMatch(arg0.getKey()))
+				return;
+			for (int i = 0; i < players.size(); i++) {
+				if (players.get(i).idMatch(arg0.getKey())) {
+					players.remove(i);
+					break;
+				}
+			}
+		}
+		
 	}
 
 }
