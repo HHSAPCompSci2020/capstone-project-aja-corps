@@ -37,7 +37,7 @@ public class GamePanel extends JPanel implements Runnable, NetworkListener {
 		super();
 
 		try {
-			backgroundImage = ImageIO.read(new File("./mario.png"));
+			backgroundImage = ImageIO.read(new File("./2CA52D8.jpg"));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
