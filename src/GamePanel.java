@@ -42,7 +42,6 @@ public class GamePanel extends JPanel implements Runnable, NetworkListener {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
 
 //		JFrame window = new JFrame("Peer Chat");
 //		window.setBounds(300, 300, 800, 600);
@@ -78,14 +77,14 @@ public class GamePanel extends JPanel implements Runnable, NetworkListener {
 		for (Shape s : obstacles) {
 			g2.fill(s);
 		}
-		
-	    g.drawImage(backgroundImage, 0, 0, this);
-	    
-	    if (entities.size() > 0) {
-		    for (Mario e: entities) {
-		    	e.draw(g2, this);
-		    }
-	    }
+
+		g.drawImage(backgroundImage, 0, 0, this);
+
+		if (entities.size() > 0) {
+			for (Mario e : entities) {
+				e.draw(g2, this);
+			}
+		}
 
 //	    entities.get(0).draw(g2, this);
 //		mario.draw(g2, this);
@@ -98,10 +97,10 @@ public class GamePanel extends JPanel implements Runnable, NetworkListener {
 
 	public void spawnNewMario(String host) {
 		Mario mario = new Mario(DRAWING_WIDTH / 2 - Mario.MARIO_WIDTH / 2, 50, host);
-    	System.out.println(host);
+		System.out.println(host);
 		entities.add(mario);
 	}
-	
+
 	public void spawnNewBall() {
 		ball = new Ball(DRAWING_WIDTH / 2 - Mario.MARIO_WIDTH / 2, 250);
 	}
@@ -109,7 +108,7 @@ public class GamePanel extends JPanel implements Runnable, NetworkListener {
 	public KeyHandler getKeyHandler() {
 		return keyControl;
 	}
-	
+
 	public void enableKeys() {
 		if (keyControl.isPressed(KeyEvent.VK_LEFT)) {
 			if (nm != null) {
@@ -123,7 +122,6 @@ public class GamePanel extends JPanel implements Runnable, NetworkListener {
 		if (keyControl.isPressed(KeyEvent.VK_UP))
 			((Mario) entities.get(0)).walk(-1);
 	}
-	
 
 	public void run() {
 		while (true) { // Modify this to allow quitting
@@ -132,7 +130,7 @@ public class GamePanel extends JPanel implements Runnable, NetworkListener {
 //			nm.sendMessage(NetworkDataObject.MESSAGE, "hello world");
 
 			enableKeys();
-			
+
 			if (entities.size() > 0) {
 				((Mario) entities.get(0)).act(obstacles);
 			}
@@ -155,7 +153,7 @@ public class GamePanel extends JPanel implements Runnable, NetworkListener {
 			}
 		}
 	}
-	
+
 	@Override
 	public void connectedToServer(NetworkMessenger nm) {
 		this.nm = nm;
@@ -178,16 +176,19 @@ public class GamePanel extends JPanel implements Runnable, NetworkListener {
 //				System.out.println(host);
 			} else if (ndo.messageType.equals(NetworkDataObject.CLIENT_LIST)) {
 				for (Mario c : entities) {
-//					System.out.println(c.host);
-					if (c.host.equals(host))
-						return;
+					System.out.println(c.host);
+					if (!c.host.equals(host)) {
+						
+					}
+						spawnNewMario(host);
 				}
-				spawnNewMario(host);
-				
+//				System.out.println(host);
+
 			}
 		}
 
-	}	
+	}
+
 	public class KeyHandler implements KeyListener {
 
 		private ArrayList<Integer> keys;
@@ -218,7 +219,7 @@ public class GamePanel extends JPanel implements Runnable, NetworkListener {
 	@Override
 	public void networkMessageReceived(NetworkDataObject ndo) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }
