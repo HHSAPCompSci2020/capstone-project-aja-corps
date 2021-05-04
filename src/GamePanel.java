@@ -24,14 +24,14 @@ public class GamePanel extends JPanel implements Runnable, NetworkListener {
 
 	private Rectangle screenRect;
 
-//	private Mario mario;
+	// private Mario mario;
 	private Ball ball;
 	private Image backgroundImage;
 	private ArrayList<Shape> obstacles;
 	private NetworkMessenger nm;
 
 	private KeyHandler keyControl;
-	private ArrayList<Mario> entities = new ArrayList<>();
+	private ArrayList<Player> entities = new ArrayList<>();
 
 	public GamePanel() {
 		super();
@@ -43,19 +43,19 @@ public class GamePanel extends JPanel implements Runnable, NetworkListener {
 			e.printStackTrace();
 		}
 
-//		JFrame window = new JFrame("Peer Chat");
-//		window.setBounds(300, 300, 800, 600);
-//		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//		window.add(this);
-//		window.setVisible(true);
+		// JFrame window = new JFrame("Peer Chat");
+		// window.setBounds(300, 300, 800, 600);
+		// window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		// window.add(this);
+		// window.setVisible(true);
 
 		keyControl = new KeyHandler();
 		setBackground(Color.CYAN);
 		screenRect = new Rectangle(0, 0, DRAWING_WIDTH, DRAWING_HEIGHT);
 		obstacles = new ArrayList<Shape>();
 		obstacles.add(new Rectangle(0, 300, 800, 22));
-//		spawnNewMario("me!");
-//		spawnNewBall();
+		// spawnNewMario("me!");
+		// spawnNewBall();
 		new Thread(this).start();
 	}
 
@@ -81,14 +81,14 @@ public class GamePanel extends JPanel implements Runnable, NetworkListener {
 		g.drawImage(backgroundImage, 0, 0, this);
 
 		if (entities.size() > 0) {
-			for (Mario e : entities) {
+			for (Player e : entities) {
 				e.draw(g2, this);
 			}
 		}
 
-//	    entities.get(0).draw(g2, this);
-//		mario.draw(g2, this);
-//		ball.draw(g2, this);
+		// entities.get(0).draw(g2, this);
+		// mario.draw(g2, this);
+		// ball.draw(g2, this);
 
 		g2.setTransform(at);
 
@@ -96,13 +96,13 @@ public class GamePanel extends JPanel implements Runnable, NetworkListener {
 	}
 
 	public void spawnNewMario(String host) {
-		Mario mario = new Mario(DRAWING_WIDTH / 2 - Mario.MARIO_WIDTH / 2, 50, host);
+		Player mario = new Player(DRAWING_WIDTH / 2 - Player.MARIO_WIDTH / 2, 50, host);
 		System.out.println(host);
 		entities.add(mario);
 	}
 
 	public void spawnNewBall() {
-		ball = new Ball(DRAWING_WIDTH / 2 - Mario.MARIO_WIDTH / 2, 250);
+		ball = new Ball(DRAWING_WIDTH / 2 - Player.MARIO_WIDTH / 2, 250);
 	}
 
 	public KeyHandler getKeyHandler() {
@@ -114,31 +114,31 @@ public class GamePanel extends JPanel implements Runnable, NetworkListener {
 			if (nm != null) {
 				nm.sendMessage(NetworkDataObject.MESSAGE, "hello");
 			}
-			((Mario) entities.get(0)).walk(-1);
+			((Player) entities.get(0)).walk(-1);
 		}
 
 		if (keyControl.isPressed(KeyEvent.VK_RIGHT))
-			((Mario) entities.get(0)).walk(-1);
+			((Player) entities.get(0)).walk(-1);
 		if (keyControl.isPressed(KeyEvent.VK_UP))
-			((Mario) entities.get(0)).walk(-1);
+			((Player) entities.get(0)).walk(-1);
 	}
 
 	public void run() {
 		while (true) { // Modify this to allow quitting
 			long startTime = System.currentTimeMillis();
 
-//			nm.sendMessage(NetworkDataObject.MESSAGE, "hello world");
+			// nm.sendMessage(NetworkDataObject.MESSAGE, "hello world");
 
 			enableKeys();
 
 			if (entities.size() > 0) {
-				((Mario) entities.get(0)).act(obstacles);
+				((Player) entities.get(0)).act(obstacles);
 			}
 
-//			ball.act(obstacles);
+			// ball.act(obstacles);
 
-//			if (!screenRect.intersects((Mario) entities.get(0)))
-//				spawnNewMario();
+			// if (!screenRect.intersects((Mario) entities.get(0)))
+			// spawnNewMario();
 
 			processNetworkMessages();
 			repaint();
@@ -173,16 +173,14 @@ public class GamePanel extends JPanel implements Runnable, NetworkListener {
 			String host = ndo.getSourceIP();
 
 			if (ndo.messageType.equals(NetworkDataObject.MESSAGE)) {
-//				System.out.println(host);
+				// System.out.println(host);
 			} else if (ndo.messageType.equals(NetworkDataObject.CLIENT_LIST)) {
-				for (Mario c : entities) {
-					System.out.println(c.host);
-					if (!c.host.equals(host)) {
-						
-					}
-						spawnNewMario(host);
+				for (Player c : entities) {
+					// System.out.println(c.host);
+					if (c.host.equals(host))
+						return;
 				}
-//				System.out.println(host);
+				// System.out.println(host);
 
 			}
 		}
