@@ -9,79 +9,64 @@ import javax.swing.ImageIcon;
 public class Ball extends MovingImage {
 	
 	private double xVelocity, yVelocity;
-	private boolean onASurface;
 	private double friction;
 	private double gravity;
-	private double jumpStrength;
-	private boolean landed;
+	private boolean bounced;
+	private boolean pickedUp;
 	
 	public Ball(int x, int y) {
-		super("ballimg.jpeg", x, y, 20, 20);
+		super("basketball.png", x, y, 20, 20);
 		xVelocity = 0;
 		yVelocity = 0;
-		onASurface = false;
-		gravity = 0.1;
+		gravity = 0.7;
 		friction = .85;
-		jumpStrength = 15;
 	}
 	
-	public void act(ArrayList<Shape> obstacles) {
+	public void act(ArrayList<Shape> obstacles, double playerX, double playerY, Shape ground) {
 		double xCoord = getX();
 		double yCoord = getY();
 		double width = getWidth();
 		double height = getHeight();
-
-		// ***********Y AXIS***********
-
-		if (!onASurface) {
-			yVelocity += gravity; // GRAVITY
-		} else {
-//			System.out.println("On a surface!");
-			yVelocity = -yVelocity - gravity;
-		}
-
-		double yCoord2 = yCoord + yVelocity;
-
-		Rectangle2D.Double strechY = new Rectangle2D.Double(xCoord,Math.min(yCoord,yCoord2),width,height+Math.abs(yVelocity));
-
-//		onASurface = false;
-
-		if (yVelocity > 0) {
-			for (Shape s : obstacles) {
-				if (s.intersects(strechY)) {
-//					System.out.println(yCoord2)
-//					landed = true;
-					onASurface = true;
-//					standingSurface = s;
-//					yVelocity = 0;
-////					System.out.println(yCoord);
-//					yCoord2 = yCoord + yVelocity;
-//					System.out.println(yCoord2);
-				}
-			}
-		} else if (yVelocity < 0) {
-			onASurface = false;
-		}
-//		} else if (yVelocity < 0) {
-//			Shape headSurface = null;
-//			for (Shape s : obstacles) {
-//				if (s.intersects(strechY)) {
-//					headSurface = s;
-//					yVelocity = 0;
-//				}
-//			}
-//			if (headSurface != null) {
-//				Rectangle r = headSurface.getBounds();
-//				yCoord2 = r.getY()+r.getHeight();
-//			}
-//		}
-//
-//		if (Math.abs(yVelocity) < .2)
-//			yVelocity = 0;
 		
-		moveToLocation(xCoord,yCoord2);
+		if(pickedUp == false) {
+			double yCoord2 = yCoord + yVelocity;
+			double xCoord2 = xCoord + xVelocity;
+			
+			Rectangle2D.Double stretchY = new Rectangle2D.Double(xCoord, Math.min(yCoord, yCoord2), width,
+					height + Math.abs(yVelocity));
+			for (Shape s : obstacles)
+				if (s.intersects(stretchY))
+					yVelocity = -yVelocity;
+
+			Rectangle2D.Double stretchX = new Rectangle2D.Double(Math.min(xCoord, xCoord2), yCoord2,
+					width + Math.abs(xVelocity), height);
+			for (Shape s : obstacles)
+				if (s.intersects(stretchX))
+					xVelocity = -xVelocity;
+			moveToLocation(xCoord2, yCoord2);
+		} else if(pickedUp){
+			bounce(playerX, playerY, ground);
+		}
 	}
-
-
-
+	
+	private void bounce(double pX, double pY, Shape ground) {
+		double xCoord = getX();
+		double yCoord = getY();
+		double width = getWidth();
+		double height = getHeight();
+		double yCoord2 = yCoord + yVelocity;
+		
+		if(yCoord == pY)
+			yVelocity = -yVelocity;
+		
+		Rectangle2D.Double stretchY = new Rectangle2D.Double(xCoord, Math.min(yCoord, yCoord2), width,
+				height + Math.abs(yVelocity));
+		if (ground.intersects(stretchY))
+			yVelocity = -yVelocity;
+		double xCoord2 = pX;
+		moveToLocation(xCoord2, yCoord2);
+	}
+	public void shoot(double pX, double pY) {
+		
+	}
 }
