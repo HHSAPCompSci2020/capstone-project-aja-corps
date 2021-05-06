@@ -17,9 +17,9 @@ public class Player extends MovingImage {
 	private double friction;
 	private double gravity;
 	private double jumpStrength;
-	private boolean speedPowerup;
-	private boolean jumpPowerup;
-	private boolean shotPowerup;
+	private boolean speedPowerup = false;
+	private boolean jumpPowerup = false;
+	private boolean shotPowerup = false;
 	
 //	public String host;
 	
