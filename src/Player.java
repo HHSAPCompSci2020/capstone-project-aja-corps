@@ -45,16 +45,25 @@ public class Player extends MovingImage {
 	}
 
 	
-	
+	/**
+	 * method toggles the speed power up
+	 * @post changes speedPowerup field
+	 */
 	
 	public void speedPowerup() {
 		speedPowerup = true;
 	}
-	
+	/**
+	 * toggles the jump power up
+	 * @post changed jumpPower up field
+	 */
 	public void jumpPowerup() {
 		jumpPowerup = true;
 	}
-
+	/**
+	 * toggles the shot power up
+	 * @post changes shoot power up field
+	 */
 	public void shotPowerup() {
 		shotPowerup = true;
 }
