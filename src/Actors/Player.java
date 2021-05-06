@@ -1,3 +1,4 @@
+package Actors;
 
 
 import java.awt.*;
@@ -62,7 +63,7 @@ public class Player extends MovingImage {
 	}
 	/**
 	 * toggles the shot power up
-	 * @post changes shoot power up field
+	 * @post changes shoot power up field 
 	 */
 	public void shotPowerup() {
 		shotPowerup = true;

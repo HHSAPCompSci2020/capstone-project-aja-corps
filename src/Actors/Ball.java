@@ -1,10 +1,13 @@
+package Actors;
 import java.awt.Image;
+
 import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
+
 
 public class Ball extends MovingImage {
 	

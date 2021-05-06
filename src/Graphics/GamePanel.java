@@ -1,3 +1,4 @@
+package Graphics;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.AffineTransform;
@@ -12,6 +13,10 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.DatabaseReference.CompletionListener;
+
+import Actors.Ball;
+import Actors.Player;
+import Actors.PlayerData;
 
 import java.util.*;
 
