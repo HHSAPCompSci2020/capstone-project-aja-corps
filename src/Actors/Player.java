@@ -46,6 +46,9 @@ public class Player extends MovingImage {
 	}
 
 	
+	
+	
+	
 	/**
 	 * method toggles the speed power up
 	 * @post changes speedPowerup field
@@ -76,6 +79,7 @@ public class Player extends MovingImage {
 	// METHODS
 	public void walk(int dir) {
 		if (xVelocity <= 10 && xVelocity >= -10)
+			
 			
 			if(speedPowerup) {
 				xVelocity += dir;
