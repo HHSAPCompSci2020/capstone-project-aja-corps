@@ -27,7 +27,15 @@ public class Ball extends MovingImage {
 		gravity = 0.7;
 		friction = .85;
 	}
-	
+	/**
+	 * Detects collisions and determines velocity as well as position of ball.
+	 * 
+	 * @param obstacles An arraylist containing bounding shapes
+	 * @param playerX X coordinate of the player
+	 * @param playerY Y coordinate of the player
+	 * @param ground Bounding shape representing the ground
+	 * @post Velocity and coordinates are changed.
+	 */
 	public void act(ArrayList<Shape> obstacles, double playerX, double playerY, Shape ground) {
 		//obstacles ArrayList contains shape representing backboard, wall, and players
 		double xCoord = getX();
@@ -75,6 +83,11 @@ public class Ball extends MovingImage {
 		}
 	}
 	
+	/**
+	 * The ball is picked up by player
+	 * 
+	 * @post pickedUp field is set to true
+	 */
 	public void pickUp() {
 		pickedUp = true;
 	}
@@ -95,6 +108,12 @@ public class Ball extends MovingImage {
 		double xCoord2 = pX;
 		moveToLocation(xCoord2, yCoord2);
 	}
+	
+	/**
+	 * Ball is shot by the player
+	 * @param pX X coordinate of the player
+	 * @param pY Y coordinate of the player
+	 */
 	public void shoot(double pX, double pY) {
 		shot = true;
 		shotX = pX;
