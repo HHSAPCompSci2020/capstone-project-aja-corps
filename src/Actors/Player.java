@@ -84,6 +84,16 @@ public class Player extends MovingImage {
 		
 		if (xVelocity <= 10 && xVelocity >= -10)
 			
+			
+			if(this.x <45) {
+				this.x =45;
+			}
+		
+		if(this.x>700) {
+			this.x = 700;
+		}
+			
+			
 			System.out.println(""+x+" "+y);
 			
 			if(speedPowerup) {
