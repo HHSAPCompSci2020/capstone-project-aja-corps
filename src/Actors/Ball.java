@@ -21,7 +21,7 @@ public class Ball extends MovingImage {
 	private boolean shot = false;
 	
 	public Ball(int x, int y) {
-		super("basketball.png", x, y, 20, 20);
+		super("img/basketball.png", x, y, 20, 20);
 		xVelocity = 0;
 		yVelocity = 0;
 		gravity = 0.7;

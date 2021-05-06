@@ -51,7 +51,7 @@ public class GamePanel extends JPanel implements Runnable {
 		super();
 
 		try {
-			backgroundImage = ImageIO.read(new File("./2CA52D8.jpg"));
+			backgroundImage = ImageIO.read(new File("img/court.jpg"));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
