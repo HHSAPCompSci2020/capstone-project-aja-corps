@@ -29,7 +29,7 @@ public class GamePanel extends JPanel implements Runnable {
 
 	private Rectangle screenRect;
 
-	private Ball ball;
+//	private Ball ball;
 	private Image backgroundImage;
 	private ArrayList<Shape> obstacles;
 
@@ -37,6 +37,7 @@ public class GamePanel extends JPanel implements Runnable {
 	private ArrayList<Player> entities = new ArrayList<>();
 	
 	private Player me;
+	private Ball ball;
 	private ArrayList<Player> players;
 	
 	// Database stuff
@@ -70,6 +71,7 @@ public class GamePanel extends JPanel implements Runnable {
 		players = new ArrayList<Player>();
 		
 		me = new Player(DRAWING_WIDTH / 2 - Player.MARIO_WIDTH / 2, 50, "TestPlayer", myUserRef.getKey());
+		ball = new Ball(DRAWING_WIDTH / 2 - Player.MARIO_WIDTH / 2, 250);
 		System.out.println(me.getDataObject().getX());
 		System.out.println(me.getDataObject().getY());
 
@@ -104,6 +106,7 @@ public class GamePanel extends JPanel implements Runnable {
 			players.get(i).draw(g2, this);
 		}
 		
+		ball.draw(g2, this);
 		me.draw(g2, this);
 		g2.setTransform(at);
 
@@ -145,6 +148,7 @@ public class GamePanel extends JPanel implements Runnable {
 			}
 
 			me.act(obstacles);
+			ball.act(obstacles, 0, 0, new Rectangle(0, 300, 800, 22));
 			
 			if (!currentlySending && me.isDataChanged()) {
 				currentlySending = true;

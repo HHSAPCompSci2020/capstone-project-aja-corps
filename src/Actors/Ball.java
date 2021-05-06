@@ -78,6 +78,7 @@ public class Ball extends MovingImage {
 	public void pickUp() {
 		pickedUp = true;
 	}
+	
 	private void bounce(double pX, double pY, Shape ground) {
 		double xCoord = getX();
 		double yCoord = getY();
@@ -95,12 +96,12 @@ public class Ball extends MovingImage {
 		double xCoord2 = pX;
 		moveToLocation(xCoord2, yCoord2);
 	}
-	public void shoot(double pX, double pY) {
-		shot = true;
-		shotX = pX;
-		shotY = pY;
-		equation = findEquation(pX, pY);
-	}
+//	public void shoot(double pX, double pY) {
+//		shot = true;
+//		shotX = pX;
+//		shotY = pY;
+//		equation = findEquation(pX, pY);
+//	}
 	private void shootingMotion(double beginningX, double beginningY) {
 		/*
 		 * in order to find what the velocity should equal, we need to find the
@@ -114,19 +115,19 @@ public class Ball extends MovingImage {
 		
 	}
 	
-	private double findSlopeAtPoint(double x) {
-		
-	}
-	private double findRise(double slope) {
-		
-	}
-	private double findRun(double slope) {
-		
-	}
-	private double[] findEquation(double x, double y) {
-		//first element is the 'a' value, second is 'b', and third is 'c' of parabolic equation
-		double[] result = new double[3];
-		
-		
-	}
+//	private double findSlopeAtPoint(double x) {
+//		
+//	}
+//	private double findRise(double slope) {
+//		
+//	}
+//	private double findRun(double slope) {
+//		
+//	}
+//	private double[] findEquation(double x, double y) {
+//		//first element is the 'a' value, second is 'b', and third is 'c' of parabolic equation
+//		double[] result = new double[3];
+//		
+//		
+//	}
 }
