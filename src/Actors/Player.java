@@ -33,7 +33,7 @@ public class Player extends MovingImage {
 	private boolean dataUpdated;
 
 	public Player(int x, int y, String username, String uniqueID) {
-		super("player.png", x, y, MARIO_WIDTH, MARIO_HEIGHT);
+		super("img/player.png", x, y, MARIO_WIDTH, MARIO_HEIGHT);
 		xVelocity = 0;
 		yVelocity = 0;
 		onASurface = false;
