@@ -91,6 +91,7 @@ public class Ball extends MovingImage {
 	public void pickUp() {
 		pickedUp = true;
 	}
+	
 	private void bounce(double pX, double pY, Shape ground) {
 		double xCoord = getX();
 		double yCoord = getY();
@@ -133,19 +134,19 @@ public class Ball extends MovingImage {
 		
 	}
 	
-	private double findSlopeAtPoint(double x) {
-		
-	}
-	private double findRise(double slope) {
-		
-	}
-	private double findRun(double slope) {
-		
-	}
-	private double[] findEquation(double x, double y) {
-		//first element is the 'a' value, second is 'b', and third is 'c' of parabolic equation
-		double[] result = new double[3];
-		
-		
-	}
+//	private double findSlopeAtPoint(double x) {
+//		
+//	}
+//	private double findRise(double slope) {
+//		
+//	}
+//	private double findRun(double slope) {
+//		
+//	}
+//	private double[] findEquation(double x, double y) {
+//		//first element is the 'a' value, second is 'b', and third is 'c' of parabolic equation
+//		double[] result = new double[3];
+//		
+//		
+//	}
 }
