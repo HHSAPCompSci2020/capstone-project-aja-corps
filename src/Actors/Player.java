@@ -21,6 +21,11 @@ public class Player extends MovingImage {
 	private boolean jumpPowerup = false;
 	private boolean shotPowerup = false;
 	
+	private int speedCounter = 0;
+	private int jumpCounter = 0;
+
+	
+	
 //	public String host;
 	
 	private String uniqueID;
@@ -55,14 +60,14 @@ public class Player extends MovingImage {
 	 */
 	
 	public void speedPowerup() {
-		speedPowerup = true;
+		speedCounter = 100;
 	}
 	/**
 	 * toggles the jump power up
 	 * @post changed jumpPower up field
 	 */
 	public void jumpPowerup() {
-		jumpPowerup = true;
+		jumpCounter = 5;
 	}
 	/**
 	 * toggles the shot power up
@@ -96,10 +101,9 @@ public class Player extends MovingImage {
 			
 			System.out.println(""+x+" "+y);
 			
-			if(speedPowerup) {
-				xVelocity += dir;
-				speedPowerup = false;
-				return;
+			if(speedCounter >0) {
+				xVelocity += (0.65)*(double)dir;
+				speedCounter--;
 			}
 			
 			
@@ -109,9 +113,9 @@ public class Player extends MovingImage {
 	public void jump() {
 		if (onASurface) {
 			
-			if(jumpPowerup) {
-			yVelocity -= 2*jumpStrength;
-			jumpPowerup = false;
+			if(jumpCounter>0) {
+			yVelocity -= (1.3)*jumpStrength;
+			jumpCounter--;
 			return;
 			}
 	
