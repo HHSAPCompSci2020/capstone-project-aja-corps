@@ -16,6 +16,9 @@ public class Player extends MovingImage {
 	private double friction;
 	private double gravity;
 	private double jumpStrength;
+	private boolean speedPowerup;
+	private boolean jumpPowerup;
+	private boolean shotPowerup;
 	
 //	public String host;
 	
@@ -29,27 +32,63 @@ public class Player extends MovingImage {
 	private boolean dataUpdated;
 
 	public Player(int x, int y, String username, String uniqueID) {
-		super("mario.png", x, y, MARIO_WIDTH, MARIO_HEIGHT);
+		super("player.png", x, y, MARIO_WIDTH, MARIO_HEIGHT);
 		xVelocity = 0;
 		yVelocity = 0;
 		onASurface = false;
 		gravity = 0.7;
 		friction = .85;
-		jumpStrength = 15;
+		jumpStrength = 10;
 		this.username = username;
 		this.uniqueID = uniqueID;
 		dataUpdated = false;
 	}
 
+	
+	
+	
+	public void speedPowerup() {
+		speedPowerup = true;
+	}
+	
+	public void jumpPowerup() {
+		jumpPowerup = true;
+	}
+
+	public void shotPowerup() {
+		shotPowerup = true;
+}
+	
+	
+	
+	
+	
 	// METHODS
 	public void walk(int dir) {
 		if (xVelocity <= 10 && xVelocity >= -10)
-			xVelocity += dir;
+			
+			if(speedPowerup) {
+				xVelocity += dir;
+				speedPowerup = false;
+				return;
+			}
+			
+			
+			xVelocity += (0.5)*(double)dir;
 	}
 
 	public void jump() {
-		if (onASurface)
+		if (onASurface) {
+			
+			if(jumpPowerup) {
+			yVelocity -= 2*jumpStrength;
+			jumpPowerup = false;
+			return;
+			}
+	
 			yVelocity -= jumpStrength;
+		
+		}
 	}
 
 	public void act(ArrayList<Shape> obstacles) {
