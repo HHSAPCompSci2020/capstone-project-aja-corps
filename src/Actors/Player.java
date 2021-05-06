@@ -6,7 +6,13 @@ import java.awt.geom.Rectangle2D;
 import java.util.*;
 
 import processing.core.PShape;
-
+/**
+ * 
+ * 
+ * 
+ * @author adityapanikkar
+ *
+ */
 public class Player extends MovingImage {
 
 	public static final int MARIO_WIDTH = 40;
@@ -81,7 +87,12 @@ public class Player extends MovingImage {
 	
 	
 	
-	// METHODS
+	/**
+	 * 
+	 * @param dir the magnitude of the step distance
+	 * 
+	 * This method represents the person taking a step. This method also includes the implementation of the powerup
+	 */
 	public void walk(int dir) {
 		
 		
@@ -110,6 +121,9 @@ public class Player extends MovingImage {
 			xVelocity += (0.5)*(double)dir;
 	}
 
+	/**
+	 * this method represents the person jumping. it also accounts for the powerups
+	 */
 	public void jump() {
 		if (onASurface) {
 			
