@@ -115,12 +115,12 @@ public class Ball extends MovingImage {
 	 * @param pX X coordinate of the player
 	 * @param pY Y coordinate of the player
 	 */
-	public void shoot(double pX, double pY) {
-		shot = true;
-		shotX = pX;
-		shotY = pY;
-		equation = findEquation(pX, pY);
-	}
+//	public void shoot(double pX, double pY) {
+//		shot = true;
+//		shotX = pX;
+//		shotY = pY;
+//		equation = findEquation(pX, pY);
+//	}
 	private void shootingMotion(double beginningX, double beginningY) {
 		/*
 		 * in order to find what the velocity should equal, we need to find the
