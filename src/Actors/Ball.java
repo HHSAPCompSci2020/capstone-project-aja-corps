@@ -17,13 +17,13 @@ public class Ball extends MovingImage {
 	private double friction;
 	private double gravity;
 	private boolean bounced;
-	private boolean pickedUp = false;
+	private boolean pickedUp = true;
 	private boolean shot = false;
 	
 	public Ball(int x, int y) {
 		super("img/basketball.png", x, y, 20, 20);
 		xVelocity = 0;
-		yVelocity = 0;
+		yVelocity = 5;
 		gravity = 0.7;
 		friction = .85;
 	}
@@ -92,7 +92,7 @@ public class Ball extends MovingImage {
 		pickedUp = true;
 	}
 	
-	private void bounce(double pX, double pY, Shape ground) {
+	public void bounce(double pX, double pY, Shape ground) {
 		double xCoord = getX();
 		double yCoord = getY();
 		double width = getWidth();
