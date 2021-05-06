@@ -78,6 +78,10 @@ public class Player extends MovingImage {
 	
 	// METHODS
 	public void walk(int dir) {
+		
+		
+		
+		
 		if (xVelocity <= 10 && xVelocity >= -10)
 			
 			System.out.println(""+x+" "+y);
