@@ -151,7 +151,7 @@ public class GamePanel extends JPanel implements Runnable {
 				c.act(obstacles);
 			}
 
-			ball.bounce(50, 100, new Rectangle(0, 300, 800, 22));
+			ball.bounce(100, 100, new Rectangle(0, 300, 800, 22));
 			me.act(obstacles);
 			//ball.act(obstacles, 0, 0, new Rectangle(0, 240, 800, 22));
 			
