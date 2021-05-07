@@ -1,7 +1,9 @@
 package Graphics;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Rectangle2D;
 import java.io.File;
 import java.io.IOException;
 
@@ -15,6 +17,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.DatabaseReference.CompletionListener;
 
 import Actors.OldBall;
+import Actors.Ball;
 import Actors.Player;
 import Actors.PlayerData;
 
@@ -29,23 +32,24 @@ public class GamePanel extends JPanel implements Runnable {
 
 	private Rectangle screenRect;
 
-//	private Ball ball;
+	// private Ball ball;
 	private Image backgroundImage;
 	private ArrayList<Shape> obstacles;
 
 	private KeyHandler keyControl;
 	private ArrayList<Player> entities = new ArrayList<>();
-	
+
 	private Player me;
-	private OldBall ball;
+	private Ball ball;
 	private ArrayList<Player> players;
-	
+
 	// Database stuff
-	private DatabaseReference roomRef;  // This is the database entry for the whole room
-	private DatabaseReference myUserRef;  // This is the database entry for just our user's data. This allows us to more easily update ourselves.
-	
-	private boolean currentlySending;  // These field allows us to limit database writes by only sending data once we've received confirmation the previous data went through.
-	
+	private DatabaseReference roomRef; // This is the database entry for the whole room
+	private DatabaseReference myUserRef; // This is the database entry for just our user's data. This allows us to more
+											// easily update ourselves.
+
+	private boolean currentlySending; // These field allows us to limit database writes by only sending data once
+										// we've received confirmation the previous data went through.
 
 	public GamePanel(DatabaseReference roomRef) {
 		super();
@@ -62,21 +66,22 @@ public class GamePanel extends JPanel implements Runnable {
 		screenRect = new Rectangle(0, 0, DRAWING_WIDTH, DRAWING_HEIGHT);
 		obstacles = new ArrayList<Shape>();
 		obstacles.add(new Rectangle(0, 300, 800, 22));
-		
+
 		this.roomRef = roomRef;
 		currentlySending = false;
-		
+
 		roomRef.child("users").addChildEventListener(new UserChangeListener());
 		myUserRef = roomRef.child("users").push();
 		players = new ArrayList<Player>();
-		
+
 		me = new Player(DRAWING_WIDTH / 2 - Player.MARIO_WIDTH / 2, 50, "TestPlayer", myUserRef.getKey());
-		ball = new OldBall(DRAWING_WIDTH / 2 - Player.MARIO_WIDTH / 2, 250);
-//		System.out.println(me.getDataObject().getX());
-//		System.out.println(me.getDataObject().getY());
+		// ball = new OldBall(DRAWING_WIDTH / 2 - Player.MARIO_WIDTH / 2, 250);
+		ball = new Ball(DRAWING_WIDTH / 2 - Player.MARIO_WIDTH / 2, 250, 20, 20);
+		System.out.println(me.getDataObject().getX());
+		System.out.println(me.getDataObject().getY());
 
 		myUserRef.setValueAsync(me.getDataObject());
-		
+
 		new Thread(this).start();
 	}
 
@@ -101,11 +106,10 @@ public class GamePanel extends JPanel implements Runnable {
 
 		g.drawImage(backgroundImage, 0, 0, this);
 
-
 		for (int i = 0; i < players.size(); i++) {
 			players.get(i).draw(g2, this);
 		}
-		
+
 		ball.draw(g2, this);
 		me.draw(g2, this);
 		g2.setTransform(at);
@@ -117,7 +121,8 @@ public class GamePanel extends JPanel implements Runnable {
 	}
 
 	public void spawnNewBall() {
-		ball = new OldBall(DRAWING_WIDTH / 2 - Player.MARIO_WIDTH / 2, 250);
+		// ball = new OldBall(DRAWING_WIDTH / 2 - Player.MARIO_WIDTH / 2, 250);
+		ball = new Ball(DRAWING_WIDTH / 2 - Player.MARIO_WIDTH / 2, 250, 20, 20);
 	}
 
 	public KeyHandler getKeyHandler() {
@@ -135,13 +140,13 @@ public class GamePanel extends JPanel implements Runnable {
 		if (keyControl.isPressed(KeyEvent.VK_UP)) {
 			me.jump();
 		}
-//		if (keyControl.isPressed(KeyEvent.VK_SHIFT)) {
-//			System.out.println("dash");
-//		}
-		
-//		if(keyControl.isPressed(KeyEvent.VK_SPACE)) {
-//			me.jumpPowerup();
-//		}
+		// if (keyControl.isPressed(KeyEvent.VK_SHIFT)) {
+		// System.out.println("dash");
+		// }
+
+		// if(keyControl.isPressed(KeyEvent.VK_SPACE)) {
+		// me.jumpPowerup();
+		// }
 	}
 
 	public void run() {
@@ -149,20 +154,19 @@ public class GamePanel extends JPanel implements Runnable {
 			long startTime = System.currentTimeMillis();
 
 			enableKeys();
-			
-			for (Player c: players) {
-				c.act(obstacles, null);
+			ArrayList<Rectangle2D.Double> playerShapes = new ArrayList<Rectangle2D.Double>();
+			for (Player c : players) {
+				c.act(obstacles);
+				playerShapes.add(new Rectangle2D.Double(c.getX(), c.getY(), c.getWidth(), c.getHeight()));
 			}
 
-			ball.bounce(100, 100, new Rectangle(0, 300, 800, 22));
-			
-			if (players.size() > 0) {
-				me.act(obstacles, players.get(0));
-			} else {
-				me.act(obstacles, null);
-			}
-			//ball.act(obstacles, 0, 0, new Rectangle(0, 240, 800, 22));
-			
+			// ball.bounce(100, 100, new Rectangle(0, 300, 800, 22));
+			// ball.act(playerShapes, 300);
+			ball.getPlayer(me);
+			ball.dribble(300);
+			me.act(obstacles);
+			// ball.act(obstacles, 0, 0, new Rectangle(0, 240, 800, 22));
+
 			if (!currentlySending && me.isDataChanged()) {
 				currentlySending = true;
 				myUserRef.setValue(me.getDataObject(), new CompletionListener() {
@@ -171,10 +175,10 @@ public class GamePanel extends JPanel implements Runnable {
 					public void onComplete(DatabaseError arg0, DatabaseReference arg1) {
 						currentlySending = false;
 					}
-					
+
 				});
 			}
-			
+
 			repaint();
 
 			long waitTime = 17 - (System.currentTimeMillis() - startTime);
@@ -215,13 +219,12 @@ public class GamePanel extends JPanel implements Runnable {
 		}
 	}
 
-	
 	class UserChangeListener implements ChildEventListener {
 
 		@Override
 		public void onCancelled(DatabaseError arg0) {
 			// TODO Auto-generated method stub
-			
+
 		}
 
 		@Override
@@ -248,7 +251,7 @@ public class GamePanel extends JPanel implements Runnable {
 		@Override
 		public void onChildMoved(DataSnapshot arg0, String arg1) {
 			// TODO Auto-generated method stub
-			
+
 		}
 
 		@Override
@@ -262,7 +265,7 @@ public class GamePanel extends JPanel implements Runnable {
 				}
 			}
 		}
-		
+
 	}
 
 }
