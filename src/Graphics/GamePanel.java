@@ -14,7 +14,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.DatabaseReference.CompletionListener;
 
-import Actors.Ball;
+import Actors.OldBall;
 import Actors.Player;
 import Actors.PlayerData;
 
@@ -37,7 +37,7 @@ public class GamePanel extends JPanel implements Runnable {
 	private ArrayList<Player> entities = new ArrayList<>();
 	
 	private Player me;
-	private Ball ball;
+	private OldBall ball;
 	private ArrayList<Player> players;
 	
 	// Database stuff
@@ -71,7 +71,7 @@ public class GamePanel extends JPanel implements Runnable {
 		players = new ArrayList<Player>();
 		
 		me = new Player(DRAWING_WIDTH / 2 - Player.MARIO_WIDTH / 2, 50, "TestPlayer", myUserRef.getKey());
-		ball = new Ball(DRAWING_WIDTH / 2 - Player.MARIO_WIDTH / 2, 250);
+		ball = new OldBall(DRAWING_WIDTH / 2 - Player.MARIO_WIDTH / 2, 250);
 		System.out.println(me.getDataObject().getX());
 		System.out.println(me.getDataObject().getY());
 
@@ -117,7 +117,7 @@ public class GamePanel extends JPanel implements Runnable {
 	}
 
 	public void spawnNewBall() {
-		ball = new Ball(DRAWING_WIDTH / 2 - Player.MARIO_WIDTH / 2, 250);
+		ball = new OldBall(DRAWING_WIDTH / 2 - Player.MARIO_WIDTH / 2, 250);
 	}
 
 	public KeyHandler getKeyHandler() {
