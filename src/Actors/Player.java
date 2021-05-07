@@ -101,7 +101,7 @@ public class Player extends MovingImage {
 			this.x = 700;
 		}
 
-		System.out.println("" + x + " " + y);
+//		System.out.println("" + x + " " + y);
 
 		if (speedCounter > 0) {
 			xVelocity += (0.65) * (double) dir;
@@ -262,6 +262,10 @@ public class Player extends MovingImage {
 
 	public double getY() {
 		return y;
+	}
+	
+	public String getID() {
+		return uniqueID;
 	}
 
 }

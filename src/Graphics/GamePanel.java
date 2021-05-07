@@ -18,6 +18,7 @@ import com.google.firebase.database.DatabaseReference.CompletionListener;
 
 import Actors.OldBall;
 import Actors.Ball;
+import Actors.BallData;
 import Actors.Player;
 import Actors.PlayerData;
 
@@ -42,11 +43,13 @@ public class GamePanel extends JPanel implements Runnable {
 	private Player me;
 	private Ball ball;
 	private ArrayList<Player> players;
+	private ArrayList<Ball> balls;
 
 	// Database stuff
 	private DatabaseReference roomRef; // This is the database entry for the whole room
 	private DatabaseReference myUserRef; // This is the database entry for just our user's data. This allows us to more
 											// easily update ourselves.
+	private DatabaseReference myBallRef;
 
 	private boolean currentlySending; // These field allows us to limit database writes by only sending data once
 										// we've received confirmation the previous data went through.
@@ -71,17 +74,20 @@ public class GamePanel extends JPanel implements Runnable {
 		currentlySending = false;
 
 		roomRef.child("users").addChildEventListener(new UserChangeListener());
+		roomRef.child("balls").addChildEventListener(new BallChangeListener());
+		
 		myUserRef = roomRef.child("users").push();
+		myBallRef = roomRef.child("balls").push();
+		
 		players = new ArrayList<Player>();
+		balls = new ArrayList<Ball>();
 
 		me = new Player(DRAWING_WIDTH / 2 - Player.MARIO_WIDTH / 2, 50, "TestPlayer", myUserRef.getKey());
-		// ball = new OldBall(DRAWING_WIDTH / 2 - Player.MARIO_WIDTH / 2, 250);
-		ball = new Ball(DRAWING_WIDTH / 2 - Player.MARIO_WIDTH / 2, 250, 20, 20);
-		System.out.println(me.getDataObject().getX());
-		System.out.println(me.getDataObject().getY());
+		ball = new Ball(DRAWING_WIDTH / 2 - Player.MARIO_WIDTH / 2, 250, 20, 20, "TestBall", myBallRef.getKey());
 
 		myUserRef.setValueAsync(me.getDataObject());
-
+		myBallRef.setValueAsync(ball.getDataObject());
+		
 		new Thread(this).start();
 	}
 
@@ -109,6 +115,10 @@ public class GamePanel extends JPanel implements Runnable {
 		for (int i = 0; i < players.size(); i++) {
 			players.get(i).draw(g2, this);
 		}
+		
+		for (int i = 0; i < balls.size(); i++) {
+			balls.get(i).draw(g2, this);
+		}
 
 		ball.draw(g2, this);
 		me.draw(g2, this);
@@ -121,8 +131,6 @@ public class GamePanel extends JPanel implements Runnable {
 	}
 
 	public void spawnNewBall() {
-		// ball = new OldBall(DRAWING_WIDTH / 2 - Player.MARIO_WIDTH / 2, 250);
-		ball = new Ball(DRAWING_WIDTH / 2 - Player.MARIO_WIDTH / 2, 250, 20, 20);
 	}
 
 	public KeyHandler getKeyHandler() {
@@ -140,13 +148,6 @@ public class GamePanel extends JPanel implements Runnable {
 		if (keyControl.isPressed(KeyEvent.VK_UP)) {
 			me.jump();
 		}
-		// if (keyControl.isPressed(KeyEvent.VK_SHIFT)) {
-		// System.out.println("dash");
-		// }
-
-		// if(keyControl.isPressed(KeyEvent.VK_SPACE)) {
-		// me.jumpPowerup();
-		// }
 	}
 
 	public void run() {
@@ -160,16 +161,26 @@ public class GamePanel extends JPanel implements Runnable {
 				playerShapes.add(new Rectangle2D.Double(c.getX(), c.getY(), c.getWidth(), c.getHeight()));
 			}
 
-			// ball.bounce(100, 100, new Rectangle(0, 300, 800, 22));
-			// ball.act(playerShapes, 300);
+
 			ball.getPlayer(me);
 			ball.dribble(300);
 			me.act(obstacles, null);
-			// ball.act(obstacles, 0, 0, new Rectangle(0, 240, 800, 22));
 
 			if (!currentlySending && me.isDataChanged()) {
 				currentlySending = true;
 				myUserRef.setValue(me.getDataObject(), new CompletionListener() {
+
+					@Override
+					public void onComplete(DatabaseError arg0, DatabaseReference arg1) {
+						currentlySending = false;
+					}
+
+				});
+			}
+			
+			if (ball.isDataChanged()) {
+				currentlySending = true;
+				myBallRef.setValue(ball.getDataObject(), new CompletionListener() {
 
 					@Override
 					public void onComplete(DatabaseError arg0, DatabaseReference arg1) {
@@ -218,6 +229,54 @@ public class GamePanel extends JPanel implements Runnable {
 			return keys.contains(code);
 		}
 	}
+	
+	class BallChangeListener implements ChildEventListener {
+		@Override
+		public void onCancelled(DatabaseError arg0) {
+			// TODO Auto-generated method stub
+
+		}
+
+		@Override
+		public void onChildAdded(DataSnapshot arg0, String arg1) {
+			if (ball.idMatch(arg0.getKey()))
+				return;
+			Ball b = new Ball(DRAWING_WIDTH / 2 - Player.MARIO_WIDTH / 2, 250, 20, 20, null, arg0.getKey());
+			b.syncWithDataObject(arg0.getValue(BallData.class));
+			balls.add(b);
+		}
+
+		@Override
+		public void onChildChanged(DataSnapshot arg0, String arg1) {
+			if (me.idMatch(arg0.getKey()))
+				return;
+
+			for (int i = 0; i < balls.size(); i++) {
+				Ball b = balls.get(i);
+				if (b.idMatch(arg0.getKey())) {
+					b.syncWithDataObject(arg0.getValue(BallData.class));
+				}
+			}
+		}
+
+		@Override
+		public void onChildMoved(DataSnapshot arg0, String arg1) {
+			// TODO Auto-generated method stub
+
+		}
+
+		@Override
+		public void onChildRemoved(DataSnapshot arg0) {
+			if (ball.idMatch(arg0.getKey()))
+				return;
+			for (int i = 0; i < balls.size(); i++) {
+				if (balls.get(i).idMatch(arg0.getKey())) {
+					balls.remove(i);
+					break;
+				}
+			}
+		}
+	}
 
 	class UserChangeListener implements ChildEventListener {
 
@@ -240,6 +299,7 @@ public class GamePanel extends JPanel implements Runnable {
 		public void onChildChanged(DataSnapshot arg0, String arg1) {
 			if (me.idMatch(arg0.getKey()))
 				return;
+
 			for (int i = 0; i < players.size(); i++) {
 				Player p = players.get(i);
 				if (p.idMatch(arg0.getKey())) {
