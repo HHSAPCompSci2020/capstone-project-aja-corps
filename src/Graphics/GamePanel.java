@@ -2,6 +2,7 @@ package Graphics;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Rectangle2D;
 import java.io.File;
 import java.io.IOException;
 
@@ -15,6 +16,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.DatabaseReference.CompletionListener;
 
 import Actors.OldBall;
+import Actors.Ball;
 import Actors.Player;
 import Actors.PlayerData;
 
@@ -37,7 +39,7 @@ public class GamePanel extends JPanel implements Runnable {
 	private ArrayList<Player> entities = new ArrayList<>();
 	
 	private Player me;
-	private OldBall ball;
+	private Ball ball;
 	private ArrayList<Player> players;
 	
 	// Database stuff
@@ -71,7 +73,8 @@ public class GamePanel extends JPanel implements Runnable {
 		players = new ArrayList<Player>();
 		
 		me = new Player(DRAWING_WIDTH / 2 - Player.MARIO_WIDTH / 2, 50, "TestPlayer", myUserRef.getKey());
-		ball = new OldBall(DRAWING_WIDTH / 2 - Player.MARIO_WIDTH / 2, 250);
+		//ball = new OldBall(DRAWING_WIDTH / 2 - Player.MARIO_WIDTH / 2, 250);
+		ball = new Ball(DRAWING_WIDTH / 2 - Player.MARIO_WIDTH / 2, 250, 20, 20);
 		System.out.println(me.getDataObject().getX());
 		System.out.println(me.getDataObject().getY());
 
@@ -117,7 +120,8 @@ public class GamePanel extends JPanel implements Runnable {
 	}
 
 	public void spawnNewBall() {
-		ball = new OldBall(DRAWING_WIDTH / 2 - Player.MARIO_WIDTH / 2, 250);
+		//ball = new OldBall(DRAWING_WIDTH / 2 - Player.MARIO_WIDTH / 2, 250);
+		ball = new Ball(DRAWING_WIDTH / 2 - Player.MARIO_WIDTH / 2, 250, 20, 20);
 	}
 
 	public KeyHandler getKeyHandler() {
@@ -146,12 +150,16 @@ public class GamePanel extends JPanel implements Runnable {
 			long startTime = System.currentTimeMillis();
 
 			enableKeys();
-			
+			ArrayList<Rectangle2D.Double> playerShapes = new ArrayList<Rectangle2D.Double>();
 			for (Player c: players) {
 				c.act(obstacles);
+				playerShapes.add(new Rectangle2D.Double(c.getX(), c.getY(), c.getWidth(), c.getHeight()));
 			}
 
-			ball.bounce(100, 100, new Rectangle(0, 300, 800, 22));
+			//ball.bounce(100, 100, new Rectangle(0, 300, 800, 22));
+			//ball.act(playerShapes, 300);
+			ball.getPlayer(me);
+			ball.dribble(300);
 			me.act(obstacles);
 			//ball.act(obstacles, 0, 0, new Rectangle(0, 240, 800, 22));
 			
