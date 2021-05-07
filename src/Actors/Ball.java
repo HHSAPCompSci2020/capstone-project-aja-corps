@@ -40,7 +40,7 @@ public class Ball extends MovingImage{
 		floorY = 300; //hardcoded for now
 		if(y >= floorY) {
 			yVelocity = -yVelocity;
-		} else if(y <= playerDribbling.getY()+10) {
+		} else if(y <= playerDribbling.getY()+15) {
 			yVelocity = Math.abs(yVelocity);
 		}
 		y += yVelocity;
