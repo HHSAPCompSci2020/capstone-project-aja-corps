@@ -148,6 +148,9 @@ public class GamePanel extends JPanel implements Runnable {
 		if (keyControl.isPressed(KeyEvent.VK_UP)) {
 			me.jump();
 		}
+		if (keyControl.isPressed(KeyEvent.VK_SHIFT)) {
+			me.dash();
+		}
 	}
 
 	public void run() {
