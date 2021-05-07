@@ -26,6 +26,7 @@ public class Player extends MovingImage {
 	private boolean speedPowerup = false;
 	private boolean jumpPowerup = false;
 	private boolean shotPowerup = false;
+	private boolean right = true;
 
 	private int speedCounter = 0;
 	private int jumpCounter = 0;
@@ -68,8 +69,17 @@ public class Player extends MovingImage {
 	 * makes player dash
 	 */
 	public void dash() {
-		x += 50;
+		if(right)
+			x += 20;
+		else
+			x -= 20;
 		dataUpdated = true;
+	}
+	public boolean getDirection() {
+		return right;
+	}
+	public void setDirection(boolean dir) {
+		right = dir;
 	}
 
 	/**
