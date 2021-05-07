@@ -19,7 +19,7 @@ public class Ball extends MovingImage {
 	public Ball(int x, int y, int width, int height, String username, String uniqueID) {
 		super("img/basketball.png", x, y, width, height);
 		xVelocity = 0;
-		yVelocity = 3;
+		yVelocity = 4;
 		this.uniqueID = uniqueID;
 		this.username = username;
 	}
