@@ -72,8 +72,8 @@ public class GamePanel extends JPanel implements Runnable {
 		
 		me = new Player(DRAWING_WIDTH / 2 - Player.MARIO_WIDTH / 2, 50, "TestPlayer", myUserRef.getKey());
 		ball = new OldBall(DRAWING_WIDTH / 2 - Player.MARIO_WIDTH / 2, 250);
-		System.out.println(me.getDataObject().getX());
-		System.out.println(me.getDataObject().getY());
+//		System.out.println(me.getDataObject().getX());
+//		System.out.println(me.getDataObject().getY());
 
 		myUserRef.setValueAsync(me.getDataObject());
 		
@@ -135,6 +135,9 @@ public class GamePanel extends JPanel implements Runnable {
 		if (keyControl.isPressed(KeyEvent.VK_UP)) {
 			me.jump();
 		}
+//		if (keyControl.isPressed(KeyEvent.VK_SHIFT)) {
+//			System.out.println("dash");
+//		}
 		
 //		if(keyControl.isPressed(KeyEvent.VK_SPACE)) {
 //			me.jumpPowerup();
@@ -148,11 +151,16 @@ public class GamePanel extends JPanel implements Runnable {
 			enableKeys();
 			
 			for (Player c: players) {
-				c.act(obstacles);
+				c.act(obstacles, null);
 			}
 
 			ball.bounce(100, 100, new Rectangle(0, 300, 800, 22));
-			me.act(obstacles);
+			
+			if (players.size() > 0) {
+				me.act(obstacles, players.get(0));
+			} else {
+				me.act(obstacles, null);
+			}
 			//ball.act(obstacles, 0, 0, new Rectangle(0, 240, 800, 22));
 			
 			if (!currentlySending && me.isDataChanged()) {

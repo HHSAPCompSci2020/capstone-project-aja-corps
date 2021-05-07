@@ -1,11 +1,11 @@
 package Actors;
 
-
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.util.*;
 
 import processing.core.PShape;
+
 /**
  * 
  * 
@@ -26,21 +26,19 @@ public class Player extends MovingImage {
 	private boolean speedPowerup = false;
 	private boolean jumpPowerup = false;
 	private boolean shotPowerup = false;
-	
+
 	private int speedCounter = 0;
 	private int jumpCounter = 0;
 
-	
-	
 //	public String host;
-	
+
 	private String uniqueID;
-	
+
 	private String username;
 	private double x, y;
-	
+
 	private PShape shape;
-	
+
 	private boolean dataUpdated;
 
 	public Player(int x, int y, String username, String uniqueID) {
@@ -56,69 +54,61 @@ public class Player extends MovingImage {
 		dataUpdated = false;
 	}
 
-	
-	
-	
-	
 	/**
 	 * method toggles the speed power up
+	 * 
 	 * @post changes speedPowerup field
 	 */
-	
+
 	public void speedPowerup() {
 		speedCounter = 100;
 	}
+
 	/**
 	 * toggles the jump power up
+	 * 
 	 * @post changed jumpPower up field
 	 */
 	public void jumpPowerup() {
 		jumpCounter = 5;
 	}
+
 	/**
 	 * toggles the shot power up
-	 * @post changes shoot power up field 
+	 * 
+	 * @post changes shoot power up field
 	 */
 	public void shotPowerup() {
 		shotPowerup = true;
-}
-	
-	
-	
-	
-	
+	}
+
 	/**
 	 * 
 	 * @param dir the magnitude of the step distance
 	 * 
-	 * This method represents the person taking a step. This method also includes the implementation of the powerup
+	 *            This method represents the person taking a step. This method also
+	 *            includes the implementation of the powerup
 	 */
 	public void walk(int dir) {
-		
-		
-		
-		
+
 		if (xVelocity <= 10 && xVelocity >= -10)
-			
-			
-			if(this.x <45) {
-				this.x =45;
+
+			if (this.x < 45) {
+				this.x = 45;
 			}
-		
-		if(this.x>700) {
+
+		if (this.x > 700) {
 			this.x = 700;
 		}
-			
-			
-			System.out.println(""+x+" "+y);
-			
-			if(speedCounter >0) {
-				xVelocity += (0.65)*(double)dir;
-				speedCounter--;
-			}
-			
-			
-			xVelocity += (0.5)*(double)dir;
+
+		System.out.println("" + x + " " + y);
+
+		if (speedCounter > 0) {
+			xVelocity += (0.65) * (double) dir;
+			speedCounter--;
+		}
+
+		xVelocity += (0.5) * (double) dir;
 	}
 
 	/**
@@ -126,19 +116,19 @@ public class Player extends MovingImage {
 	 */
 	public void jump() {
 		if (onASurface) {
-			
-			if(jumpCounter>0) {
-			yVelocity -= (1.3)*jumpStrength;
-			jumpCounter--;
-			return;
+
+			if (jumpCounter > 0) {
+				yVelocity -= (1.3) * jumpStrength;
+				jumpCounter--;
+				return;
 			}
-	
+
 			yVelocity -= jumpStrength;
-		
+
 		}
 	}
 
-	public void act(ArrayList<Shape> obstacles) {
+	public void act(ArrayList<Shape> obstacles, Player player2) {
 		double xCoord = getX();
 		double yCoord = getY();
 		double width = getWidth();
@@ -149,9 +139,17 @@ public class Player extends MovingImage {
 		yVelocity += gravity; // GRAVITY
 		double yCoord2 = yCoord + yVelocity;
 
-		Rectangle2D.Double strechY = new Rectangle2D.Double(xCoord,Math.min(yCoord,yCoord2),width,height+Math.abs(yVelocity));
+		Rectangle2D.Double strechY = new Rectangle2D.Double(xCoord, Math.min(yCoord, yCoord2), width,
+				height + Math.abs(yVelocity));
 
 		onASurface = false;
+		
+		if (player2 != null) {
+			if (strechY.intersects(player2)) {
+//				System.out.println("Intersection!");
+				xVelocity = 0;
+			}
+		}
 
 		if (yVelocity > 0) {
 			Shape standingSurface = null;
@@ -164,7 +162,7 @@ public class Player extends MovingImage {
 			}
 			if (standingSurface != null) {
 				Rectangle r = standingSurface.getBounds();
-				yCoord2 = r.getY()-height;
+				yCoord2 = r.getY() - height;
 			}
 		} else if (yVelocity < 0) {
 			Shape headSurface = null;
@@ -176,7 +174,7 @@ public class Player extends MovingImage {
 			}
 			if (headSurface != null) {
 				Rectangle r = headSurface.getBounds();
-				yCoord2 = r.getY()+r.getHeight();
+				yCoord2 = r.getY() + r.getHeight();
 			}
 		}
 
@@ -185,12 +183,12 @@ public class Player extends MovingImage {
 
 		// ***********X AXIS***********
 
-
 		xVelocity *= friction;
 
 		double xCoord2 = xCoord + xVelocity;
 
-		Rectangle2D.Double strechX = new Rectangle2D.Double(Math.min(xCoord,xCoord2),yCoord2,width+Math.abs(xVelocity),height);
+		Rectangle2D.Double strechX = new Rectangle2D.Double(Math.min(xCoord, xCoord2), yCoord2,
+				width + Math.abs(xVelocity), height);
 
 		if (xVelocity > 0) {
 			Shape rightSurface = null;
@@ -202,7 +200,7 @@ public class Player extends MovingImage {
 			}
 			if (rightSurface != null) {
 				Rectangle r = rightSurface.getBounds();
-				xCoord2 = r.getX()-width;
+				xCoord2 = r.getX() - width;
 			}
 		} else if (xVelocity < 0) {
 			Shape leftSurface = null;
@@ -214,24 +212,22 @@ public class Player extends MovingImage {
 			}
 			if (leftSurface != null) {
 				Rectangle r = leftSurface.getBounds();
-				xCoord2 = r.getX()+r.getWidth();
+				xCoord2 = r.getX() + r.getWidth();
 			}
 		}
 
-
 		if (Math.abs(xVelocity) < .2)
 			xVelocity = 0;
-		
+
 		this.x = xCoord2;
 		this.y = yCoord2;
-		
+
 		dataUpdated = true;
 
-
-		moveToLocation(xCoord2,yCoord2);
+		moveToLocation(xCoord2, yCoord2);
 
 	}
-	
+
 	public PlayerData getDataObject() {
 		dataUpdated = false;
 		PlayerData p = new PlayerData();
@@ -240,22 +236,22 @@ public class Player extends MovingImage {
 		p.y = y;
 		return p;
 	}
-	
+
 	public void syncWithDataObject(PlayerData data) {
 		dataUpdated = false;
 		this.x = data.x;
 		this.y = data.y;
 		this.username = data.username;
 	}
-	
+
 	public boolean idMatch(String uid) {
 		return this.uniqueID.equals(uid);
 	}
-	
+
 	public boolean isDataChanged() {
 		return dataUpdated;
 	}
-	
+
 	public String getUsername() {
 		return username;
 	}
@@ -267,8 +263,5 @@ public class Player extends MovingImage {
 	public double getY() {
 		return y;
 	}
-	
-	
-
 
 }
