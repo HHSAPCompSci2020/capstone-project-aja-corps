@@ -63,6 +63,14 @@ public class Player extends MovingImage {
 	public void speedPowerup() {
 		speedCounter = 100;
 	}
+	
+	/**
+	 * makes player dash
+	 */
+	public void dash() {
+		x += 50;
+		dataUpdated = true;
+	}
 
 	/**
 	 * toggles the jump power up
