@@ -10,7 +10,6 @@ public class Ball extends MovingImage {
 	private double xVelocity, yVelocity, shotx, shoty;
 	private boolean dribbling = true;
 	private Rectangle2D.Double playerDribbling;
-	private
 
 	private String uniqueID;
 	private boolean dataUpdated;
@@ -56,22 +55,22 @@ public class Ball extends MovingImage {
 		dataUpdated = true;
 	}
 
-	public void shoot(double hoopx, double hoopy) {
-		dribbling = false;
-		shotx = playerDribbling.getX() + 25;
-		shoty = playerDribbling.getY() - 15;
-		xVelocity = 5;
-		x += xVelocity;
-		y = f(x);
-
-		playerDribbling = null;
-	}
+//	public void shoot(double hoopx, double hoopy) {
+//		dribbling = false;
+//		shotx = playerDribbling.getX() + 25;
+//		shoty = playerDribbling.getY() - 15;
+//		xVelocity = 5;
+//		x += xVelocity;
+//		y = f(x);
+//
+//		playerDribbling = null;
+//	}
 
 	// this method will calculate the y coordinate based off of a function
 	// (parabola) representing the arc of the shot
-	private double f(double x) {
-
-	}
+//	private double f(double x) {
+//
+//	}
 
 	private void calculateParabola() {
 	}
