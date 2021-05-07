@@ -156,7 +156,7 @@ public class GamePanel extends JPanel implements Runnable {
 			enableKeys();
 			ArrayList<Rectangle2D.Double> playerShapes = new ArrayList<Rectangle2D.Double>();
 			for (Player c : players) {
-				c.act(obstacles);
+				c.act(obstacles, null);
 				playerShapes.add(new Rectangle2D.Double(c.getX(), c.getY(), c.getWidth(), c.getHeight()));
 			}
 
@@ -164,7 +164,7 @@ public class GamePanel extends JPanel implements Runnable {
 			// ball.act(playerShapes, 300);
 			ball.getPlayer(me);
 			ball.dribble(300);
-			me.act(obstacles);
+			me.act(obstacles, null);
 			// ball.act(obstacles, 0, 0, new Rectangle(0, 240, 800, 22));
 
 			if (!currentlySending && me.isDataChanged()) {
