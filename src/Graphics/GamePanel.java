@@ -139,10 +139,12 @@ public class GamePanel extends JPanel implements Runnable {
 
 	public void enableKeys() {
 		if (keyControl.isPressed(KeyEvent.VK_LEFT)) {
+			me.setDirection(false);
 			me.walk(-1);
 		}
 
 		if (keyControl.isPressed(KeyEvent.VK_RIGHT)) {
+			me.setDirection(true);
 			me.walk(1);
 		}
 		if (keyControl.isPressed(KeyEvent.VK_UP)) {
