@@ -38,10 +38,9 @@ public class Ball extends MovingImage{
 	
 	public void dribble(double floorY) {
 		floorY = 300; //hardcoded for now
-		if(y >= floorY || y <= playerDribbling.getY()+15) {
+		if(y >= floorY) {
 			yVelocity = -yVelocity;
-		}
-		if(y <= playerDribbling.getY()+10) {
+		} else if(y <= playerDribbling.getY()+10) {
 			yVelocity = Math.abs(yVelocity);
 		}
 		y += yVelocity;
