@@ -7,9 +7,10 @@ import processing.core.PApplet;
 
 public class Ball extends MovingImage{
 
-	private double xVelocity, yVelocity;
+	private double xVelocity, yVelocity, shotx, shoty;
 	private boolean dribbling = true;
 	private Rectangle2D.Double playerDribbling;
+	private 
 	
 	public Ball(int x, int y, int width, int height) {
 		super("img/basketball.png", x, y, width, height);
@@ -45,6 +46,23 @@ public class Ball extends MovingImage{
 		}
 		y += yVelocity;
 		x = playerDribbling.getX()+25;
+	}
+	public void shoot(double hoopx, double hoopy) {
+		dribbling = false;
+		shotx = playerDribbling.getX()+25;
+		shoty = playerDribbling.getY()-15;
+		xVelocity = 5;
+		x += xVelocity;
+		y = f(x);
+		
+		
+		playerDribbling = null;
+	}
+	//this method will calculate the y coordinate based off of a function (parabola) representing the arc of the shot
+	private double f(double x) {
+		
+	}
+	private void calculateParabola() {
 	}
 	public void getPlayer(Player p) {
 		playerDribbling = p;
