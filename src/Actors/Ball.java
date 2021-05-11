@@ -9,10 +9,11 @@ public class Ball extends MovingImage {
 
 	private double xVelocity, yVelocity, shotx, shoty;
 	private boolean dribbling = true;
-	private Rectangle2D.Double playerDribbling;
+	private Player playerDribbling;
 
 	private String uniqueID;
 	private boolean dataUpdated;
+	private boolean hasBall;
 
 	private String username;
 
@@ -43,15 +44,25 @@ public class Ball extends MovingImage {
 	}
 
 	public void dribble(double floorY) {
-		floorY = 300; // hardcoded for now
-		if (y >= floorY) {
-			yVelocity = -yVelocity;
-		} else if (y <= playerDribbling.getY() + 15) {
-			yVelocity = Math.abs(yVelocity);
+		if (playerDribbling.intersects(this)) {
+			hasBall = true;
+			playerDribbling.setHasBall(true);
 		}
-		y += yVelocity;
-		x = playerDribbling.getX() + 25;
-
+		
+		if (hasBall) {
+			floorY = 300; // hardcoded for now
+			if (y >= floorY) {
+				yVelocity = -yVelocity;
+			} else if (y <= playerDribbling.getY() + 15) {
+				yVelocity = Math.abs(yVelocity);
+			}
+			y += yVelocity;
+			if (playerDribbling.getDirection()) {
+				x = playerDribbling.getX() + 25;
+			} else {
+				x = playerDribbling.getX() - 10;
+			}
+		}
 		dataUpdated = true;
 	}
 

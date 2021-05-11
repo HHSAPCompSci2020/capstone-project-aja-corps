@@ -2,7 +2,10 @@ package Actors;
 
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
+import java.awt.image.ImageObserver;
 import java.util.*;
+
+import javax.swing.ImageIcon;
 
 import processing.core.PShape;
 
@@ -27,23 +30,22 @@ public class Player extends MovingImage {
 	private boolean jumpPowerup = false;
 	private boolean shotPowerup = false;
 	private boolean right = true;
+	private boolean shooting;
 
 	private int speedCounter = 0;
 	private int jumpCounter = 0;
 
-//	public String host;
-
 	private String uniqueID;
-
 	private String username;
 	private double x, y;
 
-	private PShape shape;
-
 	private boolean dataUpdated;
+	private boolean hasBall;
+	private static String filename = "img/player.png";
 
-	public Player(int x, int y, String username, String uniqueID) {
-		super("img/player.png", x, y, MARIO_WIDTH, MARIO_HEIGHT);
+	public Player(int x, int y, String username, String uniqueID, boolean hasBall) {
+		super(filename, x, y, MARIO_WIDTH, MARIO_HEIGHT);
+		this.hasBall = hasBall;
 		xVelocity = 0;
 		yVelocity = 0;
 		onASurface = false;
@@ -64,22 +66,25 @@ public class Player extends MovingImage {
 	public void speedPowerup() {
 		speedCounter = 100;
 	}
-	
+
 	/**
 	 * makes player dash
 	 */
 	public void dash() {
-		if(right)
+		if (right)
 			x += 20;
 		else
 			x -= 20;
 		dataUpdated = true;
 	}
+
 	public boolean getDirection() {
 		return right;
 	}
+
 	public void setDirection(boolean dir) {
 		right = dir;
+		dataUpdated = true;
 	}
 
 	/**
@@ -145,6 +150,7 @@ public class Player extends MovingImage {
 
 		}
 	}
+	
 
 	public void act(ArrayList<Shape> obstacles, Player player2) {
 		double xCoord = getX();
@@ -161,7 +167,7 @@ public class Player extends MovingImage {
 				height + Math.abs(yVelocity));
 
 		onASurface = false;
-		
+
 		if (player2 != null) {
 			if (strechY.intersects(player2)) {
 //				System.out.println("Intersection!");
@@ -252,6 +258,8 @@ public class Player extends MovingImage {
 		p.username = username;
 		p.x = x;
 		p.y = y;
+		p.right = right;
+		p.hasBall = hasBall;
 		return p;
 	}
 
@@ -260,6 +268,8 @@ public class Player extends MovingImage {
 		this.x = data.x;
 		this.y = data.y;
 		this.username = data.username;
+		this.right = data.right;
+		this.hasBall = data.hasBall;
 	}
 
 	public boolean idMatch(String uid) {
@@ -281,9 +291,39 @@ public class Player extends MovingImage {
 	public double getY() {
 		return y;
 	}
-	
+
 	public String getID() {
 		return uniqueID;
+	}
+
+	public boolean hasBall() {
+		return hasBall;
+	}
+	
+	public void setHasBall(boolean x) {
+		this.hasBall = x;
+	}
+	
+	public void shoot() {
+		this.shooting = true;
+	}
+	
+	public void setShooting(boolean x) {
+		this.shooting = x;
+	}
+
+	@Override
+	public void draw(Graphics g, ImageObserver io) {
+		if (!hasBall) {
+			g.drawImage((new ImageIcon("img/player3.png")).getImage(), (int) x, (int) y, (int) width, (int) height, io);
+		} else if (shooting) {
+			g.drawImage((new ImageIcon("img/playershoot.png")).getImage(), (int) x, (int) y, (int) width, (int) height, io);
+		} else if (right) {
+			g.drawImage((new ImageIcon(filename)).getImage(), (int) x, (int) y, (int) width, (int) height, io);
+		} else {
+			g.drawImage((new ImageIcon("img/player2.png")).getImage(), (int) x, (int) y, (int) width, (int) height, io);
+		}
+
 	}
 
 }
