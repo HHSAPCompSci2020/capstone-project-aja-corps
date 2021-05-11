@@ -17,6 +17,8 @@ public class Ball extends MovingImage {
 	private String uniqueID;
 	private boolean dataUpdated;
 	private boolean hasBall;
+	
+	private double[] equation;
 
 	private String username;
 
@@ -78,7 +80,7 @@ public class Ball extends MovingImage {
 			y = shoty;
 			dribbling = false;
 			xVelocity = 5;
-			calculateParabola();
+			calculateParabola(hoopx, hoopy);
 			// calculateRateOfDecrease();
 			playerDribbling = null;
 		} else
@@ -98,11 +100,20 @@ public class Ball extends MovingImage {
 	// this method will calculate the y coordinate based off of a function
 	// (parabola) representing the arc of the shot
 	private double f(double x) {
-		
+		double a = equation[0];
+		double h = equation[1];
+		double k = equation[2];
+		return (a*Math.pow(x-h, 2) + k);
 	}
 
-	private void calculateParabola() {
-		
+	private void calculateParabola(double hoopx, double hoopy) {
+		equation = new double[3];
+		double h = (hoopx+shotx)/2;
+		double a = (shoty-50)/Math.pow(shotx-h, 2);
+		double k = 50;
+		equation[0] = a;
+		equation[1] = h;
+		equation[2] = k;
 	}
 	/*
 	 * private void calculateRateOfDecrease() {
