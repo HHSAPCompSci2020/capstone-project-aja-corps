@@ -146,6 +146,10 @@ public class Ball extends MovingImage {
 	public boolean idMatch(String uid) {
 		return this.uniqueID.equals(uid);
 	}
+	
+	public String getID() {
+		return this.uniqueID;
+	}
 
 	public boolean isDataChanged() {
 		return dataUpdated;
