@@ -12,6 +12,7 @@ public class Ball extends MovingImage {
 	private final double friction = 0.85;
 	private boolean dribbling = true;
 	private Player playerDribbling;
+	private boolean shooting;
 
 	private String uniqueID;
 	private boolean dataUpdated;
@@ -74,7 +75,7 @@ public class Ball extends MovingImage {
 			shoty = playerDribbling.getY() - 15;
 			dribbling = false;
 			xVelocity = 5;
-			calculateParabola();
+//			calculateParabola();
 			// calculateRateOfDecrease();
 			playerDribbling = null;
 		} else
@@ -85,7 +86,7 @@ public class Ball extends MovingImage {
 			xVelocity = 0;
 		} else {
 			x += xVelocity;
-			y = f(x);
+//			y = f(x);
 			// y += yVelocity;
 			// yVelocity -= rateOfDecrease;
 		}
