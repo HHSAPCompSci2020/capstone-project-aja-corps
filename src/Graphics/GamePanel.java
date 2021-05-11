@@ -116,6 +116,8 @@ public class GamePanel extends JPanel implements Runnable {
 
 		g.drawImage(backgroundImage, 0, 0, this);
 
+		g.drawRect(130, 140, 20, 20); //ball class needs this for debugging, KEEP THIS IN
+		g.drawRect(640, 140, 20, 20);
 		for (int i = 0; i < players.size(); i++) {
 			players.get(i).draw(g2, this);
 		}

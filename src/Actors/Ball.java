@@ -30,19 +30,19 @@ public class Ball extends MovingImage {
 
 	public void act(ArrayList<Rectangle2D.Double> players, double floorY) {
 		/*
-		 * for(Rectangle2D.Double player : players) { double px = player.getX(); double
-		 * py = player.getY(); double width = player.getWidth(); double height =
-		 * player.getHeight();
-		 * 
-		 * Rectangle2D.Double ballBounds = new Rectangle2D.Double(getX(), getY(),
-		 * getWidth(), getHeight());
-		 * 
-		 * if(player != playerDribbling && ballBounds.intersects(player)) { dribbling =
-		 * true; playerDribbling = player; }
-		 * 
-		 * if(dribbling && playerDribbling != null) dribble(floorY);
-		 * 
-		 * }
+		  for(Rectangle2D.Double player : players) { double px = player.getX(); double
+		  py = player.getY(); double width = player.getWidth(); double height =
+		  player.getHeight();
+		  
+		  Rectangle2D.Double ballBounds = new Rectangle2D.Double(getX(), getY(),
+		  getWidth(), getHeight());
+		  
+		  if(player != playerDribbling && ballBounds.intersects(player)) { dribbling =
+		  true; playerDribbling = player; }
+		  
+		  if(dribbling && playerDribbling != null) dribble(floorY);
+		  
+		  }
 		 */
 	}
 
@@ -72,10 +72,13 @@ public class Ball extends MovingImage {
 	public void shoot(double hoopx, double hoopy) {
 		if (dribbling) {
 			shotx = playerDribbling.getX() + 25;
-			shoty = playerDribbling.getY() - 15;
+			//shoty = playerDribbling.getY() - 15;
+			shoty = hoopy;
+			x = shotx;
+			y = shoty;
 			dribbling = false;
 			xVelocity = 5;
-//			calculateParabola();
+			calculateParabola();
 			// calculateRateOfDecrease();
 			playerDribbling = null;
 		} else
@@ -86,7 +89,7 @@ public class Ball extends MovingImage {
 			xVelocity = 0;
 		} else {
 			x += xVelocity;
-//			y = f(x);
+			y = f(x);
 			// y += yVelocity;
 			// yVelocity -= rateOfDecrease;
 		}
@@ -94,13 +97,13 @@ public class Ball extends MovingImage {
 
 	// this method will calculate the y coordinate based off of a function
 	// (parabola) representing the arc of the shot
-	/*
-	 * private double f(double x) {
-	 * 
-	 * }
-	 * 
-	 * private void calculateParabola() { double k = 20; double }
-	 */
+	private double f(double x) {
+		
+	}
+
+	private void calculateParabola() {
+		
+	}
 	/*
 	 * private void calculateRateOfDecrease() {
 	 * 
