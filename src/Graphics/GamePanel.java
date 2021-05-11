@@ -346,6 +346,7 @@ public class GamePanel extends JPanel implements Runnable {
 
 		@Override
 		public void onChildChanged(DataSnapshot arg0, String arg1) {
+			System.out.println(me.getX() + ", " + me.getY());
 			if (me.idMatch(arg0.getKey()))
 				return;
 

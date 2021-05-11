@@ -8,6 +8,8 @@ import processing.core.PApplet;
 public class Ball extends MovingImage {
 
 	private double xVelocity, yVelocity, shotx, shoty;
+	private double rateOfDecrease;
+	private final double friction = 0.85;
 	private boolean dribbling = true;
 	private Player playerDribbling;
 
@@ -20,7 +22,7 @@ public class Ball extends MovingImage {
 	public Ball(int x, int y, int width, int height, String username, String uniqueID) {
 		super("img/basketball.png", x, y, width, height);
 		xVelocity = 0;
-		yVelocity = 3;
+		yVelocity = 4;
 		this.uniqueID = uniqueID;
 		this.username = username;
 	}
@@ -48,7 +50,7 @@ public class Ball extends MovingImage {
 			hasBall = true;
 			playerDribbling.setHasBall(true);
 		}
-		
+
 		if (hasBall) {
 			floorY = 300; // hardcoded for now
 			if (y >= floorY) {
@@ -66,25 +68,45 @@ public class Ball extends MovingImage {
 		dataUpdated = true;
 	}
 
-//	public void shoot(double hoopx, double hoopy) {
-//		dribbling = false;
-//		shotx = playerDribbling.getX() + 25;
-//		shoty = playerDribbling.getY() - 15;
-//		xVelocity = 5;
-//		x += xVelocity;
-//		y = f(x);
-//
-//		playerDribbling = null;
-//	}
+	public void shoot(double hoopx, double hoopy) {
+		if (dribbling) {
+			shotx = playerDribbling.getX() + 25;
+			shoty = playerDribbling.getY() - 15;
+			dribbling = false;
+			xVelocity = 5;
+			calculateParabola();
+			// calculateRateOfDecrease();
+			playerDribbling = null;
+		} else
+			xVelocity = xVelocity * 0.85;
+
+		if (x == hoopx && shooting) {
+			shooting = false;
+			xVelocity = 0;
+		} else {
+			x += xVelocity;
+			y = f(x);
+			// y += yVelocity;
+			// yVelocity -= rateOfDecrease;
+		}
+	}
 
 	// this method will calculate the y coordinate based off of a function
 	// (parabola) representing the arc of the shot
-//	private double f(double x) {
-//
-//	}
-
-	private void calculateParabola() {
-	}
+	/*
+	 * private double f(double x) {
+	 * 
+	 * }
+	 * 
+	 * private void calculateParabola() { double k = 20; double }
+	 */
+	/*
+	 * private void calculateRateOfDecrease() {
+	 * 
+	 * } private double y() {
+	 * 
+	 * }
+	 */
 
 	public void getPlayer(Player p) {
 		playerDribbling = p;
