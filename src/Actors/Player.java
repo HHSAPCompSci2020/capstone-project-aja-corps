@@ -172,6 +172,9 @@ public class Player extends MovingImage {
 			if (strechY.intersects(player2)) {
 //				System.out.println("Intersection!");
 				xVelocity = 0;
+				if (this.hasBall) {
+					hasBall = false;
+				}
 			}
 		}
 
@@ -315,7 +318,11 @@ public class Player extends MovingImage {
 	@Override
 	public void draw(Graphics g, ImageObserver io) {
 		if (!hasBall) {
-			g.drawImage((new ImageIcon("img/player3.png")).getImage(), (int) x, (int) y, (int) width, (int) height, io);
+			if (right) {
+				g.drawImage((new ImageIcon("img/player3.png")).getImage(), (int) x, (int) y, (int) width, (int) height, io);
+			} else {
+				g.drawImage((new ImageIcon("img/player4.png")).getImage(), (int) x, (int) y, (int) width, (int) height, io);
+			}
 		} else if (shooting) {
 			g.drawImage((new ImageIcon("img/playershoot.png")).getImage(), (int) x, (int) y, (int) width, (int) height, io);
 		} else if (right) {

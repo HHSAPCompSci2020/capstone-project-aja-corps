@@ -40,8 +40,8 @@ public class GamePanel extends JPanel implements Runnable {
 	private KeyHandler keyControl;
 	private ArrayList<Player> entities = new ArrayList<>();
 
-	private Player me;
-	private Ball ball;
+	protected Player me;
+	protected Ball ball;
 	private ArrayList<Player> players;
 	private ArrayList<Ball> balls;
 
@@ -123,13 +123,14 @@ public class GamePanel extends JPanel implements Runnable {
 			players.get(i).draw(g2, this);
 		}
 
-		for (int i = 0; i < balls.size(); i++) {
-			balls.get(i).draw(g2, this);
-		}
+//		for (int i = 0; i < balls.size(); i++) {
+//			balls.get(i).draw(g2, this);
+//		}
 
 		if (ball != null) {
 			ball.draw(g2, this);
 		}
+		
 		me.draw(g2, this);
 		g2.setTransform(at);
 
