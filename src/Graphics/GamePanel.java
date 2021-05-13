@@ -188,7 +188,10 @@ public class GamePanel extends JPanel implements Runnable {
 
 			if (ball != null) {
 				ball.getPlayer(me);
-				ball.dribble(300);
+//				if (me.isShooting()) {
+//					ball.shoot();
+//				}
+				ball.act(300);
 			}
 
 			for (Player p : players) {

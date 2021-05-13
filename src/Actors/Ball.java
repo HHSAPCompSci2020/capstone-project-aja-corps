@@ -75,7 +75,7 @@ public class Ball extends MovingImage {
 			playerDribbling = null;
 			shooting = true;
 		} else
-			xVelocity = xVelocity * 0.85;
+//			xVelocity = xVelocity * 0.85;
 
 		if (x == hoopx && shooting) {
 			shooting = false;
@@ -84,6 +84,7 @@ public class Ball extends MovingImage {
 		} else if(shooting == true){
 			x += xVelocity;
 			y = f(x);
+			System.out.println(x + ", " + y);
 			// y += yVelocity;
 			// yVelocity -= rateOfDecrease;
 		}

@@ -314,6 +314,10 @@ public class Player extends MovingImage {
 	public void setShooting(boolean x) {
 		this.shooting = x;
 	}
+	
+	public boolean isShooting() {
+		return shooting;
+	}
 
 	@Override
 	public void draw(Graphics g, ImageObserver io) {
