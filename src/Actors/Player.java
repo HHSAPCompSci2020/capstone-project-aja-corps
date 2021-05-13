@@ -327,6 +327,13 @@ public class Player extends MovingImage {
 		return this.uniqueID.equals(uid);
 	}
 
+	public boolean getSpeedPowerup() {
+		return this.speedPowerup;
+	}
+	
+	public boolean getJumpPowerup() {
+		return this.jumpPowerup;
+	}
 	public boolean isDataChanged() {
 		return dataUpdated;
 	}
@@ -375,6 +382,10 @@ public class Player extends MovingImage {
 	public boolean isShooting() {
 		return shooting;
 	}
+	
+	public int getEnergyState() {
+		return this.energyState;
+	}
 
 	@Override
 	public void draw(Graphics g, ImageObserver io) {
@@ -390,11 +401,14 @@ public class Player extends MovingImage {
 			g.setColor(Color.blue);
 			g.fill3DRect(383, 260, 30, 30, false);
 		}
+		
+		
 
 		g.setColor(Color.green);
 
 		g.drawRect((int) x + 10, (int) y - 50, 20, 30);
-		// g.fillRect((int)x+10, (int)y-47, 20, 27);
+		
+		
 
 		if (energyState == 1) {
 			g.fillRect((int) x + 10, (int) y - 30, 20, 10);
@@ -408,6 +422,7 @@ public class Player extends MovingImage {
 		if (energyState == 3) {
 			g.fillRect((int) x + 10, (int) y - 50, 20, 30);
 		}
+		
 
 		if (!hasBall) {
 			if (right) {

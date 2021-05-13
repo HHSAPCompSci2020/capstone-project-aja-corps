@@ -106,6 +106,9 @@ public class Court extends JPanel implements Runnable {
 
 		int width = getWidth();
 		int height = getHeight();
+		
+		
+
 
 		double ratioX = (double) width / DRAWING_WIDTH;
 		double ratioY = (double) height / DRAWING_HEIGHT;
@@ -222,6 +225,8 @@ public class Court extends JPanel implements Runnable {
 			if (timeCounter == 1) {
 				spawnNewBall();
 			}
+			
+			
 
 			if (me.getEnergy() == 1) {
 				barCounter = 0;

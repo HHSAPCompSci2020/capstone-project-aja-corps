@@ -34,7 +34,6 @@ Must-have Features:
 [These are features that we agree you will definitely have by the project due date. A good final project would have all of these completed. At least 5 are required. Each feature should be fully described (at least a few full sentences for each)]
 * Graphical User Interface which contains the court, the hoops, the characters, and the scoreboard. The GUI will be able to model a 2D real world gym.
 * In game characters which the players are able to control. The player will be able to move left and right, as well as jump, shoot, and dash with the character 
-*  The Live Score is printed to the console
 *  Realistic physics which dictate how the ball moves through the air
 * There will be powerups: jump boost and speed boost.
 * Networking capabilities (online gaming). Ability for player to play not only on the same machine, but online
