@@ -88,6 +88,8 @@ public class Ball extends MovingImage {
 			// y += yVelocity;
 			// yVelocity -= rateOfDecrease;
 		}
+		
+		dataUpdated = true;
 	}
 
 	// this method will calculate the y coordinate based off of a function
