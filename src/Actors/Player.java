@@ -365,7 +365,31 @@ public class Player extends MovingImage {
 	public void draw(Graphics g, ImageObserver io) {
 		
 		
-			g.drawRect((int)x, (int)y-60, 20, 40);
+			g.drawRect((int)x+10, (int)y-60, 20, 40);
+			//g.fillRect((int)x+10, (int)y-47, 20, 27);
+		
+			
+		
+			
+			if(energyState == 1) {
+				g.fillRect((int)x+10, (int)y-33, 20, 13);
+			}
+			
+			if(energyState == 2) {
+				
+				g.fillRect((int)x+10, (int)y-47, 20, 27);
+			}
+			
+			
+		
+			if(energyState == 3) {
+				g.fillRect((int)x+10, (int)y-60, 20, 40);
+			}
+			
+			
+			
+			
+			
 		
 		
 		
