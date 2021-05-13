@@ -52,6 +52,19 @@ public class MovingImage extends Rectangle2D.Double {
 		g.drawImage(image,(int)x,(int)y,(int)width,(int)height,io);
 	}
 	
+	public double getX() {
+		return x;
+	}
+	public double getY() {
+		return y;
+	}
+	public double getWidth() {
+		return width;
+	}
+	public double getHeight() {
+		return height;
+	}
+	
 	
 }
 
