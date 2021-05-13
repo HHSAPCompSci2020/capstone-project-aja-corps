@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.util.ArrayList;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -60,6 +61,7 @@ public class FirebaseBackend extends JPanel implements ChildEventListener
 		JLabel ah = new JLabel("Available Rooms");
 		ah.setHorizontalAlignment(JLabel.CENTER);
 		cnPanel.add(ah,BorderLayout.NORTH);
+//		cnPanel.add(new JLabel(new ImageIcon("img/background.png")));
 		cnPanel.setBorder(new EtchedBorder(EtchedBorder.RAISED));
 		add(cnPanel);
 		
