@@ -75,7 +75,7 @@ public class GamePanel extends JPanel implements Runnable {
 
 		roomRef.child("users").addChildEventListener(new UserChangeListener());
 		roomRef.child("balls").addChildEventListener(new BallChangeListener());
-		
+
 //		DatabaseReference x = roomRef.child("users");
 
 		myUserRef = roomRef.child("users").push();
@@ -116,7 +116,7 @@ public class GamePanel extends JPanel implements Runnable {
 
 		g.drawImage(backgroundImage, 0, 0, this);
 
-		g.drawRect(130, 140, 20, 20); //ball class needs this for debugging, KEEP THIS IN
+		g.drawRect(130, 140, 20, 20); // ball class needs this for debugging, KEEP THIS IN
 		g.drawRect(640, 140, 20, 20);
 		g.drawLine(0, 50, width, 50);
 		for (int i = 0; i < players.size(); i++) {
@@ -137,7 +137,7 @@ public class GamePanel extends JPanel implements Runnable {
 	}
 
 	public void spawnNewPlayer() {
-		
+
 	}
 
 	public void spawnNewBall() {
@@ -168,12 +168,12 @@ public class GamePanel extends JPanel implements Runnable {
 		if (keyControl.isPressed(KeyEvent.VK_SHIFT)) {
 			me.dash();
 		}
-		
+
 		if (keyControl.isPressed(KeyEvent.VK_SPACE)) {
 			ball.shoot(640, 140);
 			me.shoot();
 		}
-		
+
 		if (keyControl.isPressed(KeyEvent.VK_ENTER)) {
 			spawnNewBall();
 		}
@@ -184,7 +184,7 @@ public class GamePanel extends JPanel implements Runnable {
 			long startTime = System.currentTimeMillis();
 
 			enableKeys();
-			
+
 			if (ball != null) {
 				ball.getPlayer(me);
 				ball.dribble(300);
@@ -213,7 +213,7 @@ public class GamePanel extends JPanel implements Runnable {
 
 				});
 			}
-			
+
 			if (ball != null) {
 				if (ball.isDataChanged()) {
 					currentlySending = true;
@@ -282,7 +282,7 @@ public class GamePanel extends JPanel implements Runnable {
 //				System.out.println("My ball!");
 //				return;
 //			}
-			
+
 //			System.out.println("Ball added!");
 			Ball b = new Ball(DRAWING_WIDTH / 2 - Player.MARIO_WIDTH / 2, 250, 20, 20, null, arg0.getKey());
 			b.syncWithDataObject(arg0.getValue(BallData.class));
@@ -301,10 +301,21 @@ public class GamePanel extends JPanel implements Runnable {
 //					b.syncWithDataObject(arg0.getValue(BallData.class));
 //				} 
 //			}
-			
-			if (ball.idMatch(arg0.getKey())) {
+
+			if (!me.hasBall()) {
+//				if (ball.idMatch(arg0.getKey())) {
+//					return;
+//				}
+
 				ball.syncWithDataObject(arg0.getValue(BallData.class));
-			}
+			} 
+//			else if (me.hasBall()) {
+//				System.out.println(me.getID() + " has the ball!");
+////				if (ball.idMatch(arg0.getKey())) {
+////					ball.syncWithDataObject(arg0.getValue(BallData.class));
+////				}
+//			}
+
 //			Ball b = new Ball(DRAWING_WIDTH / 2 - Player.MARIO_WIDTH / 2, 250, 20, 20, null, arg0.getKey());
 //			ball = b;
 		}
@@ -340,7 +351,7 @@ public class GamePanel extends JPanel implements Runnable {
 		public void onChildAdded(DataSnapshot arg0, String arg1) {
 			if (me.idMatch(arg0.getKey()))
 				return;
-			
+
 			System.out.println(arg0);
 			Player p = new Player(DRAWING_WIDTH / 2 - Player.MARIO_WIDTH / 2, 50, null, arg0.getKey(), false);
 			p.syncWithDataObject(arg0.getValue(PlayerData.class));
