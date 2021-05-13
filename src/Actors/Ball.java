@@ -33,8 +33,13 @@ public class Ball extends MovingImage {
 	public void act(double floorY) {
 		if(dribbling)
 			dribble(floorY);
-		else if(shooting)
-			shoot(640, 140);
+		else if(shooting) {
+			if(playerDribbling.getDirection())
+				shoot(640, 140);
+			else
+				shoot(130, 140);
+		}
+			
 	}
 
 	public void dribble(double floorY) {
@@ -69,7 +74,10 @@ public class Ball extends MovingImage {
 			x = shotx;
 			y = shoty;
 			dribbling = false;
-			xVelocity = 5;
+			if(playerDribbling.getDirection())
+				xVelocity = 5;
+			else
+				xVelocity = -5;
 			calculateParabola(hoopx, hoopy);
 			// calculateRateOfDecrease();
 			playerDribbling = null;
@@ -103,14 +111,26 @@ public class Ball extends MovingImage {
 
 	private void calculateParabola(double hoopx, double hoopy) {
 		equation = new double[3];
-		if(shotx < 275)
-			shotx += 75;
-		else if(shotx >= 275 && shotx < 382)
-			shotx += 50;
-		else if(shotx >= 382 && shotx < 487)
-			shotx += 25;
-		else if(shotx >= 487)
-			shotx += 10;
+		if(playerDribbling.getDirection()) {
+			if(shotx < 275)
+				shotx += 75;
+			else if(shotx >= 275 && shotx < 382)
+				shotx += 50;
+			else if(shotx >= 382 && shotx < 487)
+				shotx += 25;
+			else if(shotx >= 487)
+				shotx += 10;
+		} else {
+			if(shotx < 275)
+				shotx -= 75;
+			else if(shotx >= 275 && shotx < 382)
+				shotx -= 50;
+			else if(shotx >= 382 && shotx < 487)
+				shotx -= 25;
+			else if(shotx >= 487)
+				shotx -= 10;
+		}
+		
 		double h = (hoopx+shotx)/2;
 		double a = (shoty-50)/Math.pow(shotx-h, 2);
 		double k = 50;

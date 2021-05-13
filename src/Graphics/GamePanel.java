@@ -171,7 +171,10 @@ public class GamePanel extends JPanel implements Runnable {
 		}
 
 		if (keyControl.isPressed(KeyEvent.VK_SPACE)) {
-			ball.shoot(640, 140);
+			if(me.getDirection())
+				ball.shoot(640, 140);
+			else
+				ball.shoot(130, 140);
 			me.shoot();
 		}
 
