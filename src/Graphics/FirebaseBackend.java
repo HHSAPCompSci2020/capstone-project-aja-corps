@@ -85,7 +85,7 @@ public class FirebaseBackend extends JPanel implements ChildEventListener
 		FileInputStream refreshToken;
 		try {
 
-			refreshToken = new FileInputStream("BasketballAllStars.json");
+			refreshToken = new FileInputStream("src/BasketballAllStars.json");
 
 			FirebaseOptions options = new FirebaseOptions.Builder()
 					.setCredentials(GoogleCredentials.fromStream(refreshToken))
@@ -133,7 +133,7 @@ public class FirebaseBackend extends JPanel implements ChildEventListener
 				
 				window.setBounds(100, 100, 800, 322);
 				window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-				GamePanel panel = new GamePanel(snap.getChildren().iterator().next().getRef());
+				Court panel = new Court(snap.getChildren().iterator().next().getRef());
 			    window.addKeyListener(panel.getKeyHandler());
 				window.add(panel);
 				window.setVisible(true);

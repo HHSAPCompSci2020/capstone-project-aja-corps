@@ -76,6 +76,14 @@ public class Ball extends MovingImage {
 		} else {
 			return true;
 		}
+		
+		if(playerDribbling.intersects(this)) {
+			hasBall = true;
+			playerDribbling.setHasBall(true);
+			dribbling = true;
+			bounce = false;
+			yVelocity = 4;
+		}
 	}
 
 	public void bounce(Player p) {

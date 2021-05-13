@@ -28,22 +28,20 @@ public class Player extends MovingImage {
 	private double jumpStrength;
 	private boolean speedPowerup = false;
 	private boolean jumpPowerup = false;
-	private boolean shotPowerup = false;
+
 	private boolean right = true;
 	private boolean shooting;
-	
-	private int energy;
-	
-	private int energyState;
 
-	
-	
-	private int speedCounter = 0;
-	private int jumpCounter = 0;
+	private int energy;
+
+	private int energyState;
 
 	private String uniqueID;
 	private String username;
 	private double x, y;
+
+	private boolean speedBoost = false;;
+	private boolean jumpBoost = false;;
 
 	private boolean dataUpdated;
 	private boolean hasBall;
@@ -63,52 +61,67 @@ public class Player extends MovingImage {
 		dataUpdated = false;
 		energy = 1;
 	}
-	
-	
-	
-		
-	public void updateState(int count) {
-		energyState = count;
+
+	public void spawnPowerup() {
+		double x = (Math.random());
+		if (x > 0.5) {
+			speedPowerup = true;
+
+		} else {
+			jumpPowerup = true;
+
+		}
+
 	}
-	
-	
-	public void regenerate() {
-//	System.out.println("Called");
-		
-		if(energy < 1) {
-			energy ++;
+
+	public boolean getPower() {
+
+		if (speedBoost == true || jumpBoost == true) {
+			return true;
+		} else {
+			return false;
 		}
 	}
 
-	/**
-	 * method toggles the speed power up
-	 * 
-	 * @post changes speedPowerup field
-	 */
+	public void powerOff() {
+		if (speedBoost) {
+			speedBoost = false;
+		}
 
-	public void speedPowerup() {
-		speedCounter = 100;
+		if (jumpBoost) {
+			jumpBoost = false;
+		}
+	}
+
+	public void updateState(int count) {
+		energyState = count;
+	}
+
+	public void regenerate() {
+		// System.out.println("Called");
+
+		if (energy < 1) {
+			energy++;
+		}
 	}
 
 	/**
 	 * makes player dash
 	 */
 	public void dash() {
-		System.out.println(energy);
-		
-		if(energy>0) {
-		
-		if (right)
-			x += 100;
-		else
-			x -= 100;
-		dataUpdated = true;
-		
-		energy--;
+		// System.out.println(energy);
+
+		if (energy > 0) {
+
+			if (right)
+				x += 80;
+			else
+				x -= 80;
+			dataUpdated = true;
+
+			energy--;
 		}
-		
-		
-		
+
 	}
 
 	public boolean getDirection() {
@@ -118,24 +131,6 @@ public class Player extends MovingImage {
 	public void setDirection(boolean dir) {
 		right = dir;
 		dataUpdated = true;
-	}
-
-	/**
-	 * toggles the jump power up
-	 * 
-	 * @post changed jumpPower up field
-	 */
-	public void jumpPowerup() {
-		jumpCounter = 5;
-	}
-
-	/**
-	 * toggles the shot power up
-	 * 
-	 * @post changes shoot power up field
-	 */
-	public void shotPowerup() {
-		shotPowerup = true;
 	}
 
 	/**
@@ -157,14 +152,12 @@ public class Player extends MovingImage {
 			this.x = 700;
 		}
 
-//		System.out.println("" + x + " " + y);
+		if (speedBoost) {
+			xVelocity += (double) dir;
+		} else {
 
-		if (speedCounter > 0) {
-			xVelocity += (0.65) * (double) dir;
-			speedCounter--;
+			xVelocity += (0.5) * (double) dir;
 		}
-
-		xVelocity += (0.5) * (double) dir;
 	}
 
 	/**
@@ -173,9 +166,8 @@ public class Player extends MovingImage {
 	public void jump() {
 		if (onASurface) {
 
-			if (jumpCounter > 0) {
+			if (jumpBoost) {
 				yVelocity -= (1.3) * jumpStrength;
-				jumpCounter--;
 				return;
 			}
 
@@ -183,13 +175,24 @@ public class Player extends MovingImage {
 
 		}
 	}
-	
 
-	public void act(ArrayList<Shape> obstacles, Player player2, Ball b) {
+	public void act(ArrayList<Shape> obstacles, Player player2) {
+
 		double xCoord = getX();
 		double yCoord = getY();
 		double width = getWidth();
 		double height = getHeight();
+
+		// 383, 260, 30, 30,false);
+		if (x > 383 & x < 413 & y > 230 & y < 270 & speedPowerup) {
+			speedPowerup = false;
+			speedBoost = true;
+		}
+
+		if (x > 383 & x < 413 & y > 230 & y < 270 & jumpPowerup) {
+			jumpPowerup = false;
+			jumpBoost = true;
+		}
 
 		// ***********Y AXIS***********
 
@@ -203,26 +206,26 @@ public class Player extends MovingImage {
 
 		if (player2 != null) {
 			if (strechY.intersects(player2)) {
-//				System.out.println("Intersection!");
+				// System.out.println("Intersection!");
 				xVelocity = 0;
-//				if (this.hasBall) {
-//					hasBall = false;
-//				}
+				// if (this.hasBall) {
+				// hasBall = false;
+				// }
 			}
 		}
-		
-//		if (b != null && !b.hasPlayer()) {
-////			System.out.println("Ball on the ground!");
-//			if (b.intersects(this)) {
-//				System.out.println("Intersection with " + this.getID());
-//				this.hasBall = true;
-//				b.getPlayer(this);
-//				b.setDribbling(true);
-//				dataUpdated = true;
-//				System.out.println(this.hasBall);
-//			}
-//		}
-//		
+
+		// if (b != null && !b.hasPlayer()) {
+		//// System.out.println("Ball on the ground!");
+		// if (b.intersects(this)) {
+		// System.out.println("Intersection with " + this.getID());
+		// this.hasBall = true;
+		// b.getPlayer(this);
+		// b.setDribbling(true);
+		// dataUpdated = true;
+		// System.out.println(this.hasBall);
+		// }
+		// }
+		//
 		if (yVelocity > 0) {
 			Shape standingSurface = null;
 			for (Shape s : obstacles) {
@@ -347,72 +350,76 @@ public class Player extends MovingImage {
 	public boolean hasBall() {
 		return hasBall;
 	}
-	
+
 	public void setHasBall(boolean x) {
 		this.hasBall = x;
 	}
-	
+
 	public int getEnergy() {
 		return energy;
 	}
-	
+
 	public void shoot() {
-		if(energy>0) {
-		
-		this.shooting = true;
-		
-		energy--;
+		if (energy > 0) {
+
+			this.shooting = true;
+
+			energy--;
 		}
 	}
-	
+
 	public void setShooting(boolean x) {
 		this.shooting = x;
 	}
-	
+
 	public boolean isShooting() {
 		return shooting;
 	}
 
 	@Override
 	public void draw(Graphics g, ImageObserver io) {
-		
-		
-			g.drawRect((int)x+10, (int)y-60, 20, 40);
-			//g.fillRect((int)x+10, (int)y-47, 20, 27);
-		
-			
-		
-			
-			if(energyState == 1) {
-				g.fillRect((int)x+10, (int)y-33, 20, 13);
-			}
-			
-			if(energyState == 2) {
-				
-				g.fillRect((int)x+10, (int)y-47, 20, 27);
-			}
-			
-			
-		
-			if(energyState == 3) {
-				g.fillRect((int)x+10, (int)y-60, 20, 40);
-			}
-			
-			
-			
-			
-			
-		
-		
-		
+
+		// g.drawImage(img, x, y, width, height, observer)
+
+		if (speedPowerup) {
+			g.setColor(Color.red);
+			g.fill3DRect(383, 260, 30, 30, false);
+		}
+
+		if (jumpPowerup) {
+			g.setColor(Color.blue);
+			g.fill3DRect(383, 260, 30, 30, false);
+		}
+
+		g.setColor(Color.green);
+
+		g.drawRect((int) x + 10, (int) y - 50, 20, 30);
+		// g.fillRect((int)x+10, (int)y-47, 20, 27);
+
+		if (energyState == 1) {
+			g.fillRect((int) x + 10, (int) y - 30, 20, 10);
+		}
+
+		if (energyState == 2) {
+
+			g.fillRect((int) x + 10, (int) y - 40, 20, 20);
+		}
+
+		if (energyState == 3) {
+			g.fillRect((int) x + 10, (int) y - 50, 20, 30);
+		}
+
 		if (!hasBall) {
 			if (right) {
-				g.drawImage((new ImageIcon("img/player3.png")).getImage(), (int) x, (int) y, (int) width, (int) height, io);
+				g.drawImage((new ImageIcon("img/player3.png")).getImage(), (int) x, (int) y, (int) width, (int) height,
+						io);
 			} else {
-				g.drawImage((new ImageIcon("img/player4.png")).getImage(), (int) x, (int) y, (int) width, (int) height, io);
+				g.drawImage((new ImageIcon("img/player4.png")).getImage(), (int) x, (int) y, (int) width, (int) height,
+						io);
 			}
 		} else if (shooting) {
-			g.drawImage((new ImageIcon("img/playershoot.png")).getImage(), (int) x, (int) y, (int) width, (int) height, io);
+			g.drawImage((new ImageIcon("img/playershoot.png")).getImage(), (int) x, (int) y, (int) width, (int) height,
+					io);
 		} else if (right) {
 			g.drawImage((new ImageIcon(filename)).getImage(), (int) x, (int) y, (int) width, (int) height, io);
 		} else {
