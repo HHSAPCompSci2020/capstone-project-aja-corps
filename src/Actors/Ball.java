@@ -77,7 +77,7 @@ public class Ball extends MovingImage {
 		} else
 //			xVelocity = xVelocity * 0.85;
 
-		if (x == hoopx && shooting) {
+		if (y == 300 && shooting) {
 			shooting = false;
 			xVelocity = 0;
 			dribbling = true;
