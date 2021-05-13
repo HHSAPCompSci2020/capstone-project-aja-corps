@@ -27,7 +27,7 @@ import java.util.*;
 import java.util.Queue;
 import java.io.Serializable;
 
-public class GamePanel extends JPanel implements Runnable {
+public class Court extends JPanel implements Runnable {
 	public static final int DRAWING_WIDTH = 800;
 	public static final int DRAWING_HEIGHT = 322;
 
@@ -56,7 +56,7 @@ public class GamePanel extends JPanel implements Runnable {
 	private boolean currentlySending; // These field allows us to limit database writes by only sending data once
 										// we've received confirmation the previous data went through.
 
-	public GamePanel(DatabaseReference roomRef) {
+	public Court(DatabaseReference roomRef) {
 		super();
 
 		try {

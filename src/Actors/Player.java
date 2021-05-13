@@ -94,14 +94,14 @@ public class Player extends MovingImage {
 	 * makes player dash
 	 */
 	public void dash() {
-		System.out.println(energy);
+	//	System.out.println(energy);
 		
 		if(energy>0) {
 		
 		if (right)
-			x += 40;
+			x += 80;
 		else
-			x -= 40;
+			x -= 80;
 		dataUpdated = true;
 		
 		energy--;

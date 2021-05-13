@@ -133,7 +133,7 @@ public class FirebaseBackend extends JPanel implements ChildEventListener
 				
 				window.setBounds(100, 100, 800, 322);
 				window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-				GamePanel panel = new GamePanel(snap.getChildren().iterator().next().getRef());
+				Court panel = new Court(snap.getChildren().iterator().next().getRef());
 			    window.addKeyListener(panel.getKeyHandler());
 				window.add(panel);
 				window.setVisible(true);

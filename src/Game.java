@@ -5,9 +5,9 @@ import Graphics.FirebaseBackend;
 
 import java.awt.*;
 
-public class Main extends JFrame {
+public class Game extends JFrame {
 
-	public Main(String title) {
+	public Game(String title) {
 		super(title);
 	}
 
