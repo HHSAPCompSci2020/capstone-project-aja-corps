@@ -46,6 +46,7 @@ public class Player extends MovingImage {
 	private boolean dataUpdated;
 	private boolean hasBall;
 	private static String filename = "img/player.png";
+	private boolean dash = false;
 
 	public Player(int x, int y, String username, String uniqueID, boolean hasBall) {
 		super(filename, x, y, MARIO_WIDTH, MARIO_HEIGHT);
@@ -111,6 +112,7 @@ public class Player extends MovingImage {
 	public void dash() {
 		// System.out.println(energy);
 
+		dash = true;
 		if (energy > 0) {
 
 			if (right)
