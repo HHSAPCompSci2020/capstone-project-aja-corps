@@ -31,12 +31,6 @@ public class Ball extends MovingImage {
 	}
 
 	public void act(double floorY) {
-		if (playerDribbling.intersects(this)) {
-			hasBall = true;
-			playerDribbling.setHasBall(true);
-			dribbling = true;
-		}
-		
 		if(dribbling)
 			dribble(floorY);
 		else if(shooting) {
@@ -50,7 +44,10 @@ public class Ball extends MovingImage {
 
 	public void dribble(double floorY) {
 		//System.out.println("dribbling...");
-		
+		if (playerDribbling.intersects(this)) {
+			hasBall = true;
+			playerDribbling.setHasBall(true);
+		}
 
 		if (hasBall) {
 			floorY = 300; // hardcoded for now
@@ -88,18 +85,14 @@ public class Ball extends MovingImage {
 		} else
 //			xVelocity = xVelocity * 0.85;
 
-		if (y >= 300 && shooting) {
-			x = x - 20;
-			y = 290;
-			
-			System.out.println(x + ", " + y);
+		if (y == 300 && shooting) {
 			shooting = false;
 			xVelocity = 0;
-//			dribbling = true;
+			dribbling = true;
 		} else if(shooting == true){
 			x += xVelocity;
 			y = f(x);
-//			System.out.println(x + ", " + y);
+			System.out.println(x + ", " + y);
 			// y += yVelocity;
 			// yVelocity -= rateOfDecrease;
 		}

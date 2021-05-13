@@ -172,11 +172,15 @@ public class GamePanel extends JPanel implements Runnable {
 		}
 
 		if (keyControl.isPressed(KeyEvent.VK_SPACE)) {
+		
+			if(me.getEnergy()==1) {
+			me.shoot();
 			if(me.getDirection())
 				ball.shoot(640, 140);
 			else
 				ball.shoot(130, 140);
 			me.shoot();
+		}
 		}
 
 		if (keyControl.isPressed(KeyEvent.VK_ENTER)) {
@@ -185,12 +189,12 @@ public class GamePanel extends JPanel implements Runnable {
 	}
 
 	public void run() {
-		timeCounter++;
+		
 		while (true) { // Modify this to allow quitting
 			long startTime = System.currentTimeMillis();
+			timeCounter++;
 			
-			
-			if(timeCounter%200 ==0) {
+			if(timeCounter%150 ==0) {
 				me.regenerate();
 			}
 			
