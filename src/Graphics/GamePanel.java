@@ -32,7 +32,7 @@ public class GamePanel extends JPanel implements Runnable {
 	public static final int DRAWING_HEIGHT = 322;
 
 	private Rectangle screenRect;
-	private int timeCounter=0;
+	private int timeCounter;
 
 	// private Ball ball;
 	private Image backgroundImage;
@@ -172,10 +172,11 @@ public class GamePanel extends JPanel implements Runnable {
 		}
 
 		if (keyControl.isPressed(KeyEvent.VK_SPACE)) {
-			if(me.getEnergy()==1) {
+			if(me.getDirection())
+				ball.shoot(640, 140);
+			else
+				ball.shoot(130, 140);
 			me.shoot();
-			ball.shoot(640, 140);
-			}
 		}
 
 		if (keyControl.isPressed(KeyEvent.VK_ENTER)) {
@@ -184,12 +185,12 @@ public class GamePanel extends JPanel implements Runnable {
 	}
 
 	public void run() {
-		
+		timeCounter++;
 		while (true) { // Modify this to allow quitting
 			long startTime = System.currentTimeMillis();
-			timeCounter++;
 			
-			if(timeCounter%150 ==0) {
+			
+			if(timeCounter%200 ==0) {
 				me.regenerate();
 			}
 			

@@ -31,21 +31,29 @@ public class Ball extends MovingImage {
 	}
 
 	public void act(double floorY) {
-		if (playerDribbling.intersects(this)) {
+		/*if (playerDribbling.intersects(this)) {
 			hasBall = true;
 			playerDribbling.setHasBall(true);
 			dribbling = true;
-		}
+		}*/
 		
 		if(dribbling)
 			dribble(floorY);
-		else if(shooting)
-			shoot(640, 140);
+		else if(shooting) {
+			if(playerDribbling.getDirection())
+				shoot(640, 140);
+			else
+				shoot(130, 140);
+		}
+			
 	}
 
 	public void dribble(double floorY) {
 		//System.out.println("dribbling...");
-		
+		if (playerDribbling.intersects(this)) {
+			hasBall = true;
+			playerDribbling.setHasBall(true);
+		}
 
 		if (hasBall) {
 			floorY = 300; // hardcoded for now
@@ -72,7 +80,10 @@ public class Ball extends MovingImage {
 			x = shotx;
 			y = shoty;
 			dribbling = false;
-			xVelocity = 5;
+			if(playerDribbling.getDirection())
+				xVelocity = 5;
+			else
+				xVelocity = -5;
 			calculateParabola(hoopx, hoopy);
 			// calculateRateOfDecrease();
 			playerDribbling = null;
@@ -81,12 +92,12 @@ public class Ball extends MovingImage {
 //			xVelocity = xVelocity * 0.85;
 
 		if (y >= 300 && shooting) {
-			x = x - 20;
-			y = 290;
+			//x = x - 20;
+			//y = 290;
 			
 			System.out.println(x + ", " + y);
-			shooting = false;
-			xVelocity = 0;
+			//shooting = false;
+			//xVelocity = 0;
 //			dribbling = true;
 		} else if(shooting == true){
 			x += xVelocity;
@@ -110,14 +121,26 @@ public class Ball extends MovingImage {
 
 	private void calculateParabola(double hoopx, double hoopy) {
 		equation = new double[3];
-		if(shotx < 275)
-			shotx += 75;
-		else if(shotx >= 275 && shotx < 382)
-			shotx += 50;
-		else if(shotx >= 382 && shotx < 487)
-			shotx += 25;
-		else if(shotx >= 487)
-			shotx += 10;
+		if(playerDribbling.getDirection()) {
+			if(shotx < 275)
+				shotx += 75;
+			else if(shotx >= 275 && shotx < 382)
+				shotx += 50;
+			else if(shotx >= 382 && shotx < 487)
+				shotx += 25;
+			else if(shotx >= 487)
+				shotx += 10;
+		} else {
+			if(shotx < 275)
+				shotx -= 75;
+			else if(shotx >= 275 && shotx < 382)
+				shotx -= 50;
+			else if(shotx >= 382 && shotx < 487)
+				shotx -= 25;
+			else if(shotx >= 487)
+				shotx -= 10;
+		}
+		
 		double h = (hoopx+shotx)/2;
 		double a = (shoty-50)/Math.pow(shotx-h, 2);
 		double k = 50;
