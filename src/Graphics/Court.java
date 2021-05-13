@@ -35,6 +35,7 @@ public class Court extends JPanel implements Runnable {
 	private int timeCounter;
 	private int barCounter;
 	private int powerCounter;
+	private int stopCounter;
 
 	// private Ball ball;
 	private Image backgroundImage;
@@ -197,10 +198,11 @@ public class Court extends JPanel implements Runnable {
 			timeCounter++;
 			barCounter++;
 			powerCounter++;
+			stopCounter++;
 			
 			
 			if(me.getPower()==false) {
-				powerCounter = 0;
+				stopCounter = 0;
 			}
 			
 			if(timeCounter ==1) {
@@ -208,14 +210,14 @@ public class Court extends JPanel implements Runnable {
 			}
 			
 			
-			if(powerCounter == 1500) {
+			if(powerCounter % 1500 ==0) {
 				me.spawnPowerup();
-				powerCounter = 0;
+				
 			}
 			
 			
 			
-			if(powerCounter == 350) {
+			if(stopCounter == 300) {
 				me.powerOff();
 			}
 			

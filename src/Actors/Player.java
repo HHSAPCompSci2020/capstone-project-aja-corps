@@ -88,7 +88,7 @@ public class Player extends MovingImage {
 		if(speedBoost == true || jumpBoost == true) {
 			return true;
 		}else {
-			return true;
+			return false;
 		}
 	}
 	
