@@ -57,12 +57,14 @@ public class Player extends MovingImage {
 		this.username = username;
 		this.uniqueID = uniqueID;
 		dataUpdated = false;
-		energy = 3;
+		energy = 1;
 	}
 	
 	
 	public void regenerate() {
-		if(energy != 3) {
+//	System.out.println("Called");
+		
+		if(energy < 1) {
 			energy ++;
 		}
 	}
@@ -327,10 +329,15 @@ public class Player extends MovingImage {
 		this.hasBall = x;
 	}
 	
+	public int getEnergy() {
+		return energy;
+	}
+	
 	public void shoot() {
 		if(energy>0) {
 		
 		this.shooting = true;
+		
 		energy--;
 		}
 	}
