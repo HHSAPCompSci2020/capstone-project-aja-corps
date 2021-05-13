@@ -31,6 +31,8 @@ public class Player extends MovingImage {
 	private boolean shotPowerup = false;
 	private boolean right = true;
 	private boolean shooting;
+	
+	private int energy;
 
 	private int speedCounter = 0;
 	private int jumpCounter = 0;
@@ -55,6 +57,14 @@ public class Player extends MovingImage {
 		this.username = username;
 		this.uniqueID = uniqueID;
 		dataUpdated = false;
+		energy = 3;
+	}
+	
+	
+	public void regenerate() {
+		if(energy != 3) {
+			energy ++;
+		}
 	}
 
 	/**
@@ -71,11 +81,21 @@ public class Player extends MovingImage {
 	 * makes player dash
 	 */
 	public void dash() {
+		System.out.println(energy);
+		
+		if(energy>0) {
+		
 		if (right)
 			x += 20;
 		else
 			x -= 20;
 		dataUpdated = true;
+		
+		energy--;
+		}
+		
+		
+		
 	}
 
 	public boolean getDirection() {
@@ -308,7 +328,11 @@ public class Player extends MovingImage {
 	}
 	
 	public void shoot() {
+		if(energy>0) {
+		
 		this.shooting = true;
+		energy--;
+		}
 	}
 	
 	public void setShooting(boolean x) {
