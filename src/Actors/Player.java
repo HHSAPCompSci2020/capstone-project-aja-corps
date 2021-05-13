@@ -33,7 +33,11 @@ public class Player extends MovingImage {
 	private boolean shooting;
 	
 	private int energy;
+	
+	private int energyState;
 
+	
+	
 	private int speedCounter = 0;
 	private int jumpCounter = 0;
 
@@ -58,6 +62,13 @@ public class Player extends MovingImage {
 		this.uniqueID = uniqueID;
 		dataUpdated = false;
 		energy = 1;
+	}
+	
+	
+	
+		
+	public void updateState(int count) {
+		energyState = count;
 	}
 	
 	
@@ -88,9 +99,9 @@ public class Player extends MovingImage {
 		if(energy>0) {
 		
 		if (right)
-			x += 20;
+			x += 40;
 		else
-			x -= 20;
+			x -= 40;
 		dataUpdated = true;
 		
 		energy--;
@@ -352,6 +363,36 @@ public class Player extends MovingImage {
 
 	@Override
 	public void draw(Graphics g, ImageObserver io) {
+		
+		
+			g.drawRect((int)x+10, (int)y-60, 20, 40);
+			//g.fillRect((int)x+10, (int)y-47, 20, 27);
+		
+			
+		
+			
+			if(energyState == 1) {
+				g.fillRect((int)x+10, (int)y-33, 20, 13);
+			}
+			
+			if(energyState == 2) {
+				
+				g.fillRect((int)x+10, (int)y-47, 20, 27);
+			}
+			
+			
+		
+			if(energyState == 3) {
+				g.fillRect((int)x+10, (int)y-60, 20, 40);
+			}
+			
+			
+			
+			
+			
+		
+		
+		
 		if (!hasBall) {
 			if (right) {
 				g.drawImage((new ImageIcon("img/player3.png")).getImage(), (int) x, (int) y, (int) width, (int) height, io);
