@@ -364,26 +364,27 @@ public class Player extends MovingImage {
 	@Override
 	public void draw(Graphics g, ImageObserver io) {
 		
+		g.setColor(Color.green);
 		
-			g.drawRect((int)x+10, (int)y-60, 20, 40);
+			g.drawRect((int)x+10, (int)y-50, 20, 30);
 			//g.fillRect((int)x+10, (int)y-47, 20, 27);
 		
 			
 		
 			
 			if(energyState == 1) {
-				g.fillRect((int)x+10, (int)y-33, 20, 13);
+				g.fillRect((int)x+10, (int)y-30, 20, 10);
 			}
 			
 			if(energyState == 2) {
 				
-				g.fillRect((int)x+10, (int)y-47, 20, 27);
+				g.fillRect((int)x+10, (int)y-40, 20, 20);
 			}
 			
 			
 		
 			if(energyState == 3) {
-				g.fillRect((int)x+10, (int)y-60, 20, 40);
+				g.fillRect((int)x+10, (int)y-50, 20, 30);
 			}
 			
 			

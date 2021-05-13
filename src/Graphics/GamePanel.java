@@ -202,22 +202,22 @@ public class GamePanel extends JPanel implements Runnable {
 			}
 			
 			
-			if(me.getEnergy()==0 && barCounter <= 60 && barCounter>0) {
+			if(me.getEnergy()==0 && barCounter <= 90 && barCounter>0) {
 				me.updateState(0);
 			}
 			
-			if(me.getEnergy()==0 && barCounter < 120 && barCounter>60) {
+			if(me.getEnergy()==0 && barCounter < 180 && barCounter>90) {
 				me.updateState(1);
 			}
 			
-			if(me.getEnergy()==0 && barCounter < 180 && barCounter>=120) {
+			if(me.getEnergy()==0 && barCounter < 270 && barCounter>=180) {
 		
 				me.updateState(2);
 			}
 			
 		
 			
-			if(timeCounter%180 ==0) {
+			if(timeCounter%270 ==0) {
 				me.regenerate();
 			}
 			
