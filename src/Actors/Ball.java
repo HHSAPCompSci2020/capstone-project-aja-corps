@@ -13,6 +13,8 @@ public class Ball extends MovingImage {
 	private boolean dribbling = true;
 	private Player playerDribbling;
 	private boolean shooting;
+	private boolean bounce = false;
+	private double bounceHeight = 140;
 
 	private String uniqueID;
 	private boolean dataUpdated;
@@ -38,10 +40,30 @@ public class Ball extends MovingImage {
 				shoot(640, 140);
 			else
 				shoot(130, 140);
+		} else if(bounce) {
+			bounce();
 		}
 			
 	}
 
+	public void bounce() {
+		x += xVelocity;
+		y += yVelocity;
+		
+		if(y >= 300) {
+			y = 290;
+			yVelocity = -yVelocity;
+		} else if(y <= bounceHeight) {
+			yVelocity = -yVelocity;
+			y = bounceHeight+10;
+		}
+		if(bounceHeight <= 280) {
+			bounceHeight += 0.5;
+		}
+		if(bounceHeight >= 280) {
+			yVelocity = 0;
+		}
+	}
 	public void dribble(double floorY) {
 		//System.out.println("dribbling...");
 		if (playerDribbling.intersects(this)) {
@@ -80,21 +102,35 @@ public class Ball extends MovingImage {
 				xVelocity = -5;
 			calculateParabola(hoopx, hoopy);
 			// calculateRateOfDecrease();
-			playerDribbling = null;
+			//playerDribbling = null;
 			shooting = true;
 		} else
 //			xVelocity = xVelocity * 0.85;
 
-		if (y == 300 && shooting) {
-			shooting = false;
+		if (y >= 300 && !shooting) {
 			xVelocity = 0;
 			dribbling = true;
+			y = 200;
 		} else if(shooting == true){
 			x += xVelocity;
 			y = f(x);
 			System.out.println(x + ", " + y);
 			// y += yVelocity;
 			// yVelocity -= rateOfDecrease;
+		}
+		if(y >= shoty) {
+			if(playerDribbling.getDirection() && x >= hoopx) {
+				bounce = true;
+				shooting = false;
+				xVelocity = 0;
+				yVelocity = 3;
+			}
+			else if(!playerDribbling.getDirection() && x <= hoopx) {
+				bounce = true;
+				shooting = false;
+				xVelocity = 0;
+				yVelocity = 5;
+			}
 		}
 		
 		dataUpdated = true;
