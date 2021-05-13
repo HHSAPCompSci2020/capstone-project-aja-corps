@@ -28,7 +28,7 @@ public class Player extends MovingImage {
 	private double jumpStrength;
 	private boolean speedPowerup = false;
 	private boolean jumpPowerup = false;
-	private boolean shotPowerup = false;
+
 	private boolean right = true;
 	private boolean shooting;
 	
@@ -37,13 +37,14 @@ public class Player extends MovingImage {
 	private int energyState;
 
 	
-	
-	private int speedCounter = 0;
-	private int jumpCounter = 0;
+
 
 	private String uniqueID;
 	private String username;
 	private double x, y;
+	
+	private boolean speedBoost = false;;
+	private boolean jumpBoost = false;;
 
 	private boolean dataUpdated;
 	private boolean hasBall;
@@ -64,6 +65,43 @@ public class Player extends MovingImage {
 		energy = 1;
 	}
 	
+	public void spawnPowerup() {
+		double x =  (Math.random());
+		if(x>0.5) {
+			speedPowerup=true;
+			
+		}else {
+			jumpPowerup = true;
+			
+		}
+		
+		
+		
+		
+		
+		
+		
+	}
+	
+	public boolean getPower(){
+	
+		if(speedBoost == true || jumpBoost == true) {
+			return true;
+		}else {
+			return true;
+		}
+	}
+	
+	public void powerOff() {
+		if (speedBoost) {
+			speedBoost = false;
+		}
+		
+		if(jumpBoost) {
+			jumpBoost = false;
+		}
+	}
+	
 	
 	
 		
@@ -80,15 +118,7 @@ public class Player extends MovingImage {
 		}
 	}
 
-	/**
-	 * method toggles the speed power up
-	 * 
-	 * @post changes speedPowerup field
-	 */
-
-	public void speedPowerup() {
-		speedCounter = 100;
-	}
+	
 
 	/**
 	 * makes player dash
@@ -120,23 +150,7 @@ public class Player extends MovingImage {
 		dataUpdated = true;
 	}
 
-	/**
-	 * toggles the jump power up
-	 * 
-	 * @post changed jumpPower up field
-	 */
-	public void jumpPowerup() {
-		jumpCounter = 5;
-	}
-
-	/**
-	 * toggles the shot power up
-	 * 
-	 * @post changes shoot power up field
-	 */
-	public void shotPowerup() {
-		shotPowerup = true;
-	}
+	
 
 	/**
 	 * 
@@ -157,14 +171,14 @@ public class Player extends MovingImage {
 			this.x = 700;
 		}
 
-//		System.out.println("" + x + " " + y);
+		if(speedBoost) {
+			xVelocity += (double) dir;
+		}else {
 
-		if (speedCounter > 0) {
-			xVelocity += (0.65) * (double) dir;
-			speedCounter--;
-		}
+		
 
 		xVelocity += (0.5) * (double) dir;
+		}
 	}
 
 	/**
@@ -173,9 +187,8 @@ public class Player extends MovingImage {
 	public void jump() {
 		if (onASurface) {
 
-			if (jumpCounter > 0) {
-				yVelocity -= (1.3) * jumpStrength;
-				jumpCounter--;
+			if(jumpBoost) {
+				yVelocity -= (1.3)*jumpStrength;
 				return;
 			}
 
@@ -186,10 +199,26 @@ public class Player extends MovingImage {
 	
 
 	public void act(ArrayList<Shape> obstacles, Player player2) {
+		
+		
+		
+		
+		
 		double xCoord = getX();
 		double yCoord = getY();
 		double width = getWidth();
 		double height = getHeight();
+		
+		//383, 260, 30, 30,false);
+		if(x >383 & x<413 & y >230 & y < 270 & speedPowerup) {
+			speedPowerup = false;
+			speedBoost = true;
+		}
+		
+		if(x >383 & x<413 & y >230 & y < 270 & jumpPowerup) {
+			jumpPowerup = false;
+			jumpBoost = true;
+		}
 
 		// ***********Y AXIS***********
 
@@ -363,6 +392,21 @@ public class Player extends MovingImage {
 
 	@Override
 	public void draw(Graphics g, ImageObserver io) {
+		
+	
+		//g.drawImage(img, x, y, width, height, observer)
+		
+		if(speedPowerup) {
+			g.setColor(Color.red);
+			g.fill3DRect(383, 260, 30, 30,false);
+		}
+		
+		if(jumpPowerup) {
+			g.setColor(Color.blue);
+			g.fill3DRect(383, 260, 30, 30,false);
+		}
+		
+		
 		
 		g.setColor(Color.green);
 		

@@ -34,6 +34,7 @@ public class Court extends JPanel implements Runnable {
 	private Rectangle screenRect;
 	private int timeCounter;
 	private int barCounter;
+	private int powerCounter;
 
 	// private Ball ball;
 	private Image backgroundImage;
@@ -195,6 +196,33 @@ public class Court extends JPanel implements Runnable {
 			long startTime = System.currentTimeMillis();
 			timeCounter++;
 			barCounter++;
+			powerCounter++;
+			
+			
+			if(me.getPower()==false) {
+				powerCounter = 0;
+			}
+			
+			if(timeCounter ==1) {
+				me.spawnPowerup();
+			}
+			
+			
+			if(powerCounter == 1500) {
+				me.spawnPowerup();
+				powerCounter = 0;
+			}
+			
+			
+			
+			if(powerCounter == 350) {
+				me.powerOff();
+			}
+			
+			
+			if(timeCounter == 1) {
+				spawnNewBall();
+			}
 			
 			if(me.getEnergy()==1) {
 				barCounter=0;
