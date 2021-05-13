@@ -33,6 +33,7 @@ public class GamePanel extends JPanel implements Runnable {
 
 	private Rectangle screenRect;
 	private int timeCounter;
+	private int barCounter;
 
 	// private Ball ball;
 	private Image backgroundImage;
@@ -193,6 +194,27 @@ public class GamePanel extends JPanel implements Runnable {
 		while (true) { // Modify this to allow quitting
 			long startTime = System.currentTimeMillis();
 			timeCounter++;
+			barCounter++;
+			
+			if(me.getEnergy()==1) {
+				barCounter=0;
+				me.updateState(3);
+			}
+			
+			
+			if(me.getEnergy()==0 && barCounter <= 50 && barCounter>0) {
+				me.updateState(0);
+			}
+			
+			if(me.getEnergy()==0 && barCounter < 100 && barCounter>50) {
+				me.updateState(1);
+			}
+			
+			if(me.getEnergy()==0 && barCounter < 150 && barCounter>=100) {
+				me.updateState(2);
+			}
+			
+		
 			
 			if(timeCounter%150 ==0) {
 				me.regenerate();
@@ -397,6 +419,8 @@ public class GamePanel extends JPanel implements Runnable {
 			// TODO Auto-generated method stub
 
 		}
+		
+		
 
 		@Override
 		public void onChildRemoved(DataSnapshot arg0) {
