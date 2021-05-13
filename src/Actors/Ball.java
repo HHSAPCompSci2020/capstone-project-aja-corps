@@ -63,6 +63,14 @@ public class Ball extends MovingImage {
 		if(bounceHeight >= 280) {
 			yVelocity = 0;
 		}
+		
+		if(playerDribbling.intersects(this)) {
+			hasBall = true;
+			playerDribbling.setHasBall(true);
+			dribbling = true;
+			bounce = false;
+			yVelocity = 4;
+		}
 	}
 	public void dribble(double floorY) {
 		//System.out.println("dribbling...");
