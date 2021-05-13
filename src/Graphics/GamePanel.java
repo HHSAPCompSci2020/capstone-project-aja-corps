@@ -132,7 +132,7 @@ public class GamePanel extends JPanel implements Runnable {
 		if (ball != null) {
 			ball.draw(g2, this);
 		}
-		
+
 		me.draw(g2, this);
 		g2.setTransform(at);
 
@@ -173,15 +173,15 @@ public class GamePanel extends JPanel implements Runnable {
 		}
 
 		if (keyControl.isPressed(KeyEvent.VK_SPACE)) {
-		
-			if(me.getEnergy()==1) {
-			me.shoot();
-			if(me.getDirection())
-				ball.shoot(640, 140);
-			else
-				ball.shoot(130, 140);
-			me.shoot();
-		}
+
+			if (me.getEnergy() == 1) {
+				me.shoot();
+				if (me.getDirection())
+					ball.shoot(640, 140);
+				else
+					ball.shoot(130, 140);
+				me.shoot();
+			}
 		}
 
 		if (keyControl.isPressed(KeyEvent.VK_ENTER)) {
@@ -190,59 +190,57 @@ public class GamePanel extends JPanel implements Runnable {
 	}
 
 	public void run() {
-		
+
 		while (true) { // Modify this to allow quitting
 			long startTime = System.currentTimeMillis();
+
+//			System.out.println(me.hasBall());
 			timeCounter++;
 			barCounter++;
-			
-			if(me.getEnergy()==1) {
-				barCounter=0;
+
+			if (me.getEnergy() == 1) {
+				barCounter = 0;
 				me.updateState(3);
 			}
-			
-			
-			if(me.getEnergy()==0 && barCounter <= 60 && barCounter>0) {
+
+			if (me.getEnergy() == 0 && barCounter <= 60 && barCounter > 0) {
 				me.updateState(0);
 			}
-			
-			if(me.getEnergy()==0 && barCounter < 120 && barCounter>60) {
+
+			if (me.getEnergy() == 0 && barCounter < 120 && barCounter > 60) {
 				me.updateState(1);
 			}
-			
-			if(me.getEnergy()==0 && barCounter < 180 && barCounter>=120) {
-		
+
+			if (me.getEnergy() == 0 && barCounter < 180 && barCounter >= 120) {
+
 				me.updateState(2);
 			}
-			
-		
-			
-			if(timeCounter%180 ==0) {
+
+			if (timeCounter % 180 == 0) {
 				me.regenerate();
 			}
-			
-			
+
 			enableKeys();
 
-			if (ball != null) {
-				ball.getPlayer(me);
-//				if (me.isShooting()) {
-//					ball.shoot();
-//				}
-				ball.act(300);
-			}
-
 			for (Player p : players) {
-				p.act(obstacles, me);
+				p.act(obstacles, me, ball);
 			}
 
 			if (players.size() > 0) {
-				me.act(obstacles, players.get(0));
+				me.act(obstacles, players.get(0), ball);
 			} else {
-				me.act(obstacles, null);
+				me.act(obstacles, null, ball);
 			}
 
-			me.act(obstacles, null);
+			if (ball != null) {
+				if (ball.isOnGround()) {
+					ball.act(me, 300);
+				} else if (me.hasBall()) {
+					ball.act(me, 300);
+				}
+			}
+
+			me.act(obstacles, null, ball);
 
 			if (!currentlySending && me.isDataChanged()) {
 				currentlySending = true;
@@ -334,32 +332,9 @@ public class GamePanel extends JPanel implements Runnable {
 
 		@Override
 		public void onChildChanged(DataSnapshot arg0, String arg1) {
-//			if (me.idMatch(arg0.getKey()))
-//				return;
-
-//			for (int i = 0; i < balls.size(); i++) {
-//				Ball b = balls.get(i);
-//				if (b.idMatch(arg0.getKey())) {
-//					b.syncWithDataObject(arg0.getValue(BallData.class));
-//				} 
-//			}
-
 			if (!me.hasBall()) {
-//				if (ball.idMatch(arg0.getKey())) {
-//					return;
-//				}
-
 				ball.syncWithDataObject(arg0.getValue(BallData.class));
-			} 
-//			else if (me.hasBall()) {
-//				System.out.println(me.getID() + " has the ball!");
-////				if (ball.idMatch(arg0.getKey())) {
-////					ball.syncWithDataObject(arg0.getValue(BallData.class));
-////				}
-//			}
-
-//			Ball b = new Ball(DRAWING_WIDTH / 2 - Player.MARIO_WIDTH / 2, 250, 20, 20, null, arg0.getKey());
-//			ball = b;
+			}
 		}
 
 		@Override
@@ -420,8 +395,6 @@ public class GamePanel extends JPanel implements Runnable {
 			// TODO Auto-generated method stub
 
 		}
-		
-		
 
 		@Override
 		public void onChildRemoved(DataSnapshot arg0) {

@@ -99,9 +99,9 @@ public class Player extends MovingImage {
 		if(energy>0) {
 		
 		if (right)
-			x += 40;
+			x += 100;
 		else
-			x -= 40;
+			x -= 100;
 		dataUpdated = true;
 		
 		energy--;
@@ -185,7 +185,7 @@ public class Player extends MovingImage {
 	}
 	
 
-	public void act(ArrayList<Shape> obstacles, Player player2) {
+	public void act(ArrayList<Shape> obstacles, Player player2, Ball b) {
 		double xCoord = getX();
 		double yCoord = getY();
 		double width = getWidth();
@@ -205,12 +205,24 @@ public class Player extends MovingImage {
 			if (strechY.intersects(player2)) {
 //				System.out.println("Intersection!");
 				xVelocity = 0;
-				if (this.hasBall) {
-					hasBall = false;
-				}
+//				if (this.hasBall) {
+//					hasBall = false;
+//				}
 			}
 		}
-
+		
+//		if (b != null && !b.hasPlayer()) {
+////			System.out.println("Ball on the ground!");
+//			if (b.intersects(this)) {
+//				System.out.println("Intersection with " + this.getID());
+//				this.hasBall = true;
+//				b.getPlayer(this);
+//				b.setDribbling(true);
+//				dataUpdated = true;
+//				System.out.println(this.hasBall);
+//			}
+//		}
+//		
 		if (yVelocity > 0) {
 			Shape standingSurface = null;
 			for (Shape s : obstacles) {
