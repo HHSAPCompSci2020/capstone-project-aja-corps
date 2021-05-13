@@ -3,13 +3,12 @@ package Actors;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 
+import Graphics.Scoreboard;
 import processing.core.PApplet;
 
 public class Ball extends MovingImage {
 
 	private double xVelocity, yVelocity, shotx, shoty;
-	private double rateOfDecrease;
-	private final double friction = 0.85;
 	private boolean dribbling = true;
 	private Player playerDribbling;
 	private boolean shooting;
@@ -20,7 +19,6 @@ public class Ball extends MovingImage {
 	private boolean dataUpdated;
 	private boolean hasBall;
 	private boolean onGround = true;
-	private boolean firstPickup = true;
 
 	private double[] equation;
 
@@ -176,7 +174,7 @@ public class Ball extends MovingImage {
 		}
 		if (y >= shoty) {
 			if (playerDribbling.getDirection() && x >= hoopx) {
-
+				Scoreboard.score2++;
 				bounce = true;
 				shooting = false;
 				xVelocity = 0;
@@ -184,6 +182,7 @@ public class Ball extends MovingImage {
 			} else if (!playerDribbling.getDirection() && x <= hoopx) {
 //				playerDribbling.setHasBall(false);
 //				playerDribbling = null;
+				Scoreboard.score1++;
 				bounce = true;
 				shooting = false;
 				xVelocity = 0;

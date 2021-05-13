@@ -48,6 +48,7 @@ public class Court extends JPanel implements Runnable {
 	protected Ball ball;
 	private ArrayList<Player> players;
 	private ArrayList<Ball> balls;
+	private Scoreboard scoreboard;
 
 	// Database stuff
 	private DatabaseReference roomRef; // This is the database entry for the whole room
@@ -95,6 +96,8 @@ public class Court extends JPanel implements Runnable {
 		// myBallRef.setValueAsync(ball.getDataObject());
 
 		System.out.println(roomRef.child("users"));
+		
+		scoreboard = new Scoreboard();
 
 		new Thread(this).start();
 	}
@@ -136,6 +139,7 @@ public class Court extends JPanel implements Runnable {
 		}
 
 		me.draw(g2, this);
+		scoreboard.draw(g2);
 		g2.setTransform(at);
 
 		// TODO Add any custom drawings here
