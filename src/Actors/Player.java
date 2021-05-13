@@ -88,9 +88,9 @@ public class Player extends MovingImage {
 		if(energy>0) {
 		
 		if (right)
-			x += 20;
+			x += 40;
 		else
-			x -= 20;
+			x -= 40;
 		dataUpdated = true;
 		
 		energy--;
