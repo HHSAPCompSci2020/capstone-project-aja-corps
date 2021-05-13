@@ -32,6 +32,7 @@ public class GamePanel extends JPanel implements Runnable {
 	public static final int DRAWING_HEIGHT = 322;
 
 	private Rectangle screenRect;
+	private int timeCounter;
 
 	// private Ball ball;
 	private Image backgroundImage;
@@ -184,9 +185,16 @@ public class GamePanel extends JPanel implements Runnable {
 	}
 
 	public void run() {
+		timeCounter++;
 		while (true) { // Modify this to allow quitting
 			long startTime = System.currentTimeMillis();
-
+			
+			
+			if(timeCounter%200 ==0) {
+				me.regenerate();
+			}
+			
+			
 			enableKeys();
 
 			if (ball != null) {
