@@ -85,7 +85,7 @@ public class FirebaseBackend extends JPanel implements ChildEventListener
 		FileInputStream refreshToken;
 		try {
 
-			refreshToken = new FileInputStream("BasketballAllStars.json");
+			refreshToken = new FileInputStream("src/BasketballAllStars.json");
 
 			FirebaseOptions options = new FirebaseOptions.Builder()
 					.setCredentials(GoogleCredentials.fromStream(refreshToken))
