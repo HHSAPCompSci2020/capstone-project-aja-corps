@@ -77,13 +77,13 @@ public class Ball extends MovingImage {
 			return true;
 		}
 		
-		if(playerDribbling.intersects(this)) {
-			hasBall = true;
-			playerDribbling.setHasBall(true);
-			dribbling = true;
-			bounce = false;
-			yVelocity = 4;
-		}
+//		if(playerDribbling.intersects(this)) {
+//			hasBall = true;
+//			playerDribbling.setHasBall(true);
+//			dribbling = true;
+//			bounce = false;
+//			yVelocity = 4;
+//		}
 	}
 
 	public void bounce(Player p) {

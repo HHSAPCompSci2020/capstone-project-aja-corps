@@ -248,13 +248,13 @@ public class Court extends JPanel implements Runnable {
 			enableKeys();
 
 			for (Player p : players) {
-				p.act(obstacles, me, ball);
+				p.act(obstacles, me);
 			}
 
 			if (players.size() > 0) {
-				me.act(obstacles, players.get(0), ball);
+				me.act(obstacles, players.get(0));
 			} else {
-				me.act(obstacles, null, ball);
+				me.act(obstacles, null);
 			}
 
 			if (ball != null) {
@@ -265,7 +265,7 @@ public class Court extends JPanel implements Runnable {
 				}
 			}
 
-			me.act(obstacles, null, ball);
+			me.act(obstacles, null);
 
 			if (!currentlySending && me.isDataChanged()) {
 				currentlySending = true;
