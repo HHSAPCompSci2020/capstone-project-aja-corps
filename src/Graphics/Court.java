@@ -16,7 +16,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.DatabaseReference.CompletionListener;
 
-import Actors.OldBall;
 import Actors.Ball;
 import Actors.BallData;
 import Actors.Player;
