@@ -64,13 +64,12 @@ public class Court extends JPanel implements Runnable {
 
 	private boolean currentlySending; // These field allows us to limit database writes by only sending data once
 										// we've received confirmation the previous data went through.
-	
-	
-	
+
 	/**
-	 * Instantiates a new court at the database reference in Firebase and with the name of the player
+	 * Instantiates a new court at the database reference in Firebase and with the
+	 * name of the player
 	 * 
-	 * @param roomRef Firebase database reference
+	 * @param roomRef    Firebase database reference
 	 * @param playerName Player username
 	 */
 	public Court(DatabaseReference roomRef, String playerName) {
@@ -110,15 +109,15 @@ public class Court extends JPanel implements Runnable {
 		// myBallRef.setValueAsync(ball.getDataObject());
 
 		System.out.println(roomRef.child("users"));
-		
+
 		scoreboard = new Scoreboard();
 
 		new Thread(this).start();
 	}
-	
-	
+
 	/**
-	 * Overridden method in order to draw necessary components of the court (player, ball, etc)
+	 * Overridden method in order to draw necessary components of the court (player,
+	 * ball, etc)
 	 * 
 	 * @param Graphics g
 	 */
@@ -129,7 +128,7 @@ public class Court extends JPanel implements Runnable {
 
 		int width = getWidth();
 		int height = getHeight();
-		
+
 		double ratioX = (double) width / DRAWING_WIDTH;
 		double ratioY = (double) height / DRAWING_HEIGHT;
 
@@ -224,7 +223,8 @@ public class Court extends JPanel implements Runnable {
 	}
 
 	/**
-	 * Overide method from the Runnable class that allows the game to run over and over again in this method 
+	 * Overide method from the Runnable class that allows the game to run over and
+	 * over again in this method
 	 * 
 	 */
 	public void run() {
@@ -258,8 +258,6 @@ public class Court extends JPanel implements Runnable {
 			if (timeCounter == 1) {
 				spawnNewBall();
 			}
-			
-			
 
 			if (me.getEnergy() == 1) {
 				barCounter = 0;
@@ -400,16 +398,9 @@ public class Court extends JPanel implements Runnable {
 
 		@Override
 		public void onChildAdded(DataSnapshot arg0, String arg1) {
-			// if (ball.idMatch(arg0.getKey())) {
-			// System.out.println("My ball!");
-			// return;
-			// }
-
-			// System.out.println("Ball added!");
 			Ball b = new Ball(DRAWING_WIDTH / 2 - Player.MARIO_WIDTH / 2, 250, 20, 20, null, arg0.getKey());
 			b.syncWithDataObject(arg0.getValue(BallData.class));
 			ball = b;
-			// balls.add(b);
 		}
 
 		@Override
@@ -460,7 +451,6 @@ public class Court extends JPanel implements Runnable {
 
 		@Override
 		public void onChildChanged(DataSnapshot arg0, String arg1) {
-			// System.out.println(me.getX() + ", " + me.getY());
 			if (me.idMatch(arg0.getKey()))
 				return;
 

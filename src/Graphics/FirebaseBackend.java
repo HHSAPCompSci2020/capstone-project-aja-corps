@@ -40,51 +40,46 @@ import com.google.firebase.database.FirebaseDatabase;
  *
  */
 
-public class FirebaseBackend extends JPanel implements ChildEventListener
-{
+public class FirebaseBackend extends JPanel implements ChildEventListener {
 	private JFrame theWindow;
-	
+
 	private ArrayList<String> rooms;
 	private JList<String> roomList;
-	
+
 	private JButton connectButton;
 	private JButton newRoomButton;
-	
+
 	private DatabaseReference postsRef;
-	
+
 	public FirebaseBackend() {
 		rooms = new ArrayList<String>();
-		
+
 		ActionHandler actionEventHandler = new ActionHandler();
-		
+
 		setLayout(new BorderLayout());
-		
+
 		JPanel cnPanel = new JPanel();
 		cnPanel.setLayout(new BorderLayout());
 		roomList = new JList<String>();
 		roomList.setBorder(new EtchedBorder(EtchedBorder.RAISED));
-		cnPanel.add(roomList,BorderLayout.CENTER);
+		cnPanel.add(roomList, BorderLayout.CENTER);
 		JLabel ah = new JLabel("Available Rooms");
 		ah.setHorizontalAlignment(JLabel.CENTER);
-		cnPanel.add(ah,BorderLayout.NORTH);
+		cnPanel.add(ah, BorderLayout.NORTH);
 		cnPanel.setBorder(new EtchedBorder(EtchedBorder.RAISED));
 		add(cnPanel);
-		
-		
+
 		JPanel ePanel = new JPanel();
-		ePanel.setLayout(new GridLayout(1,5,15,15));
+		ePanel.setLayout(new GridLayout(1, 5, 15, 15));
 		newRoomButton = new JButton("<html><center>Create<br>A Room</center></html>");
 		newRoomButton.addActionListener(actionEventHandler);
 		connectButton = new JButton("<html><center>Join<br>Room</center></html>");
 		connectButton.addActionListener(actionEventHandler);
 
-		
 		ePanel.add(newRoomButton);
 		ePanel.add(connectButton);
-		
-		cnPanel.add(ePanel,BorderLayout.SOUTH);
-		
 
+		cnPanel.add(ePanel, BorderLayout.SOUTH);
 
 		// DATABASE SETUP
 		FileInputStream refreshToken;
@@ -94,8 +89,7 @@ public class FirebaseBackend extends JPanel implements ChildEventListener
 
 			FirebaseOptions options = new FirebaseOptions.Builder()
 					.setCredentials(GoogleCredentials.fromStream(refreshToken))
-					.setDatabaseUrl("https://basketballallstars-35240-default-rtdb.firebaseio.com/")
-					.build();
+					.setDatabaseUrl("https://basketballallstars-35240-default-rtdb.firebaseio.com/").build();
 
 			FirebaseApp.initializeApp(options);
 			DatabaseReference database = FirebaseDatabase.getInstance().getReference();
@@ -109,48 +103,47 @@ public class FirebaseBackend extends JPanel implements ChildEventListener
 		}
 
 	}
-	
+
 	/**
 	 * Constructs and shows the JFrame main window
 	 */
 	public void show() {
-		
+
 		theWindow = new JFrame();
 		theWindow.add(this);
 		theWindow.setBounds(0, 0, 800, 600);
 		theWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		theWindow.setVisible(true);
-		
+
 	}
-	
+
 	/**
 	 * Allows one to join a room in the Firebase with a specified name
 	 * 
 	 * @param name Name of the room to join
 	 */
 	public void selectRoom(String name) {
-		
 
 		postsRef.orderByChild("name").equalTo(name).addListenerForSingleValueEvent(new ValueEventListener() {
 			@Override
 			public void onDataChange(DataSnapshot snap) {
-				
+
 				if (!snap.hasChildren())
 					return;
-				
+
 				String playerName = JOptionPane.showInputDialog("Enter your username:");
-				
+
 				theWindow.setVisible(false);
-				
+
 				JFrame window = new JFrame();
-				
+
 				window.setBounds(100, 100, 800, 322);
 				window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 				Court panel = new Court(snap.getChildren().iterator().next().getRef(), playerName);
-			    window.addKeyListener(panel.getKeyHandler());
+				window.addKeyListener(panel.getKeyHandler());
 				window.add(panel);
 				window.setVisible(true);
-				
+
 				theWindow.dispose();
 			}
 
@@ -158,18 +151,14 @@ public class FirebaseBackend extends JPanel implements ChildEventListener
 			public void onCancelled(DatabaseError arg0) {
 			}
 		});
-		
-		
-		
-	}
 
+	}
 
 	@Override
 	public void onCancelled(DatabaseError arg0) {
 		// TODO Auto-generated method stub
-		
-	}
 
+	}
 
 	@Override
 	public void onChildAdded(DataSnapshot arg0, String arg1) {
@@ -177,67 +166,62 @@ public class FirebaseBackend extends JPanel implements ChildEventListener
 		roomList.setListData(rooms.toArray(new String[rooms.size()]));
 	}
 
-
 	@Override
 	public void onChildChanged(DataSnapshot arg0, String arg1) {
 		// TODO Auto-generated method stub
-		
-	}
 
+	}
 
 	@Override
 	public void onChildMoved(DataSnapshot arg0, String arg1) {
 		// TODO Auto-generated method stub
-		
-	}
 
+	}
 
 	@Override
 	public void onChildRemoved(DataSnapshot arg0) {
 		rooms.remove(arg0.child("name").getValue(String.class));
 		roomList.setListData(rooms.toArray(new String[rooms.size()]));
 	}
-	
 
 	private class ActionHandler implements ActionListener {
 
 		public void actionPerformed(ActionEvent e) {
 			Object source = e.getSource();
 			if (source == newRoomButton) {
-				
+
 				String roomName = JOptionPane.showInputDialog("Please choose a name for your room:");
 				if (roomName == null || roomName.isEmpty()) {
 					JOptionPane.showMessageDialog(FirebaseBackend.this, "Room creation fail - The room needs a name.");
 					return;
 				}
-				
+
 				if (rooms.contains(roomName)) {
-					JOptionPane.showMessageDialog(FirebaseBackend.this, "Room creation fail - Room name already exists.");
+					JOptionPane.showMessageDialog(FirebaseBackend.this,
+							"Room creation fail - Room name already exists.");
 					return;
 				}
-				
+
 				postsRef.push().child("name").setValue(roomName, new CompletionListener() {
 
 					@Override
 					public void onComplete(DatabaseError arg0, DatabaseReference arg1) {
 						selectRoom(roomName);
 					}
-					
+
 				});
-				
+
 			} else if (source == connectButton) {
 				String sel = roomList.getSelectedValue();
-				
+
 				if (sel != null) {
-					
+
 				}
-					selectRoom(sel);
-				
+				selectRoom(sel);
+
 			}
 
 		}
 	}
 
-	
-	
 }

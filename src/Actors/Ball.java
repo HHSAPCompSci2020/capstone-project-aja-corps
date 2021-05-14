@@ -30,10 +30,10 @@ public class Ball extends MovingImage {
 	/**
 	 * Instantiates a new Ball at initial coordinates (x, y) with the specified size
 	 * 
-	 * @param x Initial X-Coordinate of the ball
-	 * @param y Initial Y-Coordinate of the ball
-	 * @param width Width of the basketball
-	 * @param height Height of the basketball
+	 * @param x        Initial X-Coordinate of the ball
+	 * @param y        Initial Y-Coordinate of the ball
+	 * @param width    Width of the basketball
+	 * @param height   Height of the basketball
 	 * @param username Name of the ball
 	 * @param uniqueID A string used to uniquely identify the ball
 	 */
@@ -46,11 +46,13 @@ public class Ball extends MovingImage {
 	}
 
 	/**
-	 * Executes ball actions, Calculates velocities of the ball, and updates coordinates of the ball according to movement or action
+	 * Executes ball actions, Calculates velocities of the ball, and updates
+	 * coordinates of the ball according to movement or action
 	 * 
-	 * @param p The player that is doing the action upon the ball
+	 * @param p      The player that is doing the action upon the ball
 	 * @param floorY The Y-Coordinate of the floor
-	 * @post X-coordinate, Y-Coordinate, X velocity, Y velocity, and appropriate booleans are changed according to action
+	 * @post X-coordinate, Y-Coordinate, X velocity, Y velocity, and appropriate
+	 *       booleans are changed according to action
 	 */
 	public void act(Player p, double floorY) {
 		if (this.intersects(p) && onGround) {
@@ -76,13 +78,13 @@ public class Ball extends MovingImage {
 //			System.out.println("bouncing");
 			bounce(p);
 		}
-		
-		if(y > floorY)
+
+		if (y > floorY)
 			moveToGround();
-		
-		//if(x > 800)
-			//setDribbling(true);
-			
+
+		// if(x > 800)
+		// setDribbling(true);
+
 		this.dataUpdated = true;
 	}
 
@@ -117,7 +119,8 @@ public class Ball extends MovingImage {
 	 * The action of the ball bouncing
 	 * 
 	 * @param p The player that was bouncing the ball
-	 * @post The x and y coordinates are updated as well as the appropriate velocities of the ball
+	 * @post The x and y coordinates are updated as well as the appropriate
+	 *       velocities of the ball
 	 */
 	public void bounce(Player p) {
 		if (bounceCount >= 5) {
@@ -180,7 +183,8 @@ public class Ball extends MovingImage {
 	 * 
 	 * @param hoopx The x coordinate of the hoop
 	 * @param hoopy The y coordinate of the hoop
-	 * @post The ball is on its trajectory in the arc motion towards the hoop. X, Y, and velocities are updated
+	 * @post The ball is on its trajectory in the arc motion towards the hoop. X, Y,
+	 *       and velocities are updated
 	 */
 	public void shoot(double hoopx, double hoopy) {
 		if (dribbling) {
