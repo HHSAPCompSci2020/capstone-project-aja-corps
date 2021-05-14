@@ -2,6 +2,12 @@ package Actors;
 
 import Graphics.Scoreboard;
 
+/**
+ * The Ball class represents a real life basketball in the Game.
+ * 
+ * @author josh_choi
+ *
+ */
 public class Ball extends MovingImage {
 
 	private double xVelocity, yVelocity, shotx, shoty;
@@ -21,6 +27,16 @@ public class Ball extends MovingImage {
 
 	private String username;
 
+	/**
+	 * Instantiates a new Ball at initial coordinates (x, y) with the specified size
+	 * 
+	 * @param x Initial X-Coordinate of the shape
+	 * @param y Initial Y-Coordinate of the shape
+	 * @param width Width of the basketball
+	 * @param height Height of the basketball
+	 * @param username Name of the ball
+	 * @param uniqueID A string used to uniquely identify the ball
+	 */
 	public Ball(int x, int y, int width, int height, String username, String uniqueID) {
 		super("img/basketball.png", x, y, width, height);
 		xVelocity = 0;
@@ -29,6 +45,13 @@ public class Ball extends MovingImage {
 		this.username = username;
 	}
 
+	/**
+	 * Executes ball actions, Calculates velocities of the ball, and updates coordinates of the ball according to movement or action
+	 * 
+	 * @param p The player that is doing the action upon the ball
+	 * @param floorY The Y-Coordinate of the floor
+	 * @post X-coordinate, Y-Coordinate, X velocity, Y velocity, and appropriate booleans are changed according to action
+	 */
 	public void act(Player p, double floorY) {
 		if (this.intersects(p) && onGround) {
 			p.setHasBall(true);
@@ -63,6 +86,12 @@ public class Ball extends MovingImage {
 		this.dataUpdated = true;
 	}
 
+	/**
+	 * Updates the dribbling status of the ball
+	 * 
+	 * @param x True if the ball should start dribbling and false if not
+	 * @post The ball stops horizontally moving but vertically by default moves down
+	 */
 	public void setDribbling(boolean x) {
 		bounceCount = 0;
 		xVelocity = 0;
@@ -71,6 +100,11 @@ public class Ball extends MovingImage {
 		this.bounce = false;
 	}
 
+	/**
+	 * Checks to see if ball is being controlled by player or not
+	 * 
+	 * @return True if there is a player and false if not
+	 */
 	public boolean hasPlayer() {
 		if (playerDribbling == null) {
 			return false;
@@ -79,6 +113,12 @@ public class Ball extends MovingImage {
 		}
 	}
 
+	/**
+	 * The action of the ball bouncing
+	 * 
+	 * @param p The player that was bouncing the ball
+	 * @post The x and y coordinates are updated as well as the appropriate velocities of the ball
+	 */
 	public void bounce(Player p) {
 		if (bounceCount >= 5) {
 			yVelocity = 0;
@@ -104,10 +144,21 @@ public class Ball extends MovingImage {
 		}
 	}
 
+	/**
+	 * Moves ball to the ground
+	 * 
+	 * @post The y coordinate of the ball is 280
+	 */
 	public void moveToGround() {
 		this.y = 280;
 	}
 
+	/**
+	 * The action of the ball being dribbled by a player
+	 * 
+	 * @param floorY The y coordinate of the floor
+	 * @post Appropriate x, y, and velocities are updated
+	 */
 	public void dribble(double floorY) {
 
 		floorY = 300; // hardcoded for now
@@ -124,6 +175,13 @@ public class Ball extends MovingImage {
 		}
 	}
 
+	/**
+	 * The action of the ball being shot by a player
+	 * 
+	 * @param hoopx The x coordinate of the hoop
+	 * @param hoopy The y coordinate of the hoop
+	 * @post The ball is on its trajectory in the arc motion towards the hoop. X, Y, and velocities are updated
+	 */
 	public void shoot(double hoopx, double hoopy) {
 		if (dribbling) {
 			shotx = playerDribbling.getX() + 25;
@@ -214,14 +272,13 @@ public class Ball extends MovingImage {
 		equation[1] = h;
 		equation[2] = k;
 	}
-	/*
-	 * private void calculateRateOfDecrease() {
-	 * 
-	 * } private double y() {
-	 * 
-	 * }
-	 */
 
+	/**
+	 * Sets the player to having possession of the ball
+	 * 
+	 * @param p The player who possesses the ball
+	 * @post The player who owns the ball is updated
+	 */
 	public void setPlayer(Player p) {
 		if (playerDribbling != null)
 			playerDribbling.setHasBall(false);
@@ -232,6 +289,11 @@ public class Ball extends MovingImage {
 		this.dataUpdated = true;
 	}
 
+	/**
+	 * Gets the data about the ball object for the online services
+	 * 
+	 * @return BallData object containing data about the ball object
+	 */
 	public BallData getDataObject() {
 		dataUpdated = false;
 		BallData p = new BallData();
@@ -242,6 +304,12 @@ public class Ball extends MovingImage {
 		return p;
 	}
 
+	/**
+	 * Syncs the ball with the current ball data object
+	 * 
+	 * @param data The ball data object used
+	 * @post Data about ball is updated
+	 */
 	public void syncWithDataObject(BallData data) {
 		dataUpdated = false;
 		this.x = data.x;
@@ -250,30 +318,66 @@ public class Ball extends MovingImage {
 		this.username = data.username;
 	}
 
+	/**
+	 * Checks to see if the id matches
+	 * 
+	 * @param uid The user id to check for matching
+	 * @return True if it is a match and false if not
+	 */
 	public boolean idMatch(String uid) {
 		return this.uniqueID.equals(uid);
 	}
 
+	/**
+	 * Gets the ID of the ball object
+	 * 
+	 * @return A String containing the ball ID
+	 */
 	public String getID() {
 		return this.uniqueID;
 	}
 
+	/**
+	 * Checks to see if data is changed
+	 * 
+	 * @return true if data is updated and false if not
+	 */
 	public boolean isDataChanged() {
 		return dataUpdated;
 	}
 
+	/**
+	 * Gets the username of the ball
+	 * 
+	 * @return String containing the name of the ball
+	 */
 	public String getUsername() {
 		return username;
 	}
 
+	/**
+	 * Finds and gets the X coordinate of the ball
+	 * 
+	 * @return double containing the x coordinate of the ball
+	 */
 	public double getX() {
 		return x;
 	}
 
+	/**
+	 * Finds and gets the Y coordinate of the ball
+	 * 
+	 * @return double containing the y coordinate of the ball
+	 */
 	public double getY() {
 		return y;
 	}
 
+	/**
+	 * Checks to see if the ball is on the ground or not
+	 * 
+	 * @return True if it is and false if not
+	 */
 	public boolean isOnGround() {
 		return onGround;
 	}
