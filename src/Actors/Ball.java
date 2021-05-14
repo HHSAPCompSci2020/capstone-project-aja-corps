@@ -173,27 +173,43 @@ public class Ball extends MovingImage {
 			// yVelocity -= rateOfDecrease;
 //			dataUpdated = true;
 		}
-		if (y >= shoty) {
+		
 			if (playerDribbling.getDirection() && x >= hoopx) {
-				Scoreboard.score2++;
+				if(makeShot()) {
+					Scoreboard.score2++;
+					xVelocity = 0;
+				} else {
+					x -= 20;
+					xVelocity = -1;
+				}
 				bounce = true;
 				shooting = false;
-				xVelocity = 0;
-				yVelocity = 3;
+				yVelocity = 5;
 			} else if (!playerDribbling.getDirection() && x <= hoopx) {
 //				playerDribbling.setHasBall(false);
 //				playerDribbling = null;
-				Scoreboard.score1++;
+				if(makeShot()) {
+					Scoreboard.score1++;
+					xVelocity = 0;
+				} else {
+					x += 20;
+					xVelocity = 1;
+				}
 				bounce = true;
 				shooting = false;
-				xVelocity = 0;
 				yVelocity = 5;
 			}
-		}
 
 //		dataUpdated = true;
 	}
 
+	private boolean makeShot() {
+		int r = (int)(Math.random()*2);
+		if(r == 0)
+			return true;
+		else
+			return false;
+	}
 	// this method will calculate the y coordinate based off of a function
 	// (parabola) representing the arc of the shot
 	private double f(double x) {
