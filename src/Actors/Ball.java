@@ -1,10 +1,6 @@
 package Actors;
 
-import java.awt.geom.Rectangle2D;
-import java.util.ArrayList;
-
 import Graphics.Scoreboard;
-import processing.core.PApplet;
 
 public class Ball extends MovingImage {
 
@@ -13,13 +9,11 @@ public class Ball extends MovingImage {
 	private Player playerDribbling;
 	private boolean shooting;
 	private boolean bounce = false;
-	private double bounceHeight = 140;
 
 	private String uniqueID;
 	private boolean dataUpdated;
-	private boolean hasBall;
 	private boolean onGround = true;
-	
+
 	private double CONSTANT = 0.3;
 	private int bounceCount = 0;
 
@@ -59,13 +53,18 @@ public class Ball extends MovingImage {
 //			System.out.println("bouncing");
 			bounce(p);
 		}
-
+		
+		if(y > floorY)
+			moveToGround();
+		
+		if(x > 800)
+			setDribbling(true);
+			
 		this.dataUpdated = true;
 	}
 
 	public void setDribbling(boolean x) {
 		bounceCount = 0;
-		bounceHeight = 140;
 		xVelocity = 0;
 		yVelocity = 4;
 		this.dribbling = x;
@@ -78,25 +77,15 @@ public class Ball extends MovingImage {
 		} else {
 			return true;
 		}
-		
-//		if(playerDribbling.intersects(this)) {
-//			hasBall = true;
-//			playerDribbling.setHasBall(true);
-//			dribbling = true;
-//			bounce = false;
-//			yVelocity = 4;
-//		}
 	}
 
 	public void bounce(Player p) {
-		if(bounceCount >= 10) {
+		if (bounceCount >= 5) {
 			yVelocity = 0;
 			moveToGround();
 			p.setHasBall(false);
 			playerDribbling = null;
-//			p.setHasBall(false);
 			dataUpdated = true;
-//			playerDribbling = null;
 			onGround = true;
 			dribbling = false;
 			playerDribbling = null;
@@ -104,27 +93,21 @@ public class Ball extends MovingImage {
 		}
 		x += xVelocity;
 		y += yVelocity;
-		
-		if(y >= 280) {
+
+		if (y >= 280) {
 			bounceCount++;
 			y = 270;
-			yVelocity = -(yVelocity*0.7);
-			System.out.println(yVelocity);
+			yVelocity = -(yVelocity * 0.7);
+			// System.out.println(yVelocity);
 		} else {
 			yVelocity += CONSTANT;
 		}
-		
-		
-
-//		if (y >= 270) {
-//			return;
-//		}
-//		dataUpdated = true;
 	}
 
 	public void moveToGround() {
 		this.y = 280;
 	}
+
 	public void dribble(double floorY) {
 
 		floorY = 300; // hardcoded for now
@@ -144,7 +127,6 @@ public class Ball extends MovingImage {
 	public void shoot(double hoopx, double hoopy) {
 		if (dribbling) {
 			shotx = playerDribbling.getX() + 25;
-			// shoty = playerDribbling.getY() - 15;
 			shoty = hoopy;
 			x = shotx;
 			y = shoty;
@@ -154,62 +136,46 @@ public class Ball extends MovingImage {
 			else
 				xVelocity = -5;
 			calculateParabola(hoopx, hoopy);
-			// calculateRateOfDecrease();
-			// playerDribbling = null;
 			shooting = true;
-		} else
-//			xVelocity = xVelocity * 0.85;
-
-//		if (y >= 300 && !shooting) {
-//			xVelocity = 0;
-//			dribbling = true;
-//			y = 200;
-//		} else
+		}
 		if (shooting == true) {
 			x += xVelocity;
 			y = f(x);
-//			System.out.println(playerDribbling.hasBall());
-			// y += yVelocity;
-			// yVelocity -= rateOfDecrease;
-//			dataUpdated = true;
 		}
-		
-			if (playerDribbling.getDirection() && x >= hoopx) {
-				if(makeShot()) {
-					Scoreboard.score2++;
-					xVelocity = 0;
-				} else {
-					x -= 20;
-					xVelocity = -1;
-				}
-				bounce = true;
-				shooting = false;
-				yVelocity = 5;
-			} else if (!playerDribbling.getDirection() && x <= hoopx) {
-//				playerDribbling.setHasBall(false);
-//				playerDribbling = null;
-				if(makeShot()) {
-					Scoreboard.score1++;
-					xVelocity = 0;
-				} else {
-					x += 20;
-					xVelocity = 1;
-				}
-				bounce = true;
-				shooting = false;
-				yVelocity = 5;
-			}
 
-//		dataUpdated = true;
+		if (playerDribbling.getDirection() && x >= hoopx) {
+			if (makeShot()) {
+				Scoreboard.score2++;
+				xVelocity = 0;
+			} else {
+				x -= 20;
+				xVelocity = -1;
+			}
+			bounce = true;
+			shooting = false;
+			yVelocity = 5;
+		} else if (!playerDribbling.getDirection() && x <= hoopx) {
+			if (makeShot()) {
+				Scoreboard.score1++;
+				xVelocity = 0;
+			} else {
+				x += 20;
+				xVelocity = 1;
+			}
+			bounce = true;
+			shooting = false;
+			yVelocity = 5;
+		}
 	}
 
 	private boolean makeShot() {
-		int r = (int)(Math.random()*2);
-		if(r == 0)
+		int r = (int) (Math.random() * 2);
+		if (r == 0)
 			return true;
 		else
 			return false;
 	}
+
 	// this method will calculate the y coordinate based off of a function
 	// (parabola) representing the arc of the shot
 	private double f(double x) {
@@ -257,7 +223,7 @@ public class Ball extends MovingImage {
 	 */
 
 	public void setPlayer(Player p) {
-		if(playerDribbling != null)
+		if (playerDribbling != null)
 			playerDribbling.setHasBall(false);
 		playerDribbling = p;
 		p.setHasBall(true);
