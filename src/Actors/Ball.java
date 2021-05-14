@@ -56,9 +56,9 @@ public class Ball extends MovingImage {
 		}
 
 		if (bounce) {
-			System.out.println("bouncing");
+//			System.out.println("bouncing");
 			bounce(p);
-			//p.setHasBall(false);
+			p.setHasBall(false);
 		}
 
 		this.dataUpdated = true;
