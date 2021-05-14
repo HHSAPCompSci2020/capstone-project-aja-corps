@@ -19,6 +19,9 @@ public class Ball extends MovingImage {
 	private boolean dataUpdated;
 	private boolean hasBall;
 	private boolean onGround = true;
+	
+	private double CONSTANT = 0.3;
+	private int bounceCount = 0;
 
 	private double[] equation;
 
@@ -53,8 +56,9 @@ public class Ball extends MovingImage {
 		}
 
 		if (bounce) {
+			System.out.println("bouncing");
 			bounce(p);
-			p.setHasBall(false);
+			//p.setHasBall(false);
 		}
 
 		this.dataUpdated = true;
@@ -85,28 +89,23 @@ public class Ball extends MovingImage {
 	}
 
 	public void bounce(Player p) {
-//		x += xVelocity;
-//		y += yVelocity;
-//		
-//		if(y >= 300) {
-//			y = 290;
-//			yVelocity = -yVelocity;
-//		} else if(y <= bounceHeight) {
-//			yVelocity = -yVelocity;
-//			y = bounceHeight+10;
-//		}
-//		if(bounceHeight <= 280) {
-//			bounceHeight += 0.5;
-//		}
-//		if(bounceHeight >= 280) {
-//			yVelocity = 0;
-//			p.setHasBall(false);
-////			playerDribbling = null;
-//			firstPickup = true;
-////			onGround = true;
-//		}
-
-		y = 280;
+		if(bounceCount >= 10) {
+			yVelocity = 0;
+			moveToGround();
+			return;
+		}
+		x += xVelocity;
+		y += yVelocity;
+		
+		if(y >= 280) {
+			bounceCount++;
+			y = 270;
+			yVelocity = -(yVelocity*0.7);
+			System.out.println(yVelocity);
+		} else {
+			yVelocity += CONSTANT;
+		}
+		playerDribbling = null;
 //		p.setHasBall(false);
 		dataUpdated = true;
 //		playerDribbling = null;
