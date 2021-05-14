@@ -28,6 +28,7 @@ public class Player extends MovingImage {
 	private double jumpStrength;
 	private boolean speedPowerup = false;
 	private boolean jumpPowerup = false;
+	private boolean intersectsPlayer;
 
 	private boolean right = true;
 	private boolean shooting;
@@ -156,6 +157,7 @@ public class Player extends MovingImage {
 	 *            includes the implementation of the powerup
 	 */
 	public void walk(int dir) {
+		intersectsPlayer = false;
 
 		if (xVelocity <= 10 && xVelocity >= -10)
 
@@ -222,7 +224,12 @@ public class Player extends MovingImage {
 		if (player2 != null) {
 			if (strechY.intersects(player2)) {
 				// System.out.println("Intersection!");
-				xVelocity = 0;
+//				if (!intersectsPlayer) {
+//					xVelocity = 0;
+//					intersectsPlayer = true;
+//				}
+				xVelocity = -xVelocity;
+//				x = player2.getX();
 				// if (this.hasBall) {
 				// hasBall = false;
 				// }
