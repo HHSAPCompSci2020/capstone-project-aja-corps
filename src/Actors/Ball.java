@@ -30,8 +30,8 @@ public class Ball extends MovingImage {
 	/**
 	 * Instantiates a new Ball at initial coordinates (x, y) with the specified size
 	 * 
-	 * @param x Initial X-Coordinate of the shape
-	 * @param y Initial Y-Coordinate of the shape
+	 * @param x Initial X-Coordinate of the ball
+	 * @param y Initial Y-Coordinate of the ball
 	 * @param width Width of the basketball
 	 * @param height Height of the basketball
 	 * @param username Name of the ball

@@ -10,8 +10,7 @@ import javax.swing.ImageIcon;
 import processing.core.PShape;
 
 /**
- * 
- * 
+ * The Player class represents a real life player in the game
  * 
  * @author adityapanikkar
  *
@@ -49,6 +48,15 @@ public class Player extends MovingImage {
 	private static String filename = "img/player.png";
 	private boolean dash = false;
 
+	/**
+	 * Instantiates a new Player at (x, y) with username, a unique identifier, and a boolean that is true if the player possesses the ball or not
+	 * 
+	 * @param x X coordinate of the player
+	 * @param y Y-coordinate of the player
+	 * @param username Name of each player
+	 * @param uniqueID The unique identifier of each player
+	 * @param hasBall True if player has ball and false if not
+	 */
 	public Player(int x, int y, String username, String uniqueID, boolean hasBall) {
 		super(filename, x, y, MARIO_WIDTH, MARIO_HEIGHT);
 		this.hasBall = hasBall;
@@ -64,11 +72,11 @@ public class Player extends MovingImage {
 		energy = 1;
 	}
 	
-	/*
-	 * Randomely Spawns one of two possible powerups
+	/**
+	 * Randomly spawns one of two possible powerups
 	 * 
+	 * @post Spawns a new random power up and player's speed or jump height is increased
 	 */
-
 	public void spawnPowerup() {
 		double x = (Math.random());
 		if (x > 0.5) {
@@ -80,11 +88,12 @@ public class Player extends MovingImage {
 		}
 
 	}
-	
-	/*
-	 * returns true if the player currently has a powerup, returns false otherwise
-	 */
 
+	/**
+	 * Checks to see if the player currently has a powerup or does not
+	 * 
+	 * @return True if the powerup is on or false if not
+	 */
 	public boolean getPower() {
 
 		if (speedBoost == true || jumpBoost == true) {
@@ -94,24 +103,18 @@ public class Player extends MovingImage {
 		}
 	}
 
-	
-	/**
-	 * 
-	 * @return returns true when the player dashes
-	 */
 	private boolean isDashing() {
 		return dash;
 	}
 	
-	/*
-	 * sets the dash field 
-	 */
 	private void setDash(boolean dash) {
 		this.dash = dash;
 	}
 	
-	/*
-	 * turns off power up when the time ends
+	/**
+	 * Turns power up off when the timer ends
+	 * 
+	 * @post The power up is turned off
 	 */
 	public void powerOff() {
 		if (speedBoost) {
@@ -122,15 +125,21 @@ public class Player extends MovingImage {
 			jumpBoost = false;
 		}
 	}
-	/*
-	 * changes the energy state
+	
+	/**
+	 * Changes the energy state
+	 * 
+	 * @param count What the energy state should be changed too
+	 * @post Energy state is updated
 	 */
 	public void updateState(int count) {
 		energyState = count;
 	}
-
-	/*
-	 * Causes the player to fully regenerate it's energy
+	
+	/**
+	 * The player fully regenerates it's energy
+	 * 
+	 * @post Energy is updated
 	 */
 	public void regenerate() {
 		// System.out.println("Called");
@@ -141,7 +150,9 @@ public class Player extends MovingImage {
 	}
 
 	/**
-	 * makes player dash
+	 * Makes player dash
+	 * 
+	 * @post Dash is true and energy is decreased
 	 */
 	public void dash(Ball ball) {
 		// System.out.println(energy);
@@ -167,21 +178,31 @@ public class Player extends MovingImage {
 
 	}
 
+	/**
+	 * Find and returns direction player is facing
+	 * 
+	 * @return True if facing right, false if facing left
+	 */
 	public boolean getDirection() {
 		return right;
 	}
 
+	/**
+	 * Sets the direction the player is facing
+	 * 
+	 * @param dir Direction to be set, true if right and false if left
+	 * @post Direction of player is updated
+	 */
 	public void setDirection(boolean dir) {
 		right = dir;
 		dataUpdated = true;
 	}
 
 	/**
+	 * This method represents the person taking a step and also includes the implementation of powerups
 	 * 
 	 * @param dir the magnitude of the step distance
-	 * 
-	 *            This method represents the person taking a step. This method also
-	 *            includes the implementation of the powerup
+	 * @post X, Y, xvelocity, and yvelocity are updated according to actions executed
 	 */
 	public void walk(int dir) {
 		intersectsPlayer = false;
@@ -205,7 +226,9 @@ public class Player extends MovingImage {
 	}
 
 	/**
-	 * this method represents the person jumping. it also accounts for the powerups
+	 * This method represents the person jumping. it also accounts for the jump powerup
+	 * 
+	 * @post Y velocity of the player is updated
 	 */
 	public void jump() {
 		if (onASurface) {
@@ -220,6 +243,13 @@ public class Player extends MovingImage {
 		}
 	}
 
+	/**
+	 * This method represents the player acting and is called each time the game cycles
+	 * 
+	 * @param obstacles A list containing shapes representing obstacles in the game
+	 * @param player2 Player in the game
+	 * @post X, Y, and velocities are updated according to actions executed
+	 */
 	public void act(ArrayList<Shape> obstacles, Player player2) {
 
 		double xCoord = getX();
@@ -329,6 +359,11 @@ public class Player extends MovingImage {
 
 	}
 
+	/**
+	 * Gets the PlayerData object containing data about the player
+	 * 
+	 * @return PlayerData object containing data
+	 */
 	public PlayerData getDataObject() {
 		dataUpdated = false;
 		PlayerData p = new PlayerData();
@@ -340,6 +375,12 @@ public class Player extends MovingImage {
 		return p;
 	}
 
+	/**
+	 * Syncs the player with the player data object
+	 * 
+	 * @param data Object containing player data
+	 * @post Player is updated and synced with player data given
+	 */
 	public void syncWithDataObject(PlayerData data) {
 		dataUpdated = false;
 		this.x = data.x;
@@ -349,49 +390,112 @@ public class Player extends MovingImage {
 		this.hasBall = data.hasBall;
 	}
 
+	/**
+	 * Checks to see if the player id matches
+	 * 
+	 * @param uid The ID to check with
+	 * @return True if it is a match, false if otherwise
+	 */
 	public boolean idMatch(String uid) {
 		return this.uniqueID.equals(uid);
 	}
 
+	/**
+	 * Finds and gets whether the speed powerup is on or not
+	 * 
+	 * @return True if yes, false if not
+	 */
 	public boolean getSpeedPowerup() {
 		return this.speedPowerup;
 	}
 	
+	/**
+	 * Gets whether the jump powerup is on or not
+	 * 
+	 * @return True if on, false if not
+	 */
 	public boolean getJumpPowerup() {
 		return this.jumpPowerup;
 	}
+	
+	/**
+	 * Checks to see whether the data is changed or not
+	 * 
+	 * @return True if data has been updated, false if not
+	 */
 	public boolean isDataChanged() {
 		return dataUpdated;
 	}
 
+	/**
+	 * Gets the username of the player
+	 * 
+	 * @return String representing  the username of the player
+	 */
 	public String getUsername() {
 		return username;
 	}
 
+	/**
+	 * Finds the X coordinate of the player
+	 * 
+	 * @return The x coordinate of the player
+	 */
 	public double getX() {
 		return x;
 	}
 
+	/**
+	 * Finds the y coordinate of the player
+	 * 
+	 * @return The y coordinate of the player
+	 */
 	public double getY() {
 		return y;
 	}
 
+	/**
+	 * Gets the player ID
+	 * 
+	 * @return String containing the unique player ID
+	 */
 	public String getID() {
 		return uniqueID;
 	}
 
+	/**
+	 * Gets whether the player has the ball or not
+	 * 
+	 * @return True if the player does, false if not
+	 */
 	public boolean hasBall() {
 		return hasBall;
 	}
 
+	/**
+	 * Sets whether the player has the ball or not
+	 * 
+	 * @param x True if the player should have the ball and false if not
+	 * @post The state whether the player has the ball or not is updated
+	 */
 	public void setHasBall(boolean x) {
 		this.hasBall = x;
 	}
 
+	/**
+	 * Finds and returns the energy of the player
+	 * 
+	 * @return the current energy of the player
+	 */
 	public int getEnergy() {
 		return energy;
 	}
 
+	/**
+	 * This method represents the player taking a shot
+	 * 
+	 * @post shooting state of the player is updated as well as energy is decreased
+	 */
 	public void shoot() {
 		if (energy > 0) {
 
@@ -401,21 +505,40 @@ public class Player extends MovingImage {
 		}
 	}
 
+	/**
+	 * Sets the shooting state of the player
+	 * 
+	 * @param x True if the player should be shooting and false if otherwise
+	 * @post Shooting condition is updated of the player
+	 */
 	public void setShooting(boolean x) {
 		this.shooting = x;
 	}
 
+	/**
+	 * Checks to see if the player is shooting or not
+	 * 
+	 * @return True if the player is, false if not
+	 */
 	public boolean isShooting() {
 		return shooting;
 	}
 	
+	/**
+	 * Finds the energy state of the player
+	 * 
+	 * @return The energy state of the current player
+	 */
 	public int getEnergyState() {
 		return this.energyState;
 	}
 
-	/*
-	 * @param g - the screen which the image is drawn on
-	 * draws the powerups, energy bar, and the player
+	/**
+	 * Draws powerups and usernames of the player
+	 * 
+	 * @param g The Graphics needed to draw components to screen
+	 * @param io Necessary to draw images
+	 * @post The screen is updated with drawn components
 	 */
 	public void draw(Graphics g, ImageObserver io) {
 
