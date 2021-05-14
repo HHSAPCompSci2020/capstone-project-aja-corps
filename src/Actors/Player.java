@@ -406,6 +406,7 @@ public class Player extends MovingImage {
 	public void draw(Graphics g, ImageObserver io) {
 
 		// g.drawImage(img, x, y, width, height, observer)
+		g.drawString(this.username, (int) x, (int) y);
 
 		if (speedPowerup) {
 			g.setColor(Color.red);
