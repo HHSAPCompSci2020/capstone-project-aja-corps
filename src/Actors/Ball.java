@@ -65,6 +65,7 @@ public class Ball extends MovingImage {
 	}
 
 	public void setDribbling(boolean x) {
+		bounceCount = 0;
 		bounceHeight = 140;
 		xVelocity = 0;
 		yVelocity = 4;
