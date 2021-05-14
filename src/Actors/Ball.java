@@ -247,6 +247,9 @@ public class Ball extends MovingImage {
 		onGround = false;
 		this.dataUpdated = true;
 	}
+	public Player getPlayer() {
+		return playerDribbling;
+	}
 
 	public BallData getDataObject() {
 		dataUpdated = false;
