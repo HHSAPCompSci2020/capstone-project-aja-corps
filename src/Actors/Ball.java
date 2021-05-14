@@ -58,7 +58,6 @@ public class Ball extends MovingImage {
 		if (bounce) {
 //			System.out.println("bouncing");
 			bounce(p);
-			p.setHasBall(false);
 		}
 
 		this.dataUpdated = true;
@@ -93,6 +92,14 @@ public class Ball extends MovingImage {
 		if(bounceCount >= 10) {
 			yVelocity = 0;
 			moveToGround();
+			p.setHasBall(false);
+			playerDribbling = null;
+//			p.setHasBall(false);
+			dataUpdated = true;
+//			playerDribbling = null;
+			onGround = true;
+			dribbling = false;
+			playerDribbling = null;
 			return;
 		}
 		x += xVelocity;
@@ -106,13 +113,8 @@ public class Ball extends MovingImage {
 		} else {
 			yVelocity += CONSTANT;
 		}
-		playerDribbling = null;
-//		p.setHasBall(false);
-		dataUpdated = true;
-//		playerDribbling = null;
-		onGround = true;
-		dribbling = false;
-		playerDribbling = null;
+		
+		
 
 //		if (y >= 270) {
 //			return;
