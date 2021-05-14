@@ -4,25 +4,7 @@ import java.util.ArrayList;
 
 /**
  * 
- *  The class you store in the database must fit 2 simple constraints:
-
-	The class must have a default constructor that takes no arguments.
-	The class must define public getters for the properties to be assigned. Properties without a public getter will be set to their default value when an instance is deserialized.
-	
-	Classes from the Java library will often not fit these requirements, so you may need to make simpler classes
-	yourself.
-	
-	
-	
-	I recommend that you *only* use this class for database posts. Don't use this class for storing
-	real data in your program. Just create these objects at the moment you want to put something in the
-	database, and when you read from the database, quickly turn these objects into some other form that
-	is more useful.
-	
-	
- * 
- * 
- * @author john_shelby
+ * @author anirudhv
  *
  */
 public class PlayerData {
@@ -37,26 +19,54 @@ public class PlayerData {
 	// you need to store the data a different, simpler way yourself.
 	// Note that ArrayLists *can* be stored.
 	
+	/**
+	 * Instantiates playerdata to be stored in the firebase
+	 */
 	public PlayerData() {
 		
 	}
 	
+	/**
+	 * Gets the direction of the player
+	 * 
+	 * @return true if the player is right facing, false otherwise
+	 */
 	public boolean getRight() {
 		return right;
 	}
 	
+	/**
+	 * Checks if player has the ball
+	 * 
+	 * @return true if the player has the ball, false otherwise
+	 */
 	public boolean hasBall() {
 		return hasBall;
 	}
 	
+	/**
+	 * Gets the username of the player
+	 * 
+	 * @return the username of the player
+	 */
 	public String getUsername() {
 		return username;
 	}
 
+	/**
+	 * Gets the x position of the player
+	 * 
+	 * @return the x position of the player
+	 */
 	public double getX() {
 		return x;
 	}
 
+	/**
+	 * Gets the y position of the player
+	 * 
+	 * @return the y position of the player
+	 */
 	public double getY() {
 		return y;
 	}

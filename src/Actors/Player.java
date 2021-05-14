@@ -49,13 +49,14 @@ public class Player extends MovingImage {
 	private boolean dash = false;
 
 	/**
-	 * Instantiates a new Player at (x, y) with username, a unique identifier, and a boolean that is true if the player possesses the ball or not
+	 * Instantiates a new Player at (x, y) with username, a unique identifier, and a
+	 * boolean that is true if the player possesses the ball or not
 	 * 
-	 * @param x X coordinate of the player
-	 * @param y Y-coordinate of the player
+	 * @param x        X coordinate of the player
+	 * @param y        Y-coordinate of the player
 	 * @param username Name of each player
 	 * @param uniqueID The unique identifier of each player
-	 * @param hasBall True if player has ball and false if not
+	 * @param hasBall  True if player has ball and false if not
 	 */
 	public Player(int x, int y, String username, String uniqueID, boolean hasBall) {
 		super(filename, x, y, MARIO_WIDTH, MARIO_HEIGHT);
@@ -71,11 +72,12 @@ public class Player extends MovingImage {
 		dataUpdated = false;
 		energy = 1;
 	}
-	
+
 	/**
 	 * Randomly spawns one of two possible powerups
 	 * 
-	 * @post Spawns a new random power up and player's speed or jump height is increased
+	 * @post Spawns a new random power up and player's speed or jump height is
+	 *       increased
 	 */
 	public void spawnPowerup() {
 		double x = (Math.random());
@@ -106,11 +108,11 @@ public class Player extends MovingImage {
 	private boolean isDashing() {
 		return dash;
 	}
-	
+
 	private void setDash(boolean dash) {
 		this.dash = dash;
 	}
-	
+
 	/**
 	 * Turns power up off when the timer ends
 	 * 
@@ -125,7 +127,7 @@ public class Player extends MovingImage {
 			jumpBoost = false;
 		}
 	}
-	
+
 	/**
 	 * Changes the energy state
 	 * 
@@ -135,7 +137,7 @@ public class Player extends MovingImage {
 	public void updateState(int count) {
 		energyState = count;
 	}
-	
+
 	/**
 	 * The player fully regenerates it's energy
 	 * 
@@ -165,14 +167,14 @@ public class Player extends MovingImage {
 			else
 				x -= 80;
 			dataUpdated = true;
-			
+
 			energy--;
 		}
-		if(right) {
-			if(x - 80 <= ball.getX() && x >= ball.getX())
+		if (right) {
+			if (x - 80 <= ball.getX() && x >= ball.getX())
 				ball.setPlayer(this);
 		} else {
-			if(x + 80 >= ball.getX() && x <= ball.getX())
+			if (x + 80 >= ball.getX() && x <= ball.getX())
 				ball.setPlayer(this);
 		}
 
@@ -199,10 +201,12 @@ public class Player extends MovingImage {
 	}
 
 	/**
-	 * This method represents the person taking a step and also includes the implementation of powerups
+	 * This method represents the person taking a step and also includes the
+	 * implementation of powerups
 	 * 
 	 * @param dir the magnitude of the step distance
-	 * @post X, Y, xvelocity, and yvelocity are updated according to actions executed
+	 * @post X, Y, xvelocity, and yvelocity are updated according to actions
+	 *       executed
 	 */
 	public void walk(int dir) {
 		intersectsPlayer = false;
@@ -226,7 +230,8 @@ public class Player extends MovingImage {
 	}
 
 	/**
-	 * This method represents the person jumping. it also accounts for the jump powerup
+	 * This method represents the person jumping. it also accounts for the jump
+	 * powerup
 	 * 
 	 * @post Y velocity of the player is updated
 	 */
@@ -244,10 +249,11 @@ public class Player extends MovingImage {
 	}
 
 	/**
-	 * This method represents the player acting and is called each time the game cycles
+	 * This method represents the player acting and is called each time the game
+	 * cycles
 	 * 
 	 * @param obstacles A list containing shapes representing obstacles in the game
-	 * @param player2 Player in the game
+	 * @param player2   Player in the game
 	 * @post X, Y, and velocities are updated according to actions executed
 	 */
 	public void act(ArrayList<Shape> obstacles, Player player2) {
@@ -266,7 +272,6 @@ public class Player extends MovingImage {
 			jumpPowerup = false;
 			jumpBoost = true;
 		}
-
 
 		yVelocity += gravity; // GRAVITY
 		double yCoord2 = yCoord + yVelocity;
@@ -408,7 +413,7 @@ public class Player extends MovingImage {
 	public boolean getSpeedPowerup() {
 		return this.speedPowerup;
 	}
-	
+
 	/**
 	 * Gets whether the jump powerup is on or not
 	 * 
@@ -417,7 +422,7 @@ public class Player extends MovingImage {
 	public boolean getJumpPowerup() {
 		return this.jumpPowerup;
 	}
-	
+
 	/**
 	 * Checks to see whether the data is changed or not
 	 * 
@@ -430,7 +435,7 @@ public class Player extends MovingImage {
 	/**
 	 * Gets the username of the player
 	 * 
-	 * @return String representing  the username of the player
+	 * @return String representing the username of the player
 	 */
 	public String getUsername() {
 		return username;
@@ -523,7 +528,7 @@ public class Player extends MovingImage {
 	public boolean isShooting() {
 		return shooting;
 	}
-	
+
 	/**
 	 * Finds the energy state of the player
 	 * 
@@ -536,7 +541,7 @@ public class Player extends MovingImage {
 	/**
 	 * Draws powerups and usernames of the player
 	 * 
-	 * @param g The Graphics needed to draw components to screen
+	 * @param g  The Graphics needed to draw components to screen
 	 * @param io Necessary to draw images
 	 * @post The screen is updated with drawn components
 	 */
@@ -554,12 +559,10 @@ public class Player extends MovingImage {
 			g.setColor(Color.blue);
 			g.fill3DRect(383, 260, 30, 30, false);
 		}
-		
+
 		g.setColor(Color.green);
 
 		g.drawRect((int) x + 10, (int) y - 50, 20, 30);
-		
-		
 
 		if (energyState == 1) {
 			g.fillRect((int) x + 10, (int) y - 30, 20, 10);
@@ -573,7 +576,6 @@ public class Player extends MovingImage {
 		if (energyState == 3) {
 			g.fillRect((int) x + 10, (int) y - 50, 20, 30);
 		}
-		
 
 		if (!hasBall) {
 			if (right) {

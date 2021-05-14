@@ -12,7 +12,7 @@ public class Game extends JFrame {
 	}
 
 	public static void main(String[] args) {
-		
+
 		FirebaseBackend b = new FirebaseBackend();
 		b.show();
 	}
