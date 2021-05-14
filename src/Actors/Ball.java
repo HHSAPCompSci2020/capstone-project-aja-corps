@@ -173,7 +173,7 @@ public class Ball extends MovingImage {
 			// yVelocity -= rateOfDecrease;
 //			dataUpdated = true;
 		}
-		if (y >= shoty) {
+		
 			if (playerDribbling.getDirection() && x >= hoopx) {
 				Scoreboard.score2++;
 				bounce = true;
@@ -189,7 +189,6 @@ public class Ball extends MovingImage {
 				xVelocity = 0;
 				yVelocity = 5;
 			}
-		}
 
 //		dataUpdated = true;
 	}
