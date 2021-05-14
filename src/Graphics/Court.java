@@ -263,20 +263,20 @@ public class Court extends JPanel implements Runnable {
 				me.updateState(3);
 			}
 
-			if (me.getEnergy() == 0 && barCounter <= 90 && barCounter > 0) {
+			if (me.getEnergy() == 0 && barCounter <= 70 && barCounter > 0) {
 				me.updateState(0);
 			}
 
-			if (me.getEnergy() == 0 && barCounter < 180 && barCounter > 90) {
+			if (me.getEnergy() == 0 && barCounter < 140 && barCounter > 70) {
 				me.updateState(1);
 			}
 
-			if (me.getEnergy() == 0 && barCounter < 270 && barCounter >= 180) {
+			if (me.getEnergy() == 0 && barCounter < 210 && barCounter >= 140) {
 
 				me.updateState(2);
 			}
 
-			if (timeCounter % 270 == 0) {
+			if (timeCounter % 210 == 0) {
 				me.regenerate();
 			}
 
