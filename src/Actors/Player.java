@@ -63,6 +63,11 @@ public class Player extends MovingImage {
 		dataUpdated = false;
 		energy = 1;
 	}
+	
+	/*
+	 * Randomely Spawns one of two possible powerups
+	 * 
+	 */
 
 	public void spawnPowerup() {
 		double x = (Math.random());
@@ -75,6 +80,10 @@ public class Player extends MovingImage {
 		}
 
 	}
+	
+	/*
+	 * returns true if the player currently has a powerup, returns false otherwise
+	 */
 
 	public boolean getPower() {
 
@@ -85,12 +94,25 @@ public class Player extends MovingImage {
 		}
 	}
 
+	
+	/**
+	 * 
+	 * @return returns true when the player dashes
+	 */
 	private boolean isDashing() {
 		return dash;
 	}
+	
+	/*
+	 * sets the dash field 
+	 */
 	private void setDash(boolean dash) {
 		this.dash = dash;
 	}
+	
+	/*
+	 * turns off power up when the time ends
+	 */
 	public void powerOff() {
 		if (speedBoost) {
 			speedBoost = false;
@@ -100,11 +122,16 @@ public class Player extends MovingImage {
 			jumpBoost = false;
 		}
 	}
-
+	/*
+	 * changes the energy state
+	 */
 	public void updateState(int count) {
 		energyState = count;
 	}
 
+	/*
+	 * Causes the player to fully regenerate it's energy
+	 */
 	public void regenerate() {
 		// System.out.println("Called");
 
@@ -409,7 +436,10 @@ public class Player extends MovingImage {
 		return this.energyState;
 	}
 
-	@Override
+	/*
+	 * @param g - the screen which the image is drawn on
+	 * draws the powerups, energy bar, and the player
+	 */
 	public void draw(Graphics g, ImageObserver io) {
 
 		// g.drawImage(img, x, y, width, height, observer)
