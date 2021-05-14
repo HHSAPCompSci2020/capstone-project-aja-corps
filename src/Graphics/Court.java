@@ -59,7 +59,7 @@ public class Court extends JPanel implements Runnable {
 	private boolean currentlySending; // These field allows us to limit database writes by only sending data once
 										// we've received confirmation the previous data went through.
 
-	public Court(DatabaseReference roomRef) {
+	public Court(DatabaseReference roomRef, String playerName) {
 		super();
 
 		try {
@@ -89,7 +89,7 @@ public class Court extends JPanel implements Runnable {
 		players = new ArrayList<Player>();
 		balls = new ArrayList<Ball>();
 
-		me = new Player(DRAWING_WIDTH / 2 - Player.MARIO_WIDTH / 2, 50, "TestPlayer", myUserRef.getKey(), false);
+		me = new Player(DRAWING_WIDTH / 2 - Player.MARIO_WIDTH / 2, 50, playerName, myUserRef.getKey(), false);
 		// ball = new Ball(300, 288, 20, 20, "TestBall", myBallRef.getKey());
 
 		myUserRef.setValueAsync(me.getDataObject());

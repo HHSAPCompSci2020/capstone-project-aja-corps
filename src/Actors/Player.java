@@ -126,7 +126,7 @@ public class Player extends MovingImage {
 			else
 				x -= 80;
 			dataUpdated = true;
-
+			
 			energy--;
 		}
 		if(right) {
@@ -417,8 +417,6 @@ public class Player extends MovingImage {
 			g.fill3DRect(383, 260, 30, 30, false);
 		}
 		
-		
-
 		g.setColor(Color.green);
 
 		g.drawRect((int) x + 10, (int) y - 50, 20, 30);

@@ -127,13 +127,15 @@ public class FirebaseBackend extends JPanel implements ChildEventListener
 				if (!snap.hasChildren())
 					return;
 				
+				String playerName = JOptionPane.showInputDialog("Enter your username:");
+				
 				theWindow.setVisible(false);
 				
 				JFrame window = new JFrame();
 				
 				window.setBounds(100, 100, 800, 322);
 				window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-				Court panel = new Court(snap.getChildren().iterator().next().getRef());
+				Court panel = new Court(snap.getChildren().iterator().next().getRef(), playerName);
 			    window.addKeyListener(panel.getKeyHandler());
 				window.add(panel);
 				window.setVisible(true);
