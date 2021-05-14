@@ -178,7 +178,7 @@ public class Court extends JPanel implements Runnable {
 		}
 
 		if (keyControl.isPressed(KeyEvent.VK_SHIFT)) {
-			me.dash();
+			me.dash(ball);
 		}
 
 		if (keyControl.isPressed(KeyEvent.VK_SPACE)) {

@@ -84,6 +84,12 @@ public class Player extends MovingImage {
 		}
 	}
 
+	private boolean isDashing() {
+		return dash;
+	}
+	private void setDash(boolean dash) {
+		this.dash = dash;
+	}
 	public void powerOff() {
 		if (speedBoost) {
 			speedBoost = false;
@@ -109,7 +115,7 @@ public class Player extends MovingImage {
 	/**
 	 * makes player dash
 	 */
-	public void dash() {
+	public void dash(Ball ball) {
 		// System.out.println(energy);
 
 		dash = true;
@@ -122,6 +128,13 @@ public class Player extends MovingImage {
 			dataUpdated = true;
 
 			energy--;
+		}
+		if(right) {
+			if(x - 80 <= ball.getX() && x >= ball.getX())
+				ball.setPlayer(this);
+		} else {
+			if(x + 80 >= ball.getX() && x <= ball.getX())
+				ball.setPlayer(this);
 		}
 
 	}

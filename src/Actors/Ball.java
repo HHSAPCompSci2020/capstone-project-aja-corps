@@ -35,7 +35,7 @@ public class Ball extends MovingImage {
 	public void act(Player p, double floorY) {
 		if (this.intersects(p) && onGround) {
 			p.setHasBall(true);
-			this.getPlayer(p);
+			this.setPlayer(p);
 			this.setDribbling(true);
 			onGround = false;
 			this.dataUpdated = true;
@@ -123,7 +123,6 @@ public class Ball extends MovingImage {
 	public void moveToGround() {
 		this.y = 280;
 	}
-
 	public void dribble(double floorY) {
 
 		floorY = 300; // hardcoded for now
@@ -239,8 +238,14 @@ public class Ball extends MovingImage {
 	 * }
 	 */
 
-	public void getPlayer(Player p) {
+	public void setPlayer(Player p) {
+		if(playerDribbling != null)
+			playerDribbling.setHasBall(false);
 		playerDribbling = p;
+		p.setHasBall(true);
+		this.setDribbling(true);
+		onGround = false;
+		this.dataUpdated = true;
 	}
 
 	public BallData getDataObject() {
