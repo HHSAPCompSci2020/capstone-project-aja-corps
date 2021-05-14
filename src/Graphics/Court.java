@@ -32,7 +32,6 @@ import java.io.Serializable;
  * @author anirudhv
  *
  */
-
 public class Court extends JPanel implements Runnable {
 	public static final int DRAWING_WIDTH = 800;
 	public static final int DRAWING_HEIGHT = 322;
