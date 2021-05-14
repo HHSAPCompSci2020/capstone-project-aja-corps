@@ -58,13 +58,14 @@ public class Ball extends MovingImage {
 		if (bounce) {
 			System.out.println("bouncing");
 			bounce(p);
-			//p.setHasBall(false);
+			p.setHasBall(false);
 		}
 
 		this.dataUpdated = true;
 	}
 
 	public void setDribbling(boolean x) {
+		bounceCount = 0;
 		bounceHeight = 140;
 		xVelocity = 0;
 		yVelocity = 4;
