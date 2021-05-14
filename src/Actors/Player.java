@@ -227,7 +227,6 @@ public class Player extends MovingImage {
 		double width = getWidth();
 		double height = getHeight();
 
-		// 383, 260, 30, 30,false);
 		if (x > 383 & x < 413 & y > 230 & y < 270 & speedPowerup) {
 			speedPowerup = false;
 			speedBoost = true;
@@ -238,7 +237,6 @@ public class Player extends MovingImage {
 			jumpBoost = true;
 		}
 
-		// ***********Y AXIS***********
 
 		yVelocity += gravity; // GRAVITY
 		double yCoord2 = yCoord + yVelocity;
@@ -250,31 +248,10 @@ public class Player extends MovingImage {
 
 		if (player2 != null) {
 			if (strechY.intersects(player2)) {
-				// System.out.println("Intersection!");
-//				if (!intersectsPlayer) {
-//					xVelocity = 0;
-//					intersectsPlayer = true;
-//				}
 				xVelocity = -xVelocity;
-//				x = player2.getX();
-				// if (this.hasBall) {
-				// hasBall = false;
-				// }
 			}
 		}
 
-		// if (b != null && !b.hasPlayer()) {
-		//// System.out.println("Ball on the ground!");
-		// if (b.intersects(this)) {
-		// System.out.println("Intersection with " + this.getID());
-		// this.hasBall = true;
-		// b.getPlayer(this);
-		// b.setDribbling(true);
-		// dataUpdated = true;
-		// System.out.println(this.hasBall);
-		// }
-		// }
-		//
 		if (yVelocity > 0) {
 			Shape standingSurface = null;
 			for (Shape s : obstacles) {

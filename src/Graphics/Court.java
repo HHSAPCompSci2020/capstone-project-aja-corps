@@ -26,6 +26,13 @@ import java.util.*;
 import java.util.Queue;
 import java.io.Serializable;
 
+/**
+ * Represents the court for the game
+ * 
+ * @author anirudhv
+ *
+ */
+
 public class Court extends JPanel implements Runnable {
 	public static final int DRAWING_WIDTH = 800;
 	public static final int DRAWING_HEIGHT = 322;
@@ -57,7 +64,15 @@ public class Court extends JPanel implements Runnable {
 
 	private boolean currentlySending; // These field allows us to limit database writes by only sending data once
 										// we've received confirmation the previous data went through.
-
+	
+	
+	
+	/**
+	 * Instantiates a new court at the database reference in Firebase and with the name of the player
+	 * 
+	 * @param roomRef Firebase database reference
+	 * @param playerName Player username
+	 */
 	public Court(DatabaseReference roomRef, String playerName) {
 		super();
 
@@ -100,7 +115,13 @@ public class Court extends JPanel implements Runnable {
 
 		new Thread(this).start();
 	}
-
+	
+	
+	/**
+	 * Overridden method in order to draw necessary components of the court (player, ball, etc)
+	 * 
+	 * @param Graphics g
+	 */
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g); // Call JPanel's paintComponent method to paint the background
 
@@ -109,9 +130,6 @@ public class Court extends JPanel implements Runnable {
 		int width = getWidth();
 		int height = getHeight();
 		
-		
-
-
 		double ratioX = (double) width / DRAWING_WIDTH;
 		double ratioY = (double) height / DRAWING_HEIGHT;
 
@@ -147,19 +165,27 @@ public class Court extends JPanel implements Runnable {
 		// TODO Add any custom drawings here
 	}
 
-	public void spawnNewPlayer() {
-
-	}
-
+	/**
+	 * Spawns a new ball in the court
+	 */
 	public void spawnNewBall() {
 		ball = new Ball(300, 288, 20, 20, "TestBall", myBallRef.getKey());
 		myBallRef.setValueAsync(ball.getDataObject());
 	}
 
+	/**
+	 * Gets the key handler necessary to use the keyboard to make movements
+	 * 
+	 * @return keyControl (handler of keyboard movements)
+	 */
 	public KeyHandler getKeyHandler() {
 		return keyControl;
 	}
 
+	/**
+	 * Listener for any key events that determine player movements
+	 * 
+	 */
 	public void enableKeys() {
 		me.setShooting(false);
 		if (keyControl.isPressed(KeyEvent.VK_LEFT)) {
@@ -197,6 +223,10 @@ public class Court extends JPanel implements Runnable {
 		}
 	}
 
+	/**
+	 * Overide method from the Runnable class that allows the game to run over and over again in this method 
+	 * 
+	 */
 	public void run() {
 
 		while (true) { // Modify this to allow quitting
@@ -318,14 +348,27 @@ public class Court extends JPanel implements Runnable {
 
 		private ArrayList<Integer> keys;
 
+		/**
+		 * Instantiates a KeyHandler which listens for key movements
+		 */
 		public KeyHandler() {
 			keys = new ArrayList<Integer>();
 		}
 
+		/**
+		 * Overrides method from KeyListener to determine when the key is pressed
+		 * 
+		 * @KeyEvent e the KeyEvent occurring
+		 */
 		public void keyPressed(KeyEvent e) {
 			keys.add(e.getKeyCode());
 		}
 
+		/**
+		 * Overrides method from KeyListener to determine when the key is released
+		 * 
+		 * @KeyEvent e the KeyEvent occurring
+		 */
 		public void keyReleased(KeyEvent e) {
 			Integer code = e.getKeyCode();
 			while (keys.contains(code))
@@ -336,6 +379,12 @@ public class Court extends JPanel implements Runnable {
 
 		}
 
+		/**
+		 * Determines if a key is currently being pressed
+		 * 
+		 * @param code keyCode of key to check
+		 * @return true or false if the key is pressed or not respectively
+		 */
 		public boolean isPressed(int code) {
 			// System.out.println(keys);
 			return keys.contains(code);

@@ -34,6 +34,12 @@ import com.google.firebase.database.DatabaseReference.CompletionListener;
 
 import com.google.firebase.database.FirebaseDatabase;
 
+/**
+ * 
+ * @author anirudhv
+ *
+ */
+
 public class FirebaseBackend extends JPanel implements ChildEventListener
 {
 	private JFrame theWindow;
@@ -61,7 +67,6 @@ public class FirebaseBackend extends JPanel implements ChildEventListener
 		JLabel ah = new JLabel("Available Rooms");
 		ah.setHorizontalAlignment(JLabel.CENTER);
 		cnPanel.add(ah,BorderLayout.NORTH);
-//		cnPanel.add(new JLabel(new ImageIcon("img/background.png")));
 		cnPanel.setBorder(new EtchedBorder(EtchedBorder.RAISED));
 		add(cnPanel);
 		
@@ -105,7 +110,9 @@ public class FirebaseBackend extends JPanel implements ChildEventListener
 
 	}
 	
-	
+	/**
+	 * Constructs and shows the JFrame main window
+	 */
 	public void show() {
 		
 		theWindow = new JFrame();
@@ -116,7 +123,11 @@ public class FirebaseBackend extends JPanel implements ChildEventListener
 		
 	}
 	
-	
+	/**
+	 * Allows one to join a room in the Firebase with a specified name
+	 * 
+	 * @param name Name of the room to join
+	 */
 	public void selectRoom(String name) {
 		
 
@@ -139,23 +150,6 @@ public class FirebaseBackend extends JPanel implements ChildEventListener
 			    window.addKeyListener(panel.getKeyHandler());
 				window.add(panel);
 				window.setVisible(true);
-
-				
-				
-//				DrawingSurface drawing = new DrawingSurface(snap.getChildren().iterator().next().getRef());
-//				PApplet.runSketch(new String[]{""}, drawing);
-//				PSurfaceAWT surf = (PSurfaceAWT) drawing.getSurface();
-//				PSurfaceAWT.SmoothCanvas canvas = (PSurfaceAWT.SmoothCanvas) surf.getNative();
-//				JFrame window = (JFrame)canvas.getFrame();
-//
-//				window.setSize(800, 600);
-//				window.setMinimumSize(new Dimension(100,100));
-//				window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//				window.setResizable(true);
-//
-//				window.setVisible(true);
-				
-//				canvas.requestFocus();
 				
 				theWindow.dispose();
 			}
