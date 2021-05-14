@@ -57,7 +57,7 @@ public class Ball extends MovingImage {
 		if(y > floorY)
 			moveToGround();
 		
-		if(x > 800)
+		//if(x > 800)
 			//setDribbling(true);
 			
 		this.dataUpdated = true;
