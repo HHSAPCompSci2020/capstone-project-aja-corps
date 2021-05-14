@@ -11,9 +11,8 @@ public class Scoreboard {
 	}
 	
 	public void draw(Graphics g) {
-		g.drawString(Integer.toString(score1), 370, 68);
-		g.drawString(Integer.toString(score2), 415, 68);
-		
+		g.drawString(Integer.toString(score1), 50, 100);
+		g.drawString(Integer.toString(score2), 750, 100);
 	}
 
 }

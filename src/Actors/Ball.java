@@ -19,10 +19,7 @@ public class Ball extends MovingImage {
 	private boolean dataUpdated;
 	private boolean hasBall;
 	private boolean onGround = true;
-	
-	private int bounceCount = 0;
 
-	private double CONSTANT = 0.3;
 	private double[] equation;
 
 	private String username;
@@ -56,11 +53,8 @@ public class Ball extends MovingImage {
 		}
 
 		if (bounce) {
-			System.out.println("bouncing");
 			bounce(p);
 			p.setHasBall(false);
-			dribbling = false;
-			playerDribbling = null;
 		}
 
 		this.dataUpdated = true;
@@ -91,55 +85,39 @@ public class Ball extends MovingImage {
 	}
 
 	public void bounce(Player p) {
-		if(bounceCount >= 10) {
-			yVelocity = 0;
-			moveToGround();
-			return;
-		}
-		x += xVelocity;
-		y += yVelocity;
-		
-		if(y >= 280) {
-			bounceCount++;
-			y = 270;
-			//yVelocity = -yVelocity;
-			yVelocity = -(yVelocity*0.7);
-			System.out.println(yVelocity);
-		} else {
-			yVelocity += CONSTANT;
-		}
-		
-		dataUpdated = true;
-		
-		
-/*		x += xVelocity;
-		y += yVelocity;
-		
-		if(y >= 300) {
-			y = 290;
-			yVelocity = -yVelocity;
-		} else if(y <= bounceHeight) {
-			yVelocity = -yVelocity;
-			y = bounceHeight+10;
-		}
-		if(bounceHeight <= 280) {
-			bounceHeight += 0.5;
-		}
-		if(bounceHeight >= 280) {
-			yVelocity = 0;
-			p.setHasBall(false);
-			playerDribbling = null;
-			firstPickup = true;
-			onGround = true;
-		}*/
-//		p.setHasBall(false);
-		
-//		playerDribbling = null;
+//		x += xVelocity;
+//		y += yVelocity;
+//		
+//		if(y >= 300) {
+//			y = 290;
+//			yVelocity = -yVelocity;
+//		} else if(y <= bounceHeight) {
+//			yVelocity = -yVelocity;
+//			y = bounceHeight+10;
+//		}
+//		if(bounceHeight <= 280) {
+//			bounceHeight += 0.5;
+//		}
+//		if(bounceHeight >= 280) {
+//			yVelocity = 0;
+//			p.setHasBall(false);
+////			playerDribbling = null;
+//			firstPickup = true;
+////			onGround = true;
+//		}
 
-		/*if (y >= 270) {
-			return;
-		}
-		dataUpdated = true;*/
+		y = 280;
+//		p.setHasBall(false);
+		dataUpdated = true;
+//		playerDribbling = null;
+		onGround = true;
+		dribbling = false;
+		playerDribbling = null;
+
+//		if (y >= 270) {
+//			return;
+//		}
+//		dataUpdated = true;
 	}
 
 	public void moveToGround() {
@@ -199,7 +177,7 @@ public class Ball extends MovingImage {
 				bounce = true;
 				shooting = false;
 				xVelocity = 0;
-				yVelocity = 5;
+				yVelocity = 3;
 			} else if (!playerDribbling.getDirection() && x <= hoopx) {
 //				playerDribbling.setHasBall(false);
 //				playerDribbling = null;
@@ -268,9 +246,6 @@ public class Ball extends MovingImage {
 		this.setDribbling(true);
 		onGround = false;
 		this.dataUpdated = true;
-	}
-	public Player getPlayer() {
-		return playerDribbling;
 	}
 
 	public BallData getDataObject() {
