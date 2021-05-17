@@ -41,6 +41,9 @@ public class Court extends JPanel implements Runnable {
 	private int barCounter;
 	private int powerCounter;
 	private int stopCounter;
+	private int pauseCounter;
+	
+	private boolean paused = false;
 
 	// private Ball ball;
 	private Image backgroundImage;
@@ -121,8 +124,10 @@ public class Court extends JPanel implements Runnable {
 	 * @param Graphics g
 	 */
 	public void paintComponent(Graphics g) {
+		g.setColor(Color.gray);
 		super.paintComponent(g); // Call JPanel's paintComponent method to paint the background
 
+		if(!paused) {
 		Graphics2D g2 = (Graphics2D) g;
 
 		int width = getWidth();
@@ -161,6 +166,9 @@ public class Court extends JPanel implements Runnable {
 		g2.setTransform(at);
 
 		// TODO Add any custom drawings here
+		
+		
+	}
 	}
 
 	/**
@@ -185,6 +193,9 @@ public class Court extends JPanel implements Runnable {
 	 * 
 	 */
 	public void enableKeys() {
+	
+		if(paused == false) {
+		
 		me.setShooting(false);
 		if (keyControl.isPressed(KeyEvent.VK_LEFT)) {
 			me.setDirection(false);
@@ -220,6 +231,12 @@ public class Court extends JPanel implements Runnable {
 			spawnNewBall();
 		}
 	}
+		
+		if(keyControl.isPressed(KeyEvent.VK_ESCAPE) && pauseCounter>0) {
+			paused = !paused;
+			pauseCounter = -10;
+		}
+	}
 
 	/**
 	 * Overide method from the Runnable class that allows the game to run over and
@@ -230,12 +247,14 @@ public class Court extends JPanel implements Runnable {
 
 		while (true) { // Modify this to allow quitting
 			long startTime = System.currentTimeMillis();
-
+			pauseCounter++;
+			if(paused == false) {
 			// System.out.println(me.hasBall());
 			timeCounter++;
 			barCounter++;
 			powerCounter++;
 			stopCounter++;
+			
 
 			if (me.getPower() == false) {
 				stopCounter = 0;
@@ -263,23 +282,23 @@ public class Court extends JPanel implements Runnable {
 				me.updateState(3);
 			}
 
-			if (me.getEnergy() == 0 && barCounter <= 70 && barCounter > 0) {
+			if (me.getEnergy() == 0 && barCounter <= 60 && barCounter > 0) {
 				me.updateState(0);
 			}
 
-			if (me.getEnergy() == 0 && barCounter < 140 && barCounter > 70) {
+			if (me.getEnergy() == 0 && barCounter < 120 && barCounter > 60) {
 				me.updateState(1);
 			}
 
-			if (me.getEnergy() == 0 && barCounter < 210 && barCounter >= 140) {
+			if (me.getEnergy() == 0 && barCounter < 180 && barCounter >= 120) {
 
 				me.updateState(2);
 			}
 
-			if (timeCounter % 210 == 0) {
+			if (timeCounter % 180 == 0) {
 				me.regenerate();
 			}
-
+			}
 			enableKeys();
 
 			for (Player p : players) {
@@ -327,6 +346,8 @@ public class Court extends JPanel implements Runnable {
 					});
 				}
 			}
+			
+			
 
 			repaint();
 
