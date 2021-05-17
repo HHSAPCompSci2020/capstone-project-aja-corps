@@ -146,7 +146,7 @@ public class Player extends MovingImage {
 	public void regenerate() {
 		// System.out.println("Called");
 
-		if (energy < 1) {
+		if (energy < 2) {
 			energy++;
 		}
 	}
@@ -263,12 +263,12 @@ public class Player extends MovingImage {
 		double width = getWidth();
 		double height = getHeight();
 
-		if (x > 383 & x < 413 & y > 230 & y < 270 & speedPowerup) {
+		if (x > 383 & x < 413 & y > 230 & y < 300 & speedPowerup) {
 			speedPowerup = false;
 			speedBoost = true;
 		}
 
-		if (x > 383 & x < 413 & y > 230 & y < 270 & jumpPowerup) {
+		if (x > 383 & x < 413 & y > 230 & y < 300 & jumpPowerup) {
 			jumpPowerup = false;
 			jumpBoost = true;
 		}
@@ -505,7 +505,7 @@ public class Player extends MovingImage {
 		if (energy > 0) {
 
 			this.shooting = true;
-
+			
 			energy--;
 		}
 	}
@@ -565,17 +565,15 @@ public class Player extends MovingImage {
 		g.drawRect((int) x + 10, (int) y - 50, 20, 30);
 
 		if (energyState == 1) {
-			g.fillRect((int) x + 10, (int) y - 30, 20, 10);
+			g.fillRect((int) x + 10, (int) y - 35, 20, 15);
 		}
 
 		if (energyState == 2) {
 
-			g.fillRect((int) x + 10, (int) y - 40, 20, 20);
-		}
-
-		if (energyState == 3) {
 			g.fillRect((int) x + 10, (int) y - 50, 20, 30);
 		}
+
+		
 
 		if (!hasBall) {
 			if (right) {

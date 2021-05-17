@@ -38,11 +38,12 @@ public class Court extends JPanel implements Runnable {
 
 	private Rectangle screenRect;
 	private int timeCounter;
-	private int barCounter;
+	//private int barCounter;
 	private int powerCounter;
 	private int stopCounter;
 	private int pauseCounter;
-	
+	private int dashCounter;
+	private int shotCounter;
 	private boolean paused = false;
 
 	// private Ball ball;
@@ -211,13 +212,14 @@ public class Court extends JPanel implements Runnable {
 			me.jump();
 		}
 
-		if (keyControl.isPressed(KeyEvent.VK_SHIFT)) {
+		if (keyControl.isPressed(KeyEvent.VK_SHIFT) && dashCounter >0) {
 			me.dash(ball);
+			dashCounter = -10;
 		}
 
-		if (keyControl.isPressed(KeyEvent.VK_SPACE)) {
+		if (keyControl.isPressed(KeyEvent.VK_SPACE) && shotCounter>0) {
 
-			if (me.getEnergy() == 1) {
+			if (me.getEnergy() >0) {
 				me.shoot();
 				if (me.getDirection())
 					ball.shoot(640, 140);
@@ -225,6 +227,7 @@ public class Court extends JPanel implements Runnable {
 					ball.shoot(130, 140);
 				me.shoot();
 			}
+			shotCounter = -10;
 		}
 
 		if (keyControl.isPressed(KeyEvent.VK_ENTER)) {
@@ -251,9 +254,11 @@ public class Court extends JPanel implements Runnable {
 			if(paused == false) {
 			// System.out.println(me.hasBall());
 			timeCounter++;
-			barCounter++;
+		//	barCounter++;
 			powerCounter++;
 			stopCounter++;
+			dashCounter++;
+			shotCounter++;
 			
 
 			if (me.getPower() == false) {
@@ -277,21 +282,15 @@ public class Court extends JPanel implements Runnable {
 				spawnNewBall();
 			}
 
-			if (me.getEnergy() == 1) {
-				barCounter = 0;
-				me.updateState(3);
-			}
-
-			if (me.getEnergy() == 0 && barCounter <= 60 && barCounter > 0) {
+			if(me.getEnergy()==0) {
 				me.updateState(0);
 			}
-
-			if (me.getEnergy() == 0 && barCounter < 120 && barCounter > 60) {
+			
+			if(me.getEnergy()==1) {
 				me.updateState(1);
 			}
-
-			if (me.getEnergy() == 0 && barCounter < 180 && barCounter >= 120) {
-
+			
+			if(me.getEnergy()==2) {
 				me.updateState(2);
 			}
 
