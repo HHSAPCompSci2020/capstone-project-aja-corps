@@ -48,6 +48,7 @@ public class Court extends JPanel implements Runnable {
 
 	// private Ball ball;
 	private Image backgroundImage;
+	private Image pauseImage;
 	private ArrayList<Shape> obstacles;
 
 	private KeyHandler keyControl;
@@ -80,6 +81,7 @@ public class Court extends JPanel implements Runnable {
 
 		try {
 			backgroundImage = ImageIO.read(new File("img/court.jpg"));
+			pauseImage = ImageIO.read(new File("img/PauseScreen.png"));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -125,11 +127,18 @@ public class Court extends JPanel implements Runnable {
 	 * @param Graphics g
 	 */
 	public void paintComponent(Graphics g) {
-		g.setColor(Color.gray);
-		super.paintComponent(g); // Call JPanel's paintComponent method to paint the background
-
-		if(!paused) {
+	
+		
+		
+		
+		
+		if(paused) {
+			g.drawImage(pauseImage, 0, 0, this);
+		}
 		Graphics2D g2 = (Graphics2D) g;
+		
+		if(!paused) {
+			
 
 		int width = getWidth();
 		int height = getHeight();
@@ -144,7 +153,7 @@ public class Court extends JPanel implements Runnable {
 		for (Shape s : obstacles) {
 			g2.fill(s);
 		}
-
+		
 		g.drawImage(backgroundImage, 0, 0, this);
 
 		g.drawRect(130, 140, 20, 20); // ball class needs this for debugging, KEEP THIS IN
@@ -170,6 +179,7 @@ public class Court extends JPanel implements Runnable {
 		
 		
 	}
+		
 	}
 
 	/**
@@ -225,7 +235,7 @@ public class Court extends JPanel implements Runnable {
 					ball.shoot(640, 140);
 				else
 					ball.shoot(130, 140);
-				me.shoot();
+				
 			}
 			shotCounter = -10;
 		}

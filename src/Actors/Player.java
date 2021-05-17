@@ -70,7 +70,7 @@ public class Player extends MovingImage {
 		this.username = username;
 		this.uniqueID = uniqueID;
 		dataUpdated = false;
-		energy = 1;
+		energy = 2;
 	}
 
 	/**
