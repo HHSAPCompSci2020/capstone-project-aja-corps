@@ -1,6 +1,6 @@
 package Actors;
 
-import Graphics.Scoreboard;
+import Graphics.PlayerStats;
 
 /**
  * The Ball class represents a real life basketball in the Game.
@@ -207,7 +207,7 @@ public class Ball extends MovingImage {
 
 		if (playerDribbling.getDirection() && x >= hoopx) {
 			if (makeShot()) {
-				Scoreboard.score2++;
+				PlayerStats.score2++;
 				xVelocity = 0;
 			} else {
 				x -= 20;
@@ -218,7 +218,7 @@ public class Ball extends MovingImage {
 			yVelocity = 5;
 		} else if (!playerDribbling.getDirection() && x <= hoopx) {
 			if (makeShot()) {
-				Scoreboard.score1++;
+				PlayerStats.score1++;
 				xVelocity = 0;
 			} else {
 				x += 20;

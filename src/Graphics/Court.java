@@ -1,6 +1,7 @@
 package Graphics;
 
 import java.awt.*;
+
 import java.awt.event.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
@@ -45,6 +46,7 @@ public class Court extends JPanel implements Runnable {
 	private int dashCounter;
 	private int shotCounter;
 	private boolean paused = false;
+	private boolean stats = false;
 
 	// private Ball ball;
 	private Image backgroundImage;
@@ -58,7 +60,7 @@ public class Court extends JPanel implements Runnable {
 	protected Ball ball;
 	private ArrayList<Player> players;
 	private ArrayList<Ball> balls;
-	private Scoreboard scoreboard;
+	private PlayerStats scoreBoard;
 
 	// Database stuff
 	private DatabaseReference roomRef; // This is the database entry for the whole room
@@ -115,7 +117,7 @@ public class Court extends JPanel implements Runnable {
 
 		System.out.println(roomRef.child("users"));
 
-		scoreboard = new Scoreboard();
+							scoreBoard = new PlayerStats();
 
 		new Thread(this).start();
 	}
@@ -134,6 +136,16 @@ public class Court extends JPanel implements Runnable {
 		
 		if(paused) {
 			g.drawImage(pauseImage, 0, 0, this);
+			g.setColor(Color.white);
+			g.drawString(" Click esc to return to the game" , 300, 170);
+			g.drawString(" Click s to return to see your statistics" , 285, 200);
+			
+			if(stats) {
+				g.drawString(" Click s to return to see your statistics" , 285, 215);
+			}
+			
+			
+			
 		}
 		Graphics2D g2 = (Graphics2D) g;
 		
@@ -172,7 +184,7 @@ public class Court extends JPanel implements Runnable {
 		}
 
 		me.draw(g2, this);
-		scoreboard.draw(g2);
+		scoreBoard.draw(g2);
 		g2.setTransform(at);
 
 		// TODO Add any custom drawings here
@@ -248,6 +260,11 @@ public class Court extends JPanel implements Runnable {
 		if(keyControl.isPressed(KeyEvent.VK_ESCAPE) && pauseCounter>0) {
 			paused = !paused;
 			pauseCounter = -10;
+			stats = false;
+		}
+		
+		if(keyControl.isPressed(KeyEvent.VK_S) && paused) {
+				stats = true;
 		}
 	}
 
