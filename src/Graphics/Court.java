@@ -48,6 +48,9 @@ public class Court extends JPanel implements Runnable {
 	private boolean paused = false;
 	private boolean stats = false;
 
+	
+	private int score;
+	private boolean chose;
 	// private Ball ball;
 	private Image backgroundImage;
 	private Image pauseImage;
@@ -117,7 +120,7 @@ public class Court extends JPanel implements Runnable {
 
 		System.out.println(roomRef.child("users"));
 
-							scoreBoard = new PlayerStats();
+							
 
 		new Thread(this).start();
 	}
@@ -131,23 +134,39 @@ public class Court extends JPanel implements Runnable {
 	public void paintComponent(Graphics g) {
 	
 		
-		
+		Graphics2D g2 = (Graphics2D) g;
 		
 		
 		if(paused) {
 			g.drawImage(pauseImage, 0, 0, this);
 			g.setColor(Color.white);
-			g.drawString(" Click esc to return to the game" , 300, 170);
-			g.drawString(" Click s to return to see your statistics" , 285, 200);
+			g.drawString(" Click esc to return to the game" , 300, 160);
+			g.drawString(" Click s to return to see your statistics" , 285, 180);
 			
 			if(stats) {
-				g.drawString(" Click s to return to see your statistics" , 285, 215);
+				
+				g.drawString(" type 1 if you are shooting on the left hoop, and type 2 if you are shooting on the left hoop" , 102, 200);
+				
+				
+				if(chose) {
+					
+					scoreBoard = new PlayerStats(me.getShots(), me.getDashes(), me.getWalks(), me.getJumps(), score);
+					String [] arr;
+					arr = new String [3];
+					
+					arr = scoreBoard.statString();
+		
+						
+					g.drawString(arr[0], 100, 220);
+					g.drawString(arr[1], 250, 240);
+					g.drawString(arr[2], 200, 260);
+				}
 			}
 			
 			
 			
 		}
-		Graphics2D g2 = (Graphics2D) g;
+		
 		
 		if(!paused) {
 			
@@ -266,6 +285,16 @@ public class Court extends JPanel implements Runnable {
 		if(keyControl.isPressed(KeyEvent.VK_S) && paused) {
 				stats = true;
 		}
+		
+		if(keyControl.isPressed(KeyEvent.VK_1) && stats) {
+			score = 1;
+			chose = true;
+		}
+		
+		if(keyControl.isPressed(KeyEvent.VK_2) && stats) {
+			score = 2;
+			chose = true;
+		}
 	}
 
 	/**
@@ -376,6 +405,8 @@ public class Court extends JPanel implements Runnable {
 			
 
 			repaint();
+			
+			scoreBoard = new PlayerStats();
 
 			long waitTime = 17 - (System.currentTimeMillis() - startTime);
 			try {

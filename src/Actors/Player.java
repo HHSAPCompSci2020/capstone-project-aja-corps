@@ -47,6 +47,10 @@ public class Player extends MovingImage {
 	private boolean hasBall;
 	private static String filename = "img/player.png";
 	private boolean dash = false;
+	private int shots;
+	private int dashes;
+	private int walks;
+	private int jumps;
 
 	/**
 	 * Instantiates a new Player at (x, y) with username, a unique identifier, and a
@@ -73,6 +77,19 @@ public class Player extends MovingImage {
 		energy = 2;
 	}
 
+	public int getShots() {
+		return shots;
+	}
+	public int getDashes() {
+		return dashes;
+	}
+	public int getWalks() {
+	return walks;
+}
+	public int getJumps() {
+	return jumps;
+}
+	
 	/**
 	 * Randomly spawns one of two possible powerups
 	 * 
@@ -158,7 +175,7 @@ public class Player extends MovingImage {
 	 */
 	public void dash(Ball ball) {
 		// System.out.println(energy);
-
+		dashes++;
 		dash = true;
 		if (energy > 0) {
 
@@ -209,6 +226,7 @@ public class Player extends MovingImage {
 	 *       executed
 	 */
 	public void walk(int dir) {
+		walks++;
 		intersectsPlayer = false;
 
 		if (xVelocity <= 10 && xVelocity >= -10)
@@ -236,8 +254,9 @@ public class Player extends MovingImage {
 	 * @post Y velocity of the player is updated
 	 */
 	public void jump() {
+		
 		if (onASurface) {
-
+			jumps++;
 			if (jumpBoost) {
 				yVelocity -= (1.3) * jumpStrength;
 				return;
@@ -503,7 +522,7 @@ public class Player extends MovingImage {
 	 */
 	public void shoot() {
 		if (energy > 0) {
-
+			shots++;
 			this.shooting = true;
 			
 			energy--;
