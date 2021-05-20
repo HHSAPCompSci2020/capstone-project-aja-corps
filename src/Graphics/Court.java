@@ -45,6 +45,7 @@ public class Court extends JPanel implements Runnable {
 	private int pauseCounter;
 	private int dashCounter;
 	private int shotCounter;
+	private int barCounter;
 	private boolean paused = false;
 	private boolean stats = false;
 
@@ -145,7 +146,7 @@ public class Court extends JPanel implements Runnable {
 			
 			if(stats) {
 				
-				g.drawString(" type 1 if you are shooting on the left hoop, and type 2 if you are shooting on the left hoop" , 102, 200);
+				g.drawString(" type 1 if you are shooting on the left hoop, and type 2 if you are shooting on the right hoop" , 102, 200);
 				
 				
 				if(chose) {
@@ -254,6 +255,10 @@ public class Court extends JPanel implements Runnable {
 		}
 
 		if (keyControl.isPressed(KeyEvent.VK_SHIFT) && dashCounter >0) {
+			if(me.getEnergy()>0) {
+				timeCounter=0;
+			}
+			
 			me.dash(ball);
 			dashCounter = -10;
 		}
@@ -261,6 +266,7 @@ public class Court extends JPanel implements Runnable {
 		if (keyControl.isPressed(KeyEvent.VK_SPACE) && shotCounter>0) {
 
 			if (me.getEnergy() >0) {
+				timeCounter=0;
 				me.shoot();
 				if (me.getDirection())
 					ball.shoot(640, 140);
@@ -310,7 +316,7 @@ public class Court extends JPanel implements Runnable {
 			if(paused == false) {
 			// System.out.println(me.hasBall());
 			timeCounter++;
-		//	barCounter++;
+			barCounter++;
 			powerCounter++;
 			stopCounter++;
 			dashCounter++;
@@ -321,7 +327,7 @@ public class Court extends JPanel implements Runnable {
 				stopCounter = 0;
 			}
 
-			if (timeCounter == 1) {
+			if (barCounter == 1) {
 				me.spawnPowerup();
 			}
 
@@ -334,7 +340,7 @@ public class Court extends JPanel implements Runnable {
 				me.powerOff();
 			}
 
-			if (timeCounter == 1) {
+			if (barCounter == 1) {
 				spawnNewBall();
 			}
 

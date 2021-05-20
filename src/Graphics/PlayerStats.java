@@ -28,22 +28,28 @@ public class PlayerStats {
 	}
 	
 	public String[] statString() {
+		
+		
+		
 		double distance = Math.round(walknum * 0.7 + dashes *1.4);
 		double percent;
-		if(shots ==0) {
-			 percent = 0;
-		}else {
-		
-		 percent = Math.round( (100.0)*score1/shots);
-		}
-		int energyUse = jumpcount+shots;
-		
 		int scorecount;
 		if(score == 1) {
 			scorecount = score1;
 		}else {
 			scorecount = score2;
 		}
+		
+		if(shots ==0) {
+			 percent = 0;
+		}else {
+		
+		 percent = Math.round( (100.0)*scorecount/shots);
+		}
+		int energyUse = dashes+shots;
+		
+		
+		
 		
 		
 		String ret = "You took "+shots+" shot(s) and made "+scorecount+" shot(s) which means that your shooting percentage is "+percent+" percent ";
