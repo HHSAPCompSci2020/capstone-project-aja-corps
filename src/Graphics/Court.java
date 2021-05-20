@@ -250,8 +250,9 @@ public class Court extends JPanel implements Runnable {
 			me.walk(1);
 		}
 
-		if (keyControl.isPressed(KeyEvent.VK_UP)) {
+		if (keyControl.isPressed(KeyEvent.VK_UP) && barCounter >25) {
 			me.jump();
+			barCounter = 5;
 		}
 
 		if (keyControl.isPressed(KeyEvent.VK_SHIFT) && dashCounter >0) {
