@@ -77,15 +77,33 @@ public class Player extends MovingImage {
 		energy = 2;
 	}
 
+	/**
+	 * 
+	 * @return returns the number of shots taken by the player
+	 */
 	public int getShots() {
 		return shots;
 	}
+	
+	/**
+	 * 
+	 * @return returns the number of times the player dashed
+	 */
 	public int getDashes() {
 		return dashes;
 	}
+	/**
+	 * 
+	 * @return returns number of times the player took a step
+	 */
 	public int getWalks() {
 	return walks;
 }
+	
+	/**
+	 * 
+	 * @return returns number of times a player has jumped
+	 */
 	public int getJumps() {
 	return jumps;
 }
@@ -121,11 +139,20 @@ public class Player extends MovingImage {
 			return false;
 		}
 	}
-
+	
+	/**
+	 * 
+	 * @return returns true if the player is currently dashing, otherwise returns false
+	 */
 	private boolean isDashing() {
 		return dash;
 	}
 
+	/**
+	 * sets the dash variable to what is passed in as the parameter
+	 * @param dash the new value of the dash variable
+	 * @post changes the dash variable
+	 */
 	private void setDash(boolean dash) {
 		this.dash = dash;
 	}
