@@ -31,7 +31,7 @@ public class PlayerStats {
 		
 		
 		
-		double distance = Math.round(walknum * 0.7 + dashes *1.4);
+		double distance = Math.round(walknum * 0.7 + dashes *1.4)/12;
 		double percent;
 		int scorecount;
 		if(score == 1) {

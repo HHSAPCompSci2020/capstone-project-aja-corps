@@ -146,7 +146,7 @@ public class Court extends JPanel implements Runnable {
 			
 			if(stats) {
 				
-				g.drawString(" type 1 if you are shooting on the left hoop, and type 2 if you are shooting on the right hoop" , 102, 200);
+				g.drawString(" type 1 if you are shooting on the left hoop, and type 2 if you are shooting on the right hoop" , 104, 200);
 				
 				
 				if(chose) {
