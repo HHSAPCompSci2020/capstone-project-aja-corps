@@ -13,6 +13,7 @@ public class PlayerData {
 	public double x, y;
 	public boolean right;
 	public boolean hasBall;
+	public int score;
 	
 	// One thing that is interesting is that the Firebase database cannot store arrays.
 	// So, if you want to use a library class that uses arrays (the Color class is one such example), then
@@ -69,6 +70,10 @@ public class PlayerData {
 	 */
 	public double getY() {
 		return y;
+	}
+	
+	public int getScore() {
+		return score;
 	}
 	
 }

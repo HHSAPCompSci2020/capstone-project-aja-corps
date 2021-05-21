@@ -27,6 +27,7 @@ public class Player extends MovingImage {
 	private double jumpStrength;
 	private boolean speedPowerup = false;
 	private boolean jumpPowerup = false;
+	private int score;
 	private boolean intersectsPlayer;
 
 	private boolean right = true;
@@ -64,13 +65,15 @@ public class Player extends MovingImage {
 	 */
 	public Player(int x, int y, String username, String uniqueID, boolean hasBall) {
 		super(filename, x, y, MARIO_WIDTH, MARIO_HEIGHT);
+		this.x = x;
+		this.y = y;
 		this.hasBall = hasBall;
 		xVelocity = 0;
 		yVelocity = 0;
 		onASurface = false;
 		gravity = 0.7;
 		friction = .85;
-		jumpStrength = 10;
+		jumpStrength = 20;
 		this.username = username;
 		this.uniqueID = uniqueID;
 		dataUpdated = false;
@@ -293,6 +296,11 @@ public class Player extends MovingImage {
 
 		}
 	}
+	
+	public void increaseScore() {
+		this.score++;
+		this.dataUpdated = true;
+	}
 
 	/**
 	 * This method represents the player acting and is called each time the game
@@ -423,6 +431,7 @@ public class Player extends MovingImage {
 		p.y = y;
 		p.right = right;
 		p.hasBall = hasBall;
+		p.score = score;
 		return p;
 	}
 
@@ -439,6 +448,7 @@ public class Player extends MovingImage {
 		this.username = data.username;
 		this.right = data.right;
 		this.hasBall = data.hasBall;
+		this.score = data.score;
 	}
 
 	/**
@@ -583,6 +593,10 @@ public class Player extends MovingImage {
 	public int getEnergyState() {
 		return this.energyState;
 	}
+	
+	public int getScore() {
+		return this.score;
+	}
 
 	/**
 	 * Draws powerups and usernames of the player
@@ -592,7 +606,7 @@ public class Player extends MovingImage {
 	 * @post The screen is updated with drawn components
 	 */
 	public void draw(Graphics g, ImageObserver io) {
-
+//		System.out.println((int) x + " " + (int) y);
 		// g.drawImage(img, x, y, width, height, observer)
 		g.drawString(this.username, (int) x, (int) y);
 

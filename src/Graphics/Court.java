@@ -82,7 +82,7 @@ public class Court extends JPanel implements Runnable {
 	 * @param roomRef    Firebase database reference
 	 * @param playerName Player username
 	 */
-	public Court(DatabaseReference roomRef, String playerName) {
+	public Court(DatabaseReference roomRef, String playerName, int playerType) {
 		super();
 
 		try {
@@ -113,15 +113,18 @@ public class Court extends JPanel implements Runnable {
 		players = new ArrayList<Player>();
 		balls = new ArrayList<Ball>();
 
-		me = new Player(DRAWING_WIDTH / 2 - Player.MARIO_WIDTH / 2, 50, playerName, myUserRef.getKey(), false);
+		if (playerType == 1) {
+			me = new Player(300, 288, playerName, myUserRef.getKey(), false);
+		} else {
+			me = new Player(400, 288, playerName, myUserRef.getKey(), false);
+			me.setDirection(false);
+		}
 		// ball = new Ball(300, 288, 20, 20, "TestBall", myBallRef.getKey());
 
 		myUserRef.setValueAsync(me.getDataObject());
 		// myBallRef.setValueAsync(ball.getDataObject());
 
 		System.out.println(roomRef.child("users"));
-
-							
 
 		new Thread(this).start();
 	}
@@ -204,7 +207,11 @@ public class Court extends JPanel implements Runnable {
 		}
 
 		me.draw(g2, this);
-		scoreBoard.draw(g2);
+		g2.drawString(Integer.toString(me.getScore()), 370, 68);
+		for (int i = 0; i < players.size(); i++) {
+			g.drawString(Integer.toString(players.get(i).getScore()), 415, 68);
+		}
+//		scoreBoard.draw(g2);
 		g2.setTransform(at);
 
 		// TODO Add any custom drawings here
@@ -327,15 +334,15 @@ public class Court extends JPanel implements Runnable {
 			if (me.getPower() == false) {
 				stopCounter = 0;
 			}
-
-			if (barCounter == 1) {
-				me.spawnPowerup();
-			}
-
-			if (powerCounter % 1500 == 0) {
-				me.spawnPowerup();
-
-			}
+//
+//			if (barCounter == 1) {
+//				me.spawnPowerup();
+//			}
+//
+//			if (powerCounter % 1500 == 0) {
+//				me.spawnPowerup();
+//
+//			}
 
 			if (stopCounter == 300) {
 				me.powerOff();

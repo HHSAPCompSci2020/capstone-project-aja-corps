@@ -187,6 +187,8 @@ public class Ball extends MovingImage {
 	 *       and velocities are updated
 	 */
 	public void shoot(double hoopx, double hoopy) {
+//		onGround = true;
+//		dataUpdated = true;
 		if (dribbling) {
 			shotx = playerDribbling.getX() + 25;
 			shoty = hoopy;
@@ -208,6 +210,7 @@ public class Ball extends MovingImage {
 		if (playerDribbling.getDirection() && x >= hoopx) {
 			if (makeShot()) {
 				PlayerStats.score2++;
+				playerDribbling.increaseScore();
 				xVelocity = 0;
 			} else {
 				x -= 20;
@@ -219,6 +222,7 @@ public class Ball extends MovingImage {
 		} else if (!playerDribbling.getDirection() && x <= hoopx) {
 			if (makeShot()) {
 				PlayerStats.score1++;
+				playerDribbling.increaseScore();
 				xVelocity = 0;
 			} else {
 				x += 20;

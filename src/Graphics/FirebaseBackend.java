@@ -57,7 +57,6 @@ public class FirebaseBackend extends JPanel implements ChildEventListener {
 		ActionHandler actionEventHandler = new ActionHandler();
 
 		setLayout(new BorderLayout());
-
 		JPanel cnPanel = new JPanel();
 		cnPanel.setLayout(new BorderLayout());
 		roomList = new JList<String>();
@@ -122,6 +121,38 @@ public class FirebaseBackend extends JPanel implements ChildEventListener {
 	 * 
 	 * @param name Name of the room to join
 	 */
+	public void createRoom(String name) {
+
+		postsRef.orderByChild("name").equalTo(name).addListenerForSingleValueEvent(new ValueEventListener() {
+			@Override
+			public void onDataChange(DataSnapshot snap) {
+
+				if (!snap.hasChildren())
+					return;
+
+				String playerName = JOptionPane.showInputDialog("Enter your username:");
+
+				theWindow.setVisible(false);
+
+				JFrame window = new JFrame();
+
+				window.setBounds(100, 100, 800, 322);
+				window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+				Court panel = new Court(snap.getChildren().iterator().next().getRef(), playerName, 1);
+				window.addKeyListener(panel.getKeyHandler());
+				window.add(panel);
+				window.setVisible(true);
+
+				theWindow.dispose();
+			}
+
+			@Override
+			public void onCancelled(DatabaseError arg0) {
+			}
+		});
+
+	}
+	
 	public void selectRoom(String name) {
 
 		postsRef.orderByChild("name").equalTo(name).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -139,7 +170,7 @@ public class FirebaseBackend extends JPanel implements ChildEventListener {
 
 				window.setBounds(100, 100, 800, 322);
 				window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-				Court panel = new Court(snap.getChildren().iterator().next().getRef(), playerName);
+				Court panel = new Court(snap.getChildren().iterator().next().getRef(), playerName, 2);
 				window.addKeyListener(panel.getKeyHandler());
 				window.add(panel);
 				window.setVisible(true);
@@ -190,26 +221,27 @@ public class FirebaseBackend extends JPanel implements ChildEventListener {
 			Object source = e.getSource();
 			if (source == newRoomButton) {
 
-				String roomName = JOptionPane.showInputDialog("Please choose a name for your room:");
-				if (roomName == null || roomName.isEmpty()) {
-					JOptionPane.showMessageDialog(FirebaseBackend.this, "Room creation fail - The room needs a name.");
-					return;
-				}
+//				String roomName = JOptionPane.showInputDialog("Please choose a name for your room:");
+//				if (roomName == null || roomName.isEmpty()) {
+//					JOptionPane.showMessageDialog(FirebaseBackend.this, "Room creation fail - The room needs a name.");
+//					return;
+//				}
+//
+//				if (rooms.contains(roomName)) {
+//					JOptionPane.showMessageDialog(FirebaseBackend.this,
+//							"Room creation fail - Room name already exists.");
+//					return;
+//				}
 
-				if (rooms.contains(roomName)) {
-					JOptionPane.showMessageDialog(FirebaseBackend.this,
-							"Room creation fail - Room name already exists.");
-					return;
-				}
+				postsRef.push().child("name").setValue("Waiting for Player... (" + roomList.getModel().getSize() + ")",
+						new CompletionListener() {
 
-				postsRef.push().child("name").setValue(roomName, new CompletionListener() {
+							@Override
+							public void onComplete(DatabaseError arg0, DatabaseReference arg1) {
+								createRoom("Waiting for Player... (" + (roomList.getModel().getSize()-1) + ")");
+							}
 
-					@Override
-					public void onComplete(DatabaseError arg0, DatabaseReference arg1) {
-						selectRoom(roomName);
-					}
-
-				});
+						});
 
 			} else if (source == connectButton) {
 				String sel = roomList.getSelectedValue();
