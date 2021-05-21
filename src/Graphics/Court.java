@@ -118,6 +118,7 @@ public class Court extends JPanel implements Runnable {
 		} else {
 			me = new Player(400, 288, playerName, myUserRef.getKey(), false);
 			me.setDirection(false);
+			spawnNewBall();
 		}
 		// ball = new Ball(300, 288, 20, 20, "TestBall", myBallRef.getKey());
 
@@ -225,7 +226,7 @@ public class Court extends JPanel implements Runnable {
 	 * Spawns a new ball in the court
 	 */
 	public void spawnNewBall() {
-		ball = new Ball(300, 288, 20, 20, "TestBall", myBallRef.getKey());
+		ball = new Ball(383, 288, 20, 20, "TestBall", myBallRef.getKey());
 		myBallRef.setValueAsync(ball.getDataObject());
 	}
 
@@ -267,11 +268,15 @@ public class Court extends JPanel implements Runnable {
 				timeCounter=0;
 			}
 			
-			me.dash(ball);
+			if (players.size() > 0) {
+				me.dash(ball, players.get(0));
+			} else {
+				me.dash(ball, null);
+			}
 			dashCounter = -10;
 		}
 
-		if (keyControl.isPressed(KeyEvent.VK_SPACE) && shotCounter>0) {
+		if (keyControl.isPressed(KeyEvent.VK_SPACE) && shotCounter>0 && me.hasBall()) {
 
 			if (me.getEnergy() >0) {
 				timeCounter=0;
@@ -348,9 +353,9 @@ public class Court extends JPanel implements Runnable {
 				me.powerOff();
 			}
 
-			if (barCounter == 1) {
-				spawnNewBall();
-			}
+//			if (barCounter == 1) {
+//				spawnNewBall();
+//			}
 
 			if(me.getEnergy()==0) {
 				me.updateState(0);

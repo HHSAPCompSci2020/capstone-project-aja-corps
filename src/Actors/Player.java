@@ -203,27 +203,49 @@ public class Player extends MovingImage {
 	 * 
 	 * @post Dash is true and energy is decreased
 	 */
-	public void dash(Ball ball) {
+	public void dash(Ball ball, Player player2) {
 		// System.out.println(energy);
 		dashes++;
 		dash = true;
 		if (energy > 0) {
+			
+			if (player2 == null || player2.getX() - this.x > 5) {
+				if (right)
+					x += 80;
+				else
+					x -= 80;
+			} else {
+				if (right) {
+					x = player2.getX() + 80;
+//					if (!this.hasBall) {
+//						player2.setHasBall(false);
+//						this.hasBall = true;
+//						ball.setPlayer(this);
+//						dataUpdated = true;
+//					}
+				} else {
+					x = player2.getX() - 80;
+//					if (!this.hasBall) {
+//						player2.setHasBall(false);
+//						this.hasBall = true;
+//						ball.setPlayer(this);
+//						dataUpdated = true;
+//					}
+				}
+			}
 
-			if (right)
-				x += 80;
-			else
-				x -= 80;
+			
 			dataUpdated = true;
 
 			energy--;
 		}
-		if (right) {
-			if (x - 80 <= ball.getX() && x >= ball.getX())
-				ball.setPlayer(this);
-		} else {
-			if (x + 80 >= ball.getX() && x <= ball.getX())
-				ball.setPlayer(this);
-		}
+//		if (right) {
+//			if (x - 80 <= ball.getX() && x >= ball.getX())
+//				ball.setPlayer(this);
+//		} else {
+//			if (x + 80 >= ball.getX() && x <= ball.getX())
+//				ball.setPlayer(this);
+//		}
 
 	}
 

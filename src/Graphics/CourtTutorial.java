@@ -237,7 +237,7 @@ public class CourtTutorial extends JPanel implements Runnable {
 					timeCounter = 0;
 				}
 
-				me.dash(ball);
+				me.dash(ball, null);
 				dashCounter = -10;
 			}
 
