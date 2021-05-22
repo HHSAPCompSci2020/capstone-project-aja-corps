@@ -29,6 +29,7 @@ public class Player extends MovingImage {
 	private boolean jumpPowerup = false;
 	private int score;
 	private boolean intersectsPlayer;
+	private boolean stolen;
 
 	private boolean right = true;
 	private boolean shooting;
@@ -88,6 +89,10 @@ public class Player extends MovingImage {
 		return shots;
 	}
 	
+	public void setStolen(boolean x) {
+		stolen = x;
+	}
+
 	/**
 	 * 
 	 * @return returns the number of times the player dashed
@@ -95,22 +100,31 @@ public class Player extends MovingImage {
 	public int getDashes() {
 		return dashes;
 	}
+
 	/**
 	 * 
 	 * @return returns number of times the player took a step
 	 */
 	public int getWalks() {
-	return walks;
-}
-	
+		return walks;
+	}
+
 	/**
 	 * 
 	 * @return returns number of times a player has jumped
 	 */
 	public int getJumps() {
-	return jumps;
-}
+		return jumps;
+	}
 	
+	public boolean hasStolen() {
+		if (stolen) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 	/**
 	 * Randomly spawns one of two possible powerups
 	 * 
@@ -142,10 +156,11 @@ public class Player extends MovingImage {
 			return false;
 		}
 	}
-	
+
 	/**
 	 * 
-	 * @return returns true if the player is currently dashing, otherwise returns false
+	 * @return returns true if the player is currently dashing, otherwise returns
+	 *         false
 	 */
 	private boolean isDashing() {
 		return dash;
@@ -153,6 +168,7 @@ public class Player extends MovingImage {
 
 	/**
 	 * sets the dash variable to what is passed in as the parameter
+	 * 
 	 * @param dash the new value of the dash variable
 	 * @post changes the dash variable
 	 */
@@ -208,8 +224,8 @@ public class Player extends MovingImage {
 		dashes++;
 		dash = true;
 		if (energy > 0) {
-			
-			if (player2 == null || player2.getX() - this.x > 5) {
+
+			if (player2 == null) {
 				if (right)
 					x += 80;
 				else
@@ -217,6 +233,12 @@ public class Player extends MovingImage {
 			} else {
 				if (right) {
 					x = player2.getX() + 80;
+//					player2.setHasBall(false);
+//					System.out.println(this.hasBall);
+//					if (!hasBall) {
+////						player2.setHasBall(false);
+//					}
+//					System.out.println(player2.hasBall());
 //					if (!this.hasBall) {
 //						player2.setHasBall(false);
 //						this.hasBall = true;
@@ -225,6 +247,17 @@ public class Player extends MovingImage {
 //					}
 				} else {
 					x = player2.getX() - 80;
+//					player2.setHasBall(false);
+//					System.out.println(this.hasBall);
+//					player2.setHasBall(false);
+//					this.hasBall = true;
+//					ball.setPlayer(this);
+//					ball.setDribbling(true);
+//					if (!hasBall) {
+////						ball.setPlayerDribbling();
+//						player2.setHasBall(false);
+//					}
+//					System.out.println(player2.hasBall());
 //					if (!this.hasBall) {
 //						player2.setHasBall(false);
 //						this.hasBall = true;
@@ -234,7 +267,6 @@ public class Player extends MovingImage {
 				}
 			}
 
-			
 			dataUpdated = true;
 
 			energy--;
@@ -306,7 +338,7 @@ public class Player extends MovingImage {
 	 * @post Y velocity of the player is updated
 	 */
 	public void jump() {
-		
+
 		if (onASurface) {
 			jumps++;
 			if (jumpBoost) {
@@ -318,7 +350,7 @@ public class Player extends MovingImage {
 
 		}
 	}
-	
+
 	public void increaseScore() {
 		this.score++;
 		this.dataUpdated = true;
@@ -333,7 +365,14 @@ public class Player extends MovingImage {
 	 * @post X, Y, and velocities are updated according to actions executed
 	 */
 	public void act(ArrayList<Shape> obstacles, Player player2) {
-
+//		if (player2 != null) {
+//			if (player2.dash && this.hasBall) {
+//				this.hasBall = false;
+//				System.out.println(player2.dash);
+//				this.dataUpdated = true;	
+//			}
+//		}
+		
 		double xCoord = getX();
 		double yCoord = getY();
 		double width = getWidth();
@@ -359,8 +398,12 @@ public class Player extends MovingImage {
 
 		if (player2 != null) {
 			if (strechY.intersects(player2)) {
+//				this.hasBall = false;
 				xVelocity = -xVelocity;
 			}
+//			if (player2.getX() - 80 == x) {
+//				this.hasBall = false;
+//			}
 		}
 
 		if (yVelocity > 0) {
@@ -563,6 +606,7 @@ public class Player extends MovingImage {
 	 */
 	public void setHasBall(boolean x) {
 		this.hasBall = x;
+		dataUpdated = true;
 	}
 
 	/**
@@ -583,7 +627,7 @@ public class Player extends MovingImage {
 		if (energy > 0) {
 			shots++;
 			this.shooting = true;
-			
+
 			energy--;
 		}
 	}
@@ -615,7 +659,7 @@ public class Player extends MovingImage {
 	public int getEnergyState() {
 		return this.energyState;
 	}
-	
+
 	public int getScore() {
 		return this.score;
 	}
@@ -654,8 +698,6 @@ public class Player extends MovingImage {
 
 			g.fillRect((int) x + 10, (int) y - 50, 20, 30);
 		}
-
-		
 
 		if (!hasBall) {
 			if (right) {

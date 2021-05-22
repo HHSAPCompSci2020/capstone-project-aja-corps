@@ -62,6 +62,14 @@ public class Ball extends MovingImage {
 			onGround = false;
 			this.dataUpdated = true;
 		}
+		
+//		if (this.intersects(p) && shooting) {
+//			p.setHasBall(true);
+//			this.setPlayer(p);
+//			this.setDribbling(true);
+//			onGround = false;
+//			this.dataUpdated = true;
+//		}
 
 		if (playerDribbling != null) {
 			if (dribbling)
@@ -88,6 +96,11 @@ public class Ball extends MovingImage {
 		this.dataUpdated = true;
 	}
 
+	public void setPlayerDribbling() {
+		this.playerDribbling = null;
+		this.playerDribbling.setHasBall(false);
+	}
+	
 	/**
 	 * Updates the dribbling status of the ball
 	 * 
