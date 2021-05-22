@@ -51,13 +51,16 @@ public class Ball extends MovingImage {
 		if (this.intersects(p) && inAir) {
 			if (playerDribbling != null) {
 				playerDribbling.setShooting(false);
+				playerDribbling = null;
 			}
+//			p.setShooting(false);
+			shooting = false;
 			p.setHasBall(true);
 			this.setPlayer(p);
 			this.setDribbling(true);
 			inAir = false;
 			onGround = false;
-			this.dataUpdated = true;
+//			this.dataUpdated = true;
 		}
 	}
 
@@ -240,6 +243,7 @@ public class Ball extends MovingImage {
 			playerDribbling.setHasBall(false);
 			inAir = true;
 			x += xVelocity;
+//			x += 0.5;
 			y = f(x);
 		}
 
@@ -269,6 +273,10 @@ public class Ball extends MovingImage {
 			yVelocity = 5;
 		}
 		
+	}
+	
+	public boolean isShooting() {
+		return shooting;
 	}
 
 	private boolean makeShot() {
