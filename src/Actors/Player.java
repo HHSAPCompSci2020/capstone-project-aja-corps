@@ -682,15 +682,15 @@ public class Player extends MovingImage {
 		g.setColor(Color.white);
 		g.drawString(this.username, (int) x, (int) y);
 
-		if (speedPowerup) {
-			g.setColor(Color.red);
-			g.fill3DRect(383, 260, 30, 30, false);
-		}
+//		if (speedPowerup) {
+//			g.setColor(Color.red);
+//			g.fill3DRect(383, 260, 30, 30, false);
+//		}
 
-		if (jumpPowerup) {
-			g.setColor(Color.blue);
-			g.fill3DRect(383, 260, 30, 30, false);
-		}
+//		if (jumpPowerup) {
+//			g.setColor(Color.blue);
+//			g.fill3DRect(383, 260, 30, 30, false);
+//		}
 
 		g.setColor(Color.green);
 

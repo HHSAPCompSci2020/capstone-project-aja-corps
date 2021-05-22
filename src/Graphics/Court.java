@@ -78,6 +78,8 @@ public class Court extends JPanel implements Runnable {
 	// private Ball ball;
 	private Image backgroundImage;
 	private Image pauseImage;
+	private Image jumpImage;
+	private Image speedImage;
 	private ArrayList<Shape> obstacles;
 
 	private KeyHandler keyControl;
@@ -113,6 +115,8 @@ public class Court extends JPanel implements Runnable {
 		try {
 			backgroundImage = ImageIO.read(new File("img/court.jpg"));
 			pauseImage = ImageIO.read(new File("img/PauseScreen.png"));
+			jumpImage = ImageIO.read(new File("img/JumpPowerUp.png"));
+			speedImage = ImageIO.read(new File("img/SpeedPowerUp.png"));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -216,6 +220,18 @@ public class Court extends JPanel implements Runnable {
 			}
 
 			g.drawImage(backgroundImage, 0, 0, this);
+			
+		
+			if(me.getJumpPowerup()) {
+			g.drawImage(jumpImage, 383, 260, 35, 35, this);
+			}
+			
+			
+			if(me.getSpeedPowerup()) {
+			g.drawImage(speedImage, 383, 260, 35, 35, this);
+			}
+
+			
 
 			seconds = (int) (currentTime - initialTime) / 1000 - (59 * minutes);
 
@@ -436,7 +452,7 @@ public class Court extends JPanel implements Runnable {
 					me.spawnPowerup();
 				}
 				//
-				if (powerCounter % 1500 == 0) {
+				if (powerCounter % 1300 == 0) {
 					me.spawnPowerup();
 					//
 				}
