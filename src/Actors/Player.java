@@ -399,7 +399,7 @@ public class Player extends MovingImage {
 		if (player2 != null) {
 			if (strechY.intersects(player2)) {
 //				this.hasBall = false;
-				xVelocity = -xVelocity;
+				xVelocity = -(xVelocity);
 			}
 //			if (player2.getX() - 80 == x) {
 //				this.hasBall = false;
@@ -710,9 +710,9 @@ public class Player extends MovingImage {
 				g.drawImage((new ImageIcon("img/player4.png")).getImage(), (int) x, (int) y, (int) width, (int) height,
 						io);
 			}
-		} else if (shooting) {
-			g.drawImage((new ImageIcon("img/playershoot.png")).getImage(), (int) x, (int) y, (int) width, (int) height,
-					io);
+//		} else if (shooting) {
+//			g.drawImage((new ImageIcon("img/playershoot.png")).getImage(), (int) x, (int) y, (int) width, (int) height,
+//					io);
 		} else if (right) {
 			g.drawImage((new ImageIcon(filename)).getImage(), (int) x, (int) y, (int) width, (int) height, io);
 		} else {

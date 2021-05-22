@@ -10,6 +10,7 @@ public class BallData {
 	public String username;
 	public double x, y;
 	public boolean onGround;
+	public boolean inAir;
 
 	// One thing that is interesting is that the Firebase database cannot store
 	// arrays.
@@ -59,6 +60,10 @@ public class BallData {
 	 */
 	public boolean isOnGround() {
 		return onGround;
+	}
+	
+	public boolean isInAir() {
+		return inAir;
 	}
 
 }

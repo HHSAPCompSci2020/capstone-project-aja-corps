@@ -14,6 +14,7 @@ public class Ball extends MovingImage {
 	private boolean dribbling = true;
 	private Player playerDribbling;
 	private boolean shooting;
+	private boolean inAir;
 	private boolean bounce = false;
 
 	private String uniqueID;
@@ -44,6 +45,17 @@ public class Ball extends MovingImage {
 		this.uniqueID = uniqueID;
 		this.username = username;
 	}
+	
+	public void block(Player p, double floorY) {
+		if (this.intersects(p) && inAir) {
+			p.setHasBall(true);
+			this.setPlayer(p);
+			this.setDribbling(true);
+			inAir = false;
+			onGround = false;
+			this.dataUpdated = true;
+		}
+	}
 
 	/**
 	 * Executes ball actions, Calculates velocities of the ball, and updates
@@ -61,14 +73,15 @@ public class Ball extends MovingImage {
 			p.setHasBall(true);
 			this.setPlayer(p);
 			this.setDribbling(true);
+			inAir = false;
 			onGround = false;
 			this.dataUpdated = true;
 		}
-		
-//		if (this.intersects(p) && shooting) {
+//		else if (this.intersects(p) && inAir) {
 //			p.setHasBall(true);
 //			this.setPlayer(p);
 //			this.setDribbling(true);
+//			inAir = false;
 //			onGround = false;
 //			this.dataUpdated = true;
 //		}
@@ -142,7 +155,9 @@ public class Ball extends MovingImage {
 			yVelocity = 0;
 			moveToGround();
 			p.setHasBall(false);
+			p.setShooting(false);
 			playerDribbling = null;
+			inAir = false;
 			dataUpdated = true;
 			onGround = true;
 			dribbling = false;
@@ -202,8 +217,6 @@ public class Ball extends MovingImage {
 	 *       and velocities are updated
 	 */
 	public void shoot(double hoopx, double hoopy) {
-//		onGround = true;
-//		dataUpdated = true;
 		if (dribbling) {
 			shotx = playerDribbling.getX() + 25;
 			shoty = hoopy;
@@ -217,14 +230,18 @@ public class Ball extends MovingImage {
 			calculateParabola(hoopx, hoopy);
 			shooting = true;
 		}
+//		Player p = playerDribbling;
 		if (shooting == true) {
+//			playerDribbling = null;
+			playerDribbling.setHasBall(false);
+			inAir = true;
 			x += xVelocity;
 			y = f(x);
 		}
 
 		if (playerDribbling.getDirection() && x >= hoopx) {
 			if (makeShot()) {
-				PlayerStats.score2++;
+//				PlayerStats.score2++;
 				playerDribbling.increaseScore();
 				xVelocity = 0;
 			} else {
@@ -236,7 +253,7 @@ public class Ball extends MovingImage {
 			yVelocity = 5;
 		} else if (!playerDribbling.getDirection() && x <= hoopx) {
 			if (makeShot()) {
-				PlayerStats.score1++;
+//				PlayerStats.score1++;
 				playerDribbling.increaseScore();
 				xVelocity = 0;
 			} else {
@@ -247,6 +264,7 @@ public class Ball extends MovingImage {
 			shooting = false;
 			yVelocity = 5;
 		}
+		
 	}
 
 	private boolean makeShot() {
@@ -309,6 +327,7 @@ public class Ball extends MovingImage {
 		p.setHasBall(true);
 		this.setDribbling(true);
 		onGround = false;
+		inAir = false;
 		this.dataUpdated = true;
 	}
 
@@ -324,6 +343,7 @@ public class Ball extends MovingImage {
 		p.x = x;
 		p.y = y;
 		p.onGround = onGround;
+		p.inAir = inAir;
 		return p;
 	}
 
@@ -338,6 +358,7 @@ public class Ball extends MovingImage {
 		this.x = data.x;
 		this.y = data.y;
 		this.onGround = data.onGround;
+		this.inAir = data.inAir;
 		this.username = data.username;
 	}
 
@@ -410,5 +431,9 @@ public class Ball extends MovingImage {
 	 */
 	public boolean isOnGround() {
 		return onGround;
+	}
+	
+	public boolean isInAir() {
+		return inAir;
 	}
 }

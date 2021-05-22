@@ -122,7 +122,7 @@ public class Court extends JPanel implements Runnable {
 		if (playerType == 1) {
 			me = new Player(300, 288, playerName, myUserRef.getKey(), false);
 		} else {
-			me = new Player(400, 288, playerName, myUserRef.getKey(), false);
+			me = new Player(500, 288, playerName, myUserRef.getKey(), false);
 			me.setDirection(false);
 			spawnNewBall();
 		}
@@ -256,7 +256,7 @@ public class Court extends JPanel implements Runnable {
 	
 		if(paused == false) {
 		
-		me.setShooting(false);
+//		me.setShooting(false);
 		if (keyControl.isPressed(KeyEvent.VK_LEFT)) {
 			me.setDirection(false);
 			me.walk(-1);
@@ -383,17 +383,17 @@ public class Court extends JPanel implements Runnable {
 			
 			
 			
-			if (barCounter == 1) {
-				spawnNewBall();
-			}
+//			if (barCounter == 1) {
+//				spawnNewBall();
+//			}
 			
 			
 
 			
 			
-			if(ball == null) {
-				paused = true;
-			}
+//			if(ball == null) {
+//				paused = true;
+//			}
 			
 			
 			
@@ -465,11 +465,14 @@ public class Court extends JPanel implements Runnable {
 			}
 
 			if (ball != null) {
-				if (ball.isOnGround()) {
+				if (ball.isInAir()) {
+					ball.block(me, 300);
+				} else if (ball.isOnGround()) {
 					ball.act(me, 300);
-				} else if (me.hasBall()) {
+				} 
+				if (me.hasBall() || me.isShooting()) {
 					ball.act(me, 300);
-				}
+				} 
 			}
 
 			me.act(obstacles, null);
