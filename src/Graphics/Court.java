@@ -48,7 +48,7 @@ public class Court extends JPanel implements Runnable {
 	private int barCounter;
 	private boolean paused = false;
 	private boolean stats = false;
-	private boolean iPaused;
+	private boolean iPaused = false;
 	private int timesPaused = 0;
 	private int pauseTime;
 	
@@ -270,6 +270,7 @@ public class Court extends JPanel implements Runnable {
 		if (keyControl.isPressed(KeyEvent.VK_UP) && barCounter >35) {
 			me.jump();
 			barCounter = 5;
+			
 		}
 
 		if (keyControl.isPressed(KeyEvent.VK_SHIFT) && dashCounter >0) {
@@ -304,6 +305,9 @@ public class Court extends JPanel implements Runnable {
 			
 		}
 	}
+		
+		
+		
 		
 		if(keyControl.isPressed(KeyEvent.VK_ESCAPE) && pauseCounter>0 && timesPaused<6 &&(ball == null || ball.getDribbling())) {
 			timesPaused++;
@@ -375,7 +379,7 @@ public class Court extends JPanel implements Runnable {
 			stopCounter++;
 			dashCounter++;
 			shotCounter++;
-			pauseTime++;
+			
 			
 			
 			
@@ -385,23 +389,14 @@ public class Court extends JPanel implements Runnable {
 			
 			
 
-			if(pauseTime > 10 && iPaused == true) {
-				pauseTime=0;
-				timesPaused++;
-				paused = false;
-				iPaused = false;
-				ball = new Ball((int)x, (int)y, 20, 20, "TestBall", myBallRef.getKey());
-			}else {
+			
 			
 			if(ball == null) {
 				paused = true;
 			}
 			
-			if(ball != null && paused == true) {
-				paused = false;
-			}
 			
-			}
+			
 			
 			
 			
@@ -441,6 +436,22 @@ public class Court extends JPanel implements Runnable {
 				me.regenerate();
 			}
 			}
+			
+			pauseTime++;
+			
+			if(ball != null && paused == true) {
+				paused = false;
+			}
+			
+			if(pauseTime > 750 && iPaused ) {
+				pauseTime=0;
+				timesPaused++;
+				paused = false;
+				iPaused = false;
+				ball = new Ball((int)x, (int)y, 20, 20, "TestBall", myBallRef.getKey());
+			}
+			
+			
 			enableKeys();
 
 			for (Player p : players) {
