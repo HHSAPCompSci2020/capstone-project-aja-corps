@@ -73,7 +73,7 @@ public class Player extends MovingImage {
 		onASurface = false;
 		gravity = 0.7;
 		friction = .85;
-		jumpStrength = 20;
+		jumpStrength = 10;
 		this.username = username;
 		this.uniqueID = uniqueID;
 		dataUpdated = false;
@@ -580,7 +580,10 @@ public class Player extends MovingImage {
 	 * @post shooting state of the player is updated as well as energy is decreased
 	 */
 	public void shoot() {
+		
+		
 		if (energy > 0) {
+	
 			shots++;
 			this.shooting = true;
 			

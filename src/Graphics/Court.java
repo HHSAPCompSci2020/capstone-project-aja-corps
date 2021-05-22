@@ -48,6 +48,12 @@ public class Court extends JPanel implements Runnable {
 	private int barCounter;
 	private boolean paused = false;
 	private boolean stats = false;
+	private boolean iPaused;
+	private int timesPaused = 0;
+	private int pauseTime;
+	
+	private double x;
+	private double y;
 
 	
 	private int score;
@@ -148,6 +154,9 @@ public class Court extends JPanel implements Runnable {
 			g.drawString(" Click esc to return to the game" , 300, 160);
 			g.drawString(" Click s to return to see your statistics" , 285, 180);
 			
+			if(!iPaused)
+			g.drawString("Your Opponent Paused the Game", 305, 60);
+			
 			if(stats) {
 				
 				g.drawString(" type 1 if you are shooting on the left hoop, and type 2 if you are shooting on the right hoop" , 104, 200);
@@ -161,7 +170,7 @@ public class Court extends JPanel implements Runnable {
 					
 					arr = scoreBoard.statString();
 		
-						
+					
 					g.drawString(arr[0], 100, 220);
 					g.drawString(arr[1], 250, 240);
 					g.drawString(arr[2], 200, 260);
@@ -258,7 +267,7 @@ public class Court extends JPanel implements Runnable {
 			me.walk(1);
 		}
 
-		if (keyControl.isPressed(KeyEvent.VK_UP) && barCounter >25) {
+		if (keyControl.isPressed(KeyEvent.VK_UP) && barCounter >35) {
 			me.jump();
 			barCounter = 5;
 		}
@@ -276,7 +285,7 @@ public class Court extends JPanel implements Runnable {
 			dashCounter = -10;
 		}
 
-		if (keyControl.isPressed(KeyEvent.VK_SPACE) && shotCounter>0 && me.hasBall()) {
+		if (keyControl.isPressed(KeyEvent.VK_SPACE) && shotCounter>0 && ball.getDribbling()) {
 
 			if (me.getEnergy() >0) {
 				timeCounter=0;
@@ -292,13 +301,45 @@ public class Court extends JPanel implements Runnable {
 
 		if (keyControl.isPressed(KeyEvent.VK_ENTER)) {
 			spawnNewBall();
+			
 		}
 	}
 		
-		if(keyControl.isPressed(KeyEvent.VK_ESCAPE) && pauseCounter>0) {
+		if(keyControl.isPressed(KeyEvent.VK_ESCAPE) && pauseCounter>0 && timesPaused<6 &&(ball == null || ball.getDribbling())) {
+			timesPaused++;
+			pauseTime = 0;
+			
+			
+			
+			if(paused && iPaused == false) {
+				return;
+			}
+			
+			
 			paused = !paused;
+			iPaused =!iPaused;
+			
+			
+			if(ball!=null) {
+				 x = ball.getCenterX();
+				 y = ball.getCenterY();
+			}
+			
+			if(iPaused) {
+				
+				ball = null;
+			}
+			
+			
+			
+			if(!iPaused && ball == null) {
+				ball = new Ball((int)x, (int)y, 20, 20, "TestBall", myBallRef.getKey());
+			}
 			pauseCounter = -10;
 			stats = false;
+			
+			
+			
 		}
 		
 		if(keyControl.isPressed(KeyEvent.VK_S) && paused) {
@@ -334,28 +375,55 @@ public class Court extends JPanel implements Runnable {
 			stopCounter++;
 			dashCounter++;
 			shotCounter++;
+			pauseTime++;
+			
+			
+			
+			if (barCounter == 1) {
+				spawnNewBall();
+			}
+			
+			
+
+			if(pauseTime > 10 && iPaused == true) {
+				pauseTime=0;
+				timesPaused++;
+				paused = false;
+				iPaused = false;
+				ball = new Ball((int)x, (int)y, 20, 20, "TestBall", myBallRef.getKey());
+			}else {
+			
+			if(ball == null) {
+				paused = true;
+			}
+			
+			if(ball != null && paused == true) {
+				paused = false;
+			}
+			
+			}
+			
+			
 			
 
 			if (me.getPower() == false) {
 				stopCounter = 0;
 			}
 //
-//			if (barCounter == 1) {
-//				me.spawnPowerup();
-//			}
+			if (barCounter == 1) {
+				me.spawnPowerup();
+			}
 //
-//			if (powerCounter % 1500 == 0) {
-//				me.spawnPowerup();
+			if (powerCounter % 1500 == 0) {
+				me.spawnPowerup();
 //
-//			}
+			}
 
 			if (stopCounter == 300) {
 				me.powerOff();
 			}
 
-//			if (barCounter == 1) {
-//				spawnNewBall();
-//			}
+			
 
 			if(me.getEnergy()==0) {
 				me.updateState(0);
