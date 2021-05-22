@@ -31,6 +31,7 @@ public class Player extends MovingImage {
 	private int score;
 	private boolean intersectsPlayer;
 	private boolean stolen;
+	private boolean ballInAir;
 
 	private boolean right = true;
 	private boolean shooting;
@@ -75,7 +76,7 @@ public class Player extends MovingImage {
 		onASurface = false;
 		gravity = 0.7;
 		friction = .85;
-		jumpStrength = 12;
+		jumpStrength = 17;
 		this.username = username;
 		this.uniqueID = uniqueID;
 		dataUpdated = false;
@@ -625,7 +626,7 @@ public class Player extends MovingImage {
 	 * @post shooting state of the player is updated as well as energy is decreased
 	 */
 	public void shoot() {
-		
+		ballInAir = true;
 		
 		if (energy > 0) {
 	

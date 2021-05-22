@@ -490,11 +490,15 @@ public class Court extends JPanel implements Runnable {
 
 			if (ball != null) {
 				if (ball.isInAir()) {
-					ball.block(me, 300);
+					if (!players.get(0).hasBall()) {
+//						System.out.println("Blocking!");
+						ball.block(me, 300);
+					}
 				} else if (ball.isOnGround()) {
 					ball.act(me, 300);
 				}
-				if (me.hasBall() || me.isShooting()) {
+				if ((me.hasBall() || ball.isShooting()) && !players.get(0).hasBall()) {
+//					System.out.println("Has ball or shootin!");
 					ball.act(me, 300);
 				}
 			}
