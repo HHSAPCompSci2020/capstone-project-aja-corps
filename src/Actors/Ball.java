@@ -49,6 +49,9 @@ public class Ball extends MovingImage {
 	
 	public void block(Player p, double floorY) {
 		if (this.intersects(p) && inAir) {
+			if (playerDribbling != null) {
+				playerDribbling.setShooting(false);
+			}
 			p.setHasBall(true);
 			this.setPlayer(p);
 			this.setDribbling(true);
