@@ -231,10 +231,27 @@ public class Ball extends MovingImage {
 			x = shotx;
 			y = shoty;
 			dribbling = false;
-			if (playerDribbling.getDirection())
-				xVelocity = 5;
-			else
-				xVelocity = -5;
+			
+			if (playerDribbling.getDirection()) {
+				if (shotx < 275)
+					xVelocity = 6;
+				else if (shotx >= 275 && shotx < 382)
+					xVelocity = 4;
+				else if (shotx >= 382 && shotx < 487)
+					xVelocity = 3;
+				else if (shotx >= 487)
+					xVelocity = 1;
+			} else {
+				if (shotx < 275)
+					xVelocity = -1;
+				else if (shotx >= 275 && shotx < 382)
+					xVelocity = -3;
+				else if (shotx >= 382 && shotx < 487)
+					xVelocity = -4;
+				else if (shotx >= 487)
+					xVelocity = -6;
+			}
+			
 			calculateParabola(hoopx, hoopy);
 			shooting = true;
 		}
