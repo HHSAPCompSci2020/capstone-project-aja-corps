@@ -391,9 +391,7 @@ public class Court extends JPanel implements Runnable {
 
 			
 			
-			if(ball == null) {
-				paused = true;
-			}
+			
 			
 			
 			

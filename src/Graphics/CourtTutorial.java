@@ -51,6 +51,8 @@ public class CourtTutorial extends JPanel implements Runnable {
 	private boolean dashed;
 	private JLabel instructions;
 	private boolean powerUp;
+	private boolean quit = true;
+	private boolean ePressed;
 
 	private int score;
 	private boolean chose;
@@ -112,9 +114,12 @@ public class CourtTutorial extends JPanel implements Runnable {
 		if (paused) {
 			g.drawImage(pauseImage, 0, 0, this);
 			g.setColor(Color.white);
-			g.drawString(" Press ESC to return to the game and E to exit", 300, 160);
-			g.drawString(" Press S to return to see your statistics", 285, 180);
-//			g.drawString(" Press e to exit the game", 200, 200);
+			g.drawString(" Press ESC to return to the game and E to exit", 260, 160);
+		//	g.drawString(" Press S to see your statistics", 285, 180);
+			
+			if(ePressed) {
+			g.drawString(" Thanks for playing the tutorial! Now that you know how to play the game, you can relaunch the game and begin online play!", 5, 200);
+			}
 
 			if (stats) {
 
@@ -241,7 +246,7 @@ public class CourtTutorial extends JPanel implements Runnable {
 				dashCounter = -10;
 			}
 
-			if (keyControl.isPressed(KeyEvent.VK_SPACE) && shotCounter > 0) {
+			if (keyControl.isPressed(KeyEvent.VK_SPACE) && shotCounter > 0 && ball.getDribbling()) {
 
 				shot = true;
 
@@ -269,11 +274,11 @@ public class CourtTutorial extends JPanel implements Runnable {
 		}
 
 		if (keyControl.isPressed(KeyEvent.VK_S) && paused) {
-			stats = true;
+	//		stats = true;
 		}
 		
 		if (keyControl.isPressed(KeyEvent.VK_E) && paused) {
-			stats = true;
+		//	stats = true;
 		}
 
 		if (keyControl.isPressed(KeyEvent.VK_1) && stats) {
@@ -285,6 +290,13 @@ public class CourtTutorial extends JPanel implements Runnable {
 			score = 2;
 			chose = true;
 		}
+		
+		if (keyControl.isPressed(KeyEvent.VK_E) && paused) {
+			ePressed = true;
+			quit =false;
+		}
+		
+		
 	}
 
 	/**
@@ -294,7 +306,7 @@ public class CourtTutorial extends JPanel implements Runnable {
 	 */
 	public void run() {
 
-		while (true) { // Modify this to allow quitting
+		while (quit) { // Modify this to allow quitting
 			long startTime = System.currentTimeMillis();
 			pauseCounter++;
 			if (moveLeftAndRight) {
