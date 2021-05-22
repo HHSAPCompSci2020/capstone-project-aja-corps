@@ -21,6 +21,7 @@ import Actors.Ball;
 import Actors.BallData;
 import Actors.Player;
 import Actors.PlayerData;
+import java.util.Timer;
 
 import java.util.*;
 
@@ -39,7 +40,7 @@ public class Court extends JPanel implements Runnable {
 
 	private Rectangle screenRect;
 	private int timeCounter;
-	//private int barCounter;
+	// private int barCounter;
 	private int powerCounter;
 	private int stopCounter;
 	private int pauseCounter;
@@ -51,11 +52,19 @@ public class Court extends JPanel implements Runnable {
 	private boolean iPaused = false;
 	private int timesPaused = 0;
 	private int pauseTime;
-	
+	private Timer clock;
+	protected long startTime;
+
 	private double x;
 	private double y;
 
-	
+	private long initialTime;
+	private long currentTime;
+	private int minutes;
+	private int seconds;
+
+	private boolean quit = false;
+
 	private int score;
 	private boolean chose;
 	// private Ball ball;
@@ -99,12 +108,13 @@ public class Court extends JPanel implements Runnable {
 			e.printStackTrace();
 		}
 
+		clock = new Timer();
 		keyControl = new KeyHandler();
 		setBackground(Color.CYAN);
 		screenRect = new Rectangle(0, 0, DRAWING_WIDTH, DRAWING_HEIGHT);
 		obstacles = new ArrayList<Shape>();
 		obstacles.add(new Rectangle(0, 300, 800, 22));
-
+		initialTime = System.currentTimeMillis();
 		this.roomRef = roomRef;
 		currentlySending = false;
 
@@ -143,92 +153,107 @@ public class Court extends JPanel implements Runnable {
 	 * @param Graphics g
 	 */
 	public void paintComponent(Graphics g) {
-	
-		
+
 		Graphics2D g2 = (Graphics2D) g;
-		
-		
-		if(paused) {
+
+		if (paused) {
 			g.drawImage(pauseImage, 0, 0, this);
 			g.setColor(Color.white);
-			g.drawString(" Click esc to return to the game" , 300, 160);
-			g.drawString(" Click s to return to see your statistics" , 285, 180);
-			
-			if(!iPaused)
-			g.drawString("Your Opponent Paused the Game", 305, 60);
-			
-			if(stats) {
-				
-				g.drawString(" type 1 if you are shooting on the left hoop, and type 2 if you are shooting on the right hoop" , 104, 200);
-				
-				
-				if(chose) {
-					
-					scoreBoard = new PlayerStats(me.getShots(), me.getDashes(), me.getWalks(), me.getJumps(), score);
-					String [] arr;
-					arr = new String [3];
-					
+			g.drawString(" Click esc to return to the game", 300, 160);
+			g.drawString(" Click s to return to see your statistics", 285, 180);
+
+			if (!iPaused)
+				g.drawString("Your Opponent Paused the Game", 305, 60);
+
+			if (stats) {
+
+				g.drawString(
+						" type 1 if you are shooting on the left hoop, and type 2 if you are shooting on the right hoop",
+						104, 200);
+
+				if (chose) {
+
+					scoreBoard = new PlayerStats(me.getShots(), me.getDashes(), me.getWalks(), me.getJumps(), score,
+							startTime);
+					String[] arr;
+					arr = new String[3];
+
 					arr = scoreBoard.statString();
-		
-					
+
 					g.drawString(arr[0], 100, 220);
 					g.drawString(arr[1], 250, 240);
 					g.drawString(arr[2], 200, 260);
 				}
 			}
-			
-			
-			
-		}
-		
-		
-		if(!paused) {
-			
 
-		int width = getWidth();
-		int height = getHeight();
-
-		double ratioX = (double) width / DRAWING_WIDTH;
-		double ratioY = (double) height / DRAWING_HEIGHT;
-
-		AffineTransform at = g2.getTransform();
-		g2.scale(ratioX, ratioY);
-
-		g.setColor(new Color(205, 102, 29));
-		for (Shape s : obstacles) {
-			g2.fill(s);
-		}
-		
-		g.drawImage(backgroundImage, 0, 0, this);
-
-		g.drawRect(130, 140, 20, 20); // ball class needs this for debugging, KEEP THIS IN
-		g.drawRect(640, 140, 20, 20);
-		g.drawLine(0, 50, width, 50);
-		for (int i = 0; i < players.size(); i++) {
-			players.get(i).draw(g2, this);
 		}
 
-		// for (int i = 0; i < balls.size(); i++) {
-		// balls.get(i).draw(g2, this);
-		// }
+		if (!paused) {
 
-		if (ball != null) {
-			ball.draw(g2, this);
+			currentTime = System.currentTimeMillis();
+			int width = getWidth();
+			int height = getHeight();
+
+			double ratioX = (double) width / DRAWING_WIDTH;
+			double ratioY = (double) height / DRAWING_HEIGHT;
+
+			AffineTransform at = g2.getTransform();
+			g2.scale(ratioX, ratioY);
+
+			g.setColor(new Color(205, 102, 29));
+			for (Shape s : obstacles) {
+				g2.fill(s);
+			}
+
+			g.drawImage(backgroundImage, 0, 0, this);
+
+			seconds = (int) (currentTime - initialTime) / 1000 - (59 * minutes);
+
+			if (seconds == 59 && timeCounter % 20 == 0) {
+				minutes++;
+				seconds = 0;
+			}
+
+			if (seconds < 10) {
+				g.drawString(minutes + " : " + "0" + seconds, 379, 30);
+			} else {
+
+				g.drawString(minutes + " : " + seconds, 379, 30);
+			}
+
+			if (minutes == 15) {
+				g.drawString(" Time is up, game over", 325, 258);
+				// paused = true;
+				quit = true;
+			}
+
+			g.drawRect(130, 140, 20, 20); // ball class needs this for debugging, KEEP THIS IN
+			g.drawRect(640, 140, 20, 20);
+			g.drawLine(0, 50, width, 50);
+			for (int i = 0; i < players.size(); i++) {
+				players.get(i).draw(g2, this);
+			}
+
+			// for (int i = 0; i < balls.size(); i++) {
+			// balls.get(i).draw(g2, this);
+			// }
+
+			if (ball != null) {
+				ball.draw(g2, this);
+			}
+
+			me.draw(g2, this);
+			g2.drawString(Integer.toString(me.getScore()), 370, 68);
+			for (int i = 0; i < players.size(); i++) {
+				g.drawString(Integer.toString(players.get(i).getScore()), 415, 68);
+			}
+			// scoreBoard.draw(g2);
+			g2.setTransform(at);
+
+			// TODO Add any custom drawings here
+
 		}
 
-		me.draw(g2, this);
-		g2.drawString(Integer.toString(me.getScore()), 370, 68);
-		for (int i = 0; i < players.size(); i++) {
-			g.drawString(Integer.toString(players.get(i).getScore()), 415, 68);
-		}
-//		scoreBoard.draw(g2);
-		g2.setTransform(at);
-
-		// TODO Add any custom drawings here
-		
-		
-	}
-		
 	}
 
 	/**
@@ -253,109 +278,99 @@ public class Court extends JPanel implements Runnable {
 	 * 
 	 */
 	public void enableKeys() {
-	
-		if(paused == false) {
-		
-//		me.setShooting(false);
-		if (keyControl.isPressed(KeyEvent.VK_LEFT)) {
-			me.setDirection(false);
-			me.walk(-1);
-		}
 
-		if (keyControl.isPressed(KeyEvent.VK_RIGHT)) {
-			me.setDirection(true);
-			me.walk(1);
-		}
+		if (paused == false) {
 
-		if (keyControl.isPressed(KeyEvent.VK_UP) && barCounter >35) {
-			me.jump();
-			barCounter = 5;
-			
-		}
-
-		if (keyControl.isPressed(KeyEvent.VK_SHIFT) && dashCounter >0) {
-			if(me.getEnergy()>0) {
-				timeCounter=0;
+			// me.setShooting(false);
+			if (keyControl.isPressed(KeyEvent.VK_LEFT)) {
+				me.setDirection(false);
+				me.walk(-1);
 			}
-			
-			if (players.size() > 0) {
-				me.dash(ball, players.get(0));
-			} else {
-				me.dash(ball, null);
+
+			if (keyControl.isPressed(KeyEvent.VK_RIGHT)) {
+				me.setDirection(true);
+				me.walk(1);
 			}
-			dashCounter = -10;
-		}
 
-		if (keyControl.isPressed(KeyEvent.VK_SPACE) && shotCounter>0 && ball.getDribbling()) {
+			if (keyControl.isPressed(KeyEvent.VK_UP) && barCounter > 35) {
+				me.jump();
+				barCounter = 5;
 
-			if (me.getEnergy() >0) {
-				timeCounter=0;
-				me.shoot();
-				if (me.getDirection())
-					ball.shoot(640, 140);
-				else
-					ball.shoot(130, 140);
-				
 			}
-			shotCounter = -10;
+
+			if (keyControl.isPressed(KeyEvent.VK_SHIFT) && dashCounter > 0) {
+				if (me.getEnergy() > 0) {
+					timeCounter = 0;
+				}
+
+				if (players.size() > 0) {
+					me.dash(ball, players.get(0));
+				} else {
+					me.dash(ball, null);
+				}
+				dashCounter = -10;
+			}
+
+			if (keyControl.isPressed(KeyEvent.VK_SPACE) && shotCounter > 0 && ball.getDribbling()) {
+
+				if (me.getEnergy() > 0) {
+					timeCounter = 0;
+					me.shoot();
+					if (me.getDirection())
+						ball.shoot(640, 140);
+					else
+						ball.shoot(130, 140);
+
+				}
+				shotCounter = -10;
+			}
+
+			if (keyControl.isPressed(KeyEvent.VK_ENTER)) {
+				spawnNewBall();
+
+			}
 		}
 
-		if (keyControl.isPressed(KeyEvent.VK_ENTER)) {
-			spawnNewBall();
-			
-		}
-	}
-		
-		
-		
-		
-		if(keyControl.isPressed(KeyEvent.VK_ESCAPE) && pauseCounter>0 && timesPaused<6 &&(ball == null || ball.getDribbling())) {
+		if (keyControl.isPressed(KeyEvent.VK_ESCAPE) && pauseCounter > 0 && timesPaused < 6
+				&& (ball == null || ball.getDribbling())) {
 			timesPaused++;
 			pauseTime = 0;
-			
-			
-			
-			if(paused && iPaused == false) {
+
+			if (paused && iPaused == false) {
 				return;
 			}
-			
-			
+
 			paused = !paused;
-			iPaused =!iPaused;
-			
-			
-			if(ball!=null) {
-				 x = ball.getCenterX();
-				 y = ball.getCenterY();
+			iPaused = !iPaused;
+
+			if (ball != null) {
+				x = ball.getCenterX();
+				y = ball.getCenterY();
 			}
-			
-			if(iPaused) {
-				
+
+			if (iPaused) {
+
 				ball = null;
 			}
-			
-			
-			
-			if(!iPaused && ball == null) {
-				ball = new Ball((int)x, (int)y, 20, 20, "TestBall", myBallRef.getKey());
+
+			if (!iPaused && ball == null) {
+				ball = new Ball((int) x, (int) y, 20, 20, "TestBall", myBallRef.getKey());
 			}
 			pauseCounter = -10;
 			stats = false;
-			
-			
-			
+
 		}
-		
-		if(keyControl.isPressed(KeyEvent.VK_S) && paused) {
-				stats = true;
+
+		if (keyControl.isPressed(KeyEvent.VK_S) && paused) {
+			stats = true;
 		}
-		
-		if(keyControl.isPressed(KeyEvent.VK_1) && stats) {
+
+		if (keyControl.isPressed(KeyEvent.VK_1) && stats) {
 			score = 1;
 			chose = true;
 		}
-		
-		if(keyControl.isPressed(KeyEvent.VK_2) && stats) {
+
+		if (keyControl.isPressed(KeyEvent.VK_2) && stats) {
 			score = 2;
 			chose = true;
 		}
@@ -368,90 +383,70 @@ public class Court extends JPanel implements Runnable {
 	 */
 	public void run() {
 
-		while (true) { // Modify this to allow quitting
-			long startTime = System.currentTimeMillis();
+		while (!quit) { // Modify this to allow quitting
+			startTime = System.currentTimeMillis();
 			pauseCounter++;
-			if(paused == false) {
-			// System.out.println(me.hasBall());
-			timeCounter++;
-			barCounter++;
-			powerCounter++;
-			stopCounter++;
-			dashCounter++;
-			shotCounter++;
-			
-			
-			
-			
-//			if (barCounter == 1) {
-//				spawnNewBall();
-//			}
-			
-			
+			if (paused == false) {
+				// System.out.println(me.hasBall());
+				timeCounter++;
+				barCounter++;
+				powerCounter++;
+				stopCounter++;
+				dashCounter++;
+				shotCounter++;
 
-			
-			
-//			if(ball == null) {
-//				paused = true;
-//			}
-			
-			
-			
-			
-			
-			
+				// if (barCounter == 1) {
+				// spawnNewBall();
+				// }
 
-			if (me.getPower() == false) {
-				stopCounter = 0;
-			}
-//
-			if (barCounter == 1) {
-				me.spawnPowerup();
-			}
-//
-			if (powerCounter % 1500 == 0) {
-				me.spawnPowerup();
-//
-			}
+				if (me.getPower() == false) {
+					stopCounter = 0;
+				}
+				//
+				if (barCounter == 1) {
+					me.spawnPowerup();
+				}
+				//
+				if (powerCounter % 1500 == 0) {
+					me.spawnPowerup();
+					//
+				}
 
-			if (stopCounter == 300) {
-				me.powerOff();
-			}
+				if (stopCounter == 300) {
+					me.powerOff();
+				}
 
-			
+				if (me.getEnergy() == 0) {
+					me.updateState(0);
+				}
 
-			if(me.getEnergy()==0) {
-				me.updateState(0);
-			}
-			
-			if(me.getEnergy()==1) {
-				me.updateState(1);
-			}
-			
-			if(me.getEnergy()==2) {
-				me.updateState(2);
+				if (me.getEnergy() == 1) {
+					me.updateState(1);
+				}
+
+				if (me.getEnergy() == 2) {
+					me.updateState(2);
+				}
+
+				if (timeCounter % 180 == 0) {
+					me.regenerate();
+				}
 			}
 
-			if (timeCounter % 180 == 0) {
-				me.regenerate();
-			}
-			}
-			
 			pauseTime++;
-			
-			if(ball != null && paused == true) {
+
+			if (ball != null && paused == true) {
 				paused = false;
 			}
-			
-			if(pauseTime > 750 && iPaused ) {
-				pauseTime=0;
+
+			if (pauseTime > 750 && iPaused) {
+				pauseTime = 0;
 				timesPaused++;
 				paused = false;
 				iPaused = false;
-				ball = new Ball((int)x, (int)y, 20, 20, "TestBall", myBallRef.getKey());
+				ball = new Ball((int) x, (int) y, 20, 20, "TestBall", myBallRef.getKey());
 			}
-			
-			
+
 			enableKeys();
 
 			for (Player p : players) {
@@ -469,10 +464,10 @@ public class Court extends JPanel implements Runnable {
 					ball.block(me, 300);
 				} else if (ball.isOnGround()) {
 					ball.act(me, 300);
-				} 
+				}
 				if (me.hasBall() || me.isShooting()) {
 					ball.act(me, 300);
-				} 
+				}
 			}
 
 			me.act(obstacles, null);
@@ -502,11 +497,9 @@ public class Court extends JPanel implements Runnable {
 					});
 				}
 			}
-			
-			
 
 			repaint();
-			
+
 			scoreBoard = new PlayerStats();
 
 			long waitTime = 17 - (System.currentTimeMillis() - startTime);
