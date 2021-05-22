@@ -16,6 +16,7 @@ public class PlayerStats {
 	private int walknum;
 	private int jumpcount;
 	private int score;
+	private boolean paused;
 
 	/**
 	 * default constructor
@@ -42,6 +43,7 @@ public class PlayerStats {
 		this.walknum = walknum;
 		this.jumpcount = jumpcount;
 		this.score = score;
+		this.paused = true;
 		
 	}
 	/**

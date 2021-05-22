@@ -55,6 +55,8 @@ public class Ball extends MovingImage {
 	 *       booleans are changed according to action
 	 */
 	public void act(Player p, double floorY) {
+	
+		
 		if (this.intersects(p) && onGround) {
 			p.setHasBall(true);
 			this.setPlayer(p);
@@ -365,6 +367,13 @@ public class Ball extends MovingImage {
 	 */
 	public boolean isDataChanged() {
 		return dataUpdated;
+	}
+	/**
+	 * 
+	 * @return returns true if the ball is being dribbled
+	 */
+	public boolean getDribbling() {
+		return dribbling;
 	}
 
 	/**
