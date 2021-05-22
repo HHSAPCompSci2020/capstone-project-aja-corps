@@ -75,7 +75,7 @@ public class Player extends MovingImage {
 		onASurface = false;
 		gravity = 0.7;
 		friction = .85;
-		jumpStrength = 10;
+		jumpStrength = 15;
 		this.username = username;
 		this.uniqueID = uniqueID;
 		dataUpdated = false;
