@@ -242,8 +242,8 @@ public class Ball extends MovingImage {
 //			playerDribbling = null;
 			playerDribbling.setHasBall(false);
 			inAir = true;
-//			x += xVelocity;
-			x += 0.5;
+			x += xVelocity;
+//			x += 0.5;
 			y = f(x);
 		}
 
