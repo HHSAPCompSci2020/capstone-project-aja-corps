@@ -1,6 +1,7 @@
 package Actors;
 
 import Data.BallData;
+import Graphics.Home;
 import Graphics.PlayerStats;
 
 /**
@@ -180,6 +181,7 @@ public class Ball extends MovingImage {
 			bounceCount++;
 			y = 270;
 			yVelocity = -(yVelocity * 0.7);
+			Home.soundEffect(0);
 			// System.out.println(yVelocity);
 		} else {
 			yVelocity += CONSTANT;

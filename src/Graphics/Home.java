@@ -12,11 +12,16 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.DatabaseReference.CompletionListener;
 
-public class Home extends JPanel {
+import jay.jaysound.JayLayer;
+import jay.jaysound.JayLayerListener;
+
+public class Home extends JPanel implements JayLayerListener{
 	private JButton connectButton;
 	private JButton newRoomButton;
 	private JFrame theWindow;
 	private boolean outOfTutorial;
+	
+	private static JayLayer sound;
 	
 	public Home() {
 		ActionHandler actionEventHandler = new ActionHandler();
@@ -26,6 +31,16 @@ public class Home extends JPanel {
 		connectButton.addActionListener(actionEventHandler);
 		this.add(newRoomButton);
 		this.add(connectButton);
+		
+		String[] soundEffects = new String[] {"bounce.mp3", "jump.mp3", "steal.mp3", "swish.mp3", "rim.mp3", "crowd.mp3", "scoreboard.mp3"};
+		String[] songs = new String[] {"track1.mp3", "track2.mp3", "track3.mp3", "track4.mp3"};
+		
+		sound = new JayLayer("audio/","audio/",false);
+		sound.addPlayList();
+		sound.addSongs(0,songs);
+		sound.addSoundEffects(soundEffects);
+		sound.changePlayList(0);
+		sound.addJayLayerListener(this);
 	}
 	
 	public void paintComponent(Graphics g) {
@@ -74,5 +89,33 @@ public class Home extends JPanel {
 				playOnline();
 			}
 		}
+	}
+
+	public static void soundEffect(int i) {
+		sound.playSoundEffect(i);
+	}
+	
+	@Override
+	public void musicStarted() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
+	public void musicStopped() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void playlistEnded() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void songEnded() {
+		// TODO Auto-generated method stub
+		
 	}
 }
