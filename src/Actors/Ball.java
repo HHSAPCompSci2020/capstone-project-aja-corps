@@ -60,6 +60,7 @@ public class Ball extends MovingImage {
 			this.setDribbling(true);
 			inAir = false;
 			onGround = false;
+			y = 280;
 //			this.dataUpdated = true;
 		}
 	}
