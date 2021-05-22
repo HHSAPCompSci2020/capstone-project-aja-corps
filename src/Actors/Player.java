@@ -7,6 +7,7 @@ import java.util.*;
 
 import javax.swing.ImageIcon;
 
+import Data.PlayerData;
 import processing.core.PShape;
 
 /**
@@ -677,6 +678,7 @@ public class Player extends MovingImage {
 	public void draw(Graphics g, ImageObserver io) {
 //		System.out.println((int) x + " " + (int) y);
 		// g.drawImage(img, x, y, width, height, observer)
+		g.setColor(Color.white);
 		g.drawString(this.username, (int) x, (int) y);
 
 		if (speedPowerup) {

@@ -1,5 +1,7 @@
 package Graphics;
 
+import java.applet.Applet;
+import java.applet.AudioClip;
 import java.awt.*;
 
 import java.awt.event.*;
@@ -9,6 +11,8 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.*;
 
 import com.google.firebase.database.ChildEventListener;
@@ -18,15 +22,19 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.DatabaseReference.CompletionListener;
 
 import Actors.Ball;
-import Actors.BallData;
 import Actors.Player;
-import Actors.PlayerData;
+import Data.BallData;
+import Data.PlayerData;
+import Data.SoundEffect;
+
 import java.util.Timer;
 
 import java.util.*;
 
 import java.util.Queue;
 import java.io.Serializable;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 /**
  * Represents the court for the game
@@ -80,6 +88,7 @@ public class Court extends JPanel implements Runnable {
 	private ArrayList<Player> players;
 	private ArrayList<Ball> balls;
 	private PlayerStats scoreBoard;
+	private SoundEffect data;
 
 	// Database stuff
 	private DatabaseReference roomRef; // This is the database entry for the whole room
@@ -99,6 +108,7 @@ public class Court extends JPanel implements Runnable {
 	 */
 	public Court(DatabaseReference roomRef, String playerName, int playerType) {
 		super();
+//		data = new SoundEffect();
 
 		try {
 			backgroundImage = ImageIO.read(new File("img/court.jpg"));
@@ -215,9 +225,10 @@ public class Court extends JPanel implements Runnable {
 			}
 
 			if (seconds < 10) {
+				g.setColor(Color.white);
 				g.drawString(minutes + " : " + "0" + seconds, 379, 30);
 			} else {
-
+				g.setColor(Color.white);
 				g.drawString(minutes + " : " + seconds, 379, 30);
 			}
 
@@ -227,9 +238,9 @@ public class Court extends JPanel implements Runnable {
 				quit = true;
 			}
 
-			g.drawRect(130, 140, 20, 20); // ball class needs this for debugging, KEEP THIS IN
-			g.drawRect(640, 140, 20, 20);
-			g.drawLine(0, 50, width, 50);
+//			g.drawRect(130, 140, 20, 20); // ball class needs this for debugging, KEEP THIS IN
+//			g.drawRect(640, 140, 20, 20);
+//			g.drawLine(0, 50, width, 50);
 			for (int i = 0; i < players.size(); i++) {
 				players.get(i).draw(g2, this);
 			}
@@ -384,6 +395,24 @@ public class Court extends JPanel implements Runnable {
 	public void run() {
 
 		while (!quit) { // Modify this to allow quitting
+//			data.playSound();
+//			SoundEffect audioPlayer;
+//			try {
+//				audioPlayer = new SoundEffect("./sounds/swish.wav");
+//				audioPlayer.play();
+//			} catch (UnsupportedAudioFileException e1) {
+//				// TODO Auto-generated catch block
+//				e1.printStackTrace();
+//			} catch (IOException e1) {
+//				// TODO Auto-generated catch block
+//				e1.printStackTrace();
+//			} catch (LineUnavailableException e1) {
+//				// TODO Auto-generated catch block
+//				e1.printStackTrace();
+//			}
+      
+			
+			
 			startTime = System.currentTimeMillis();
 			pauseCounter++;
 			if (paused == false) {

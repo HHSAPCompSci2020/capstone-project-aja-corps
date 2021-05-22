@@ -18,9 +18,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.DatabaseReference.CompletionListener;
 
 import Actors.Ball;
-import Actors.BallData;
 import Actors.Player;
-import Actors.PlayerData;
+import Data.BallData;
+import Data.PlayerData;
 
 import java.util.*;
 

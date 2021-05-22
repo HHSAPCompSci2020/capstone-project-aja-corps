@@ -1,4 +1,4 @@
-package Actors;
+package Data;
 
 import java.util.ArrayList;
 

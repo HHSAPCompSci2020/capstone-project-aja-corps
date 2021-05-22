@@ -1,5 +1,6 @@
 package Actors;
 
+import Data.BallData;
 import Graphics.PlayerStats;
 
 /**
