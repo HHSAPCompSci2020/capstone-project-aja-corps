@@ -63,8 +63,8 @@ public class Court extends JPanel implements Runnable {
 	private Timer clock;
 	protected long startTime;
 
-	private double x;
-	private double y;
+	private double x = 450;
+	private double y = 260;
 
 	private long initialTime;
 	private long currentTime;
@@ -219,7 +219,7 @@ public class Court extends JPanel implements Runnable {
 
 			seconds = (int) (currentTime - initialTime) / 1000 - (59 * minutes);
 
-			if (seconds == 59 && timeCounter % 20 == 0) {
+			if (seconds >= 59 && timeCounter % 20 == 0) {
 				minutes++;
 				seconds = 0;
 			}
