@@ -16,7 +16,7 @@ public class PlayerStats {
 	private int walknum;
 	private int jumpcount;
 	private int score;
-	private boolean paused;
+	private long timePassed;
 
 	/**
 	 * default constructor
@@ -36,14 +36,14 @@ public class PlayerStats {
 	 * @param score if score is 1, left hoop is the scoring hoop, if score =2 right hoop is the soring hoop
 	 */
 	 
-	public PlayerStats(int shots, int dashes, int walknum,  int jumpcount, int score) {
+	public PlayerStats(int shots, int dashes, int walknum,  int jumpcount, int score, long timePassed) {
 
 		this.shots = shots;
 		this.dashes = dashes;
 		this.walknum = walknum;
 		this.jumpcount = jumpcount;
 		this.score = score;
-		this.paused = true;
+		this.timePassed = timePassed;
 		
 	}
 	/**
@@ -102,6 +102,11 @@ public class PlayerStats {
 	 
 	 
 	public void draw(Graphics g)  {
+		
+	
+	
+		
+		
 		if(score1 >9) {
 			g.drawString(Integer.toString(score1), 366, 68);
 			

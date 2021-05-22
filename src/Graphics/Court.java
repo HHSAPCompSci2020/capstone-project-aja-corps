@@ -2,6 +2,7 @@ package Graphics;
 
 import java.awt.*;
 
+
 import java.awt.event.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
@@ -21,6 +22,7 @@ import Actors.Ball;
 import Actors.BallData;
 import Actors.Player;
 import Actors.PlayerData;
+import java.util.Timer;
 
 import java.util.*;
 
@@ -51,9 +53,19 @@ public class Court extends JPanel implements Runnable {
 	private boolean iPaused = false;
 	private int timesPaused = 0;
 	private int pauseTime;
+	private Timer clock;
+	protected long startTime;
 	
 	private double x;
 	private double y;
+	
+	private long initialTime;
+	private long currentTime;
+	private int minutes;
+	private int seconds;
+	
+	private boolean quit = false;
+	
 
 	
 	private int score;
@@ -99,12 +111,13 @@ public class Court extends JPanel implements Runnable {
 			e.printStackTrace();
 		}
 
+		clock = new Timer();
 		keyControl = new KeyHandler();
 		setBackground(Color.CYAN);
 		screenRect = new Rectangle(0, 0, DRAWING_WIDTH, DRAWING_HEIGHT);
 		obstacles = new ArrayList<Shape>();
 		obstacles.add(new Rectangle(0, 300, 800, 22));
-
+		initialTime = System.currentTimeMillis();
 		this.roomRef = roomRef;
 		currentlySending = false;
 
@@ -164,7 +177,7 @@ public class Court extends JPanel implements Runnable {
 				
 				if(chose) {
 					
-					scoreBoard = new PlayerStats(me.getShots(), me.getDashes(), me.getWalks(), me.getJumps(), score);
+					scoreBoard = new PlayerStats(me.getShots(), me.getDashes(), me.getWalks(), me.getJumps(), score, startTime);
 					String [] arr;
 					arr = new String [3];
 					
@@ -184,7 +197,8 @@ public class Court extends JPanel implements Runnable {
 		
 		if(!paused) {
 			
-
+		
+		currentTime = System.currentTimeMillis();
 		int width = getWidth();
 		int height = getHeight();
 
@@ -200,7 +214,29 @@ public class Court extends JPanel implements Runnable {
 		}
 		
 		g.drawImage(backgroundImage, 0, 0, this);
-
+		
+		seconds =(int) (currentTime-initialTime)/1000 -(59*minutes);
+		
+	
+		
+		if(seconds==59 && timeCounter%20==0) {
+			minutes++;
+			seconds=0;
+		}
+			
+		if(seconds<10) {
+			g.drawString(minutes+" : "+"0"+seconds, 379, 30);
+		}else {
+		
+		g.drawString(minutes+" : "+seconds, 379, 30);
+		}
+		
+		if(minutes == 15) {
+			g.drawString(" Time is up, game over", 325, 258);
+		//	paused = true;
+			quit = true;
+		}
+		
 		g.drawRect(130, 140, 20, 20); // ball class needs this for debugging, KEEP THIS IN
 		g.drawRect(640, 140, 20, 20);
 		g.drawLine(0, 50, width, 50);
@@ -368,8 +404,8 @@ public class Court extends JPanel implements Runnable {
 	 */
 	public void run() {
 
-		while (true) { // Modify this to allow quitting
-			long startTime = System.currentTimeMillis();
+		while (!quit) { // Modify this to allow quitting
+			 startTime = System.currentTimeMillis();
 			pauseCounter++;
 			if(paused == false) {
 			// System.out.println(me.hasBall());

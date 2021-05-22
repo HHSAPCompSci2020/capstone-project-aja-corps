@@ -129,7 +129,7 @@ public class CourtTutorial extends JPanel implements Runnable {
 
 				if (chose) {
 
-					scoreBoard = new PlayerStats(me.getShots(), me.getDashes(), me.getWalks(), me.getJumps(), score);
+					scoreBoard = new PlayerStats(me.getShots(), me.getDashes(), me.getWalks(), me.getJumps(), score, 0);
 					String[] arr;
 					arr = new String[3];
 
