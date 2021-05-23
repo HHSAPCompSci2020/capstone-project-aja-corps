@@ -62,7 +62,7 @@ public class FirebaseBackend extends JPanel implements ChildEventListener {
 		roomList = new JList<String>();
 		roomList.setBorder(new EtchedBorder(EtchedBorder.RAISED));
 		cnPanel.add(roomList, BorderLayout.CENTER);
-		JLabel ah = new JLabel("Available Rooms");
+		JLabel ah = new JLabel("Available Games");
 		ah.setHorizontalAlignment(JLabel.CENTER);
 		cnPanel.add(ah, BorderLayout.NORTH);
 		cnPanel.setBorder(new EtchedBorder(EtchedBorder.RAISED));
@@ -70,9 +70,9 @@ public class FirebaseBackend extends JPanel implements ChildEventListener {
 
 		JPanel ePanel = new JPanel();
 		ePanel.setLayout(new GridLayout(1, 5, 15, 15));
-		newRoomButton = new JButton("<html><center>Create<br>A Room</center></html>");
+		newRoomButton = new JButton("<html><center>Create<br>Grame</center></html>");
 		newRoomButton.addActionListener(actionEventHandler);
-		connectButton = new JButton("<html><center>Join<br>Room</center></html>");
+		connectButton = new JButton("<html><center>Join<br>Game</center></html>");
 		connectButton.addActionListener(actionEventHandler);
 
 		ePanel.add(newRoomButton);

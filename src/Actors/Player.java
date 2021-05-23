@@ -499,6 +499,7 @@ public class Player extends MovingImage {
 		p.right = right;
 		p.hasBall = hasBall;
 		p.score = score;
+		p.shooting = shooting;
 		return p;
 	}
 
@@ -516,6 +517,7 @@ public class Player extends MovingImage {
 		this.right = data.right;
 		this.hasBall = data.hasBall;
 		this.score = data.score;
+		this.shooting = data.shooting;
 	}
 
 	/**
@@ -645,6 +647,7 @@ public class Player extends MovingImage {
 	 */
 	public void setShooting(boolean x) {
 		this.shooting = x;
+		dataUpdated = true;
 	}
 
 	/**

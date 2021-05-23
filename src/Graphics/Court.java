@@ -89,6 +89,8 @@ public class Court extends JPanel implements Runnable {
 	private ArrayList<Ball> balls;
 	private PlayerStats scoreBoard;
 	private SoundEffect data;
+	private JLabel instructions;
+	private boolean waiting;
 
 	// Database stuff
 	private DatabaseReference roomRef; // This is the database entry for the whole room
@@ -141,6 +143,10 @@ public class Court extends JPanel implements Runnable {
 
 		if (playerType == 1) {
 			me = new Player(300, 288, playerName, myUserRef.getKey(), false);
+			waiting = true;
+			instructions = new JLabel(
+					"Welcome to Basketball All Stars! Use the left and right arrow keys to move left and right and the up arrow key to jump.");
+			add(instructions);
 		} else {
 			me = new Player(500, 288, playerName, myUserRef.getKey(), false);
 			me.setDirection(false);
@@ -258,8 +264,12 @@ public class Court extends JPanel implements Runnable {
 			for (int i = 0; i < players.size(); i++) {
 				g.drawString(Integer.toString(players.get(i).getScore()), 415, 68);
 			}
-			// scoreBoard.draw(g2);
-			g2.setTransform(at);
+			if (waiting) {
+				g2.setColor(new Color(255, 255, 255));
+				g2.fillRect(0, 0, 800, 30);
+				// scoreBoard.draw(g2);
+				g2.setTransform(at);
+			}
 
 			// TODO Add any custom drawings here
 
@@ -410,9 +420,7 @@ public class Court extends JPanel implements Runnable {
 //				// TODO Auto-generated catch block
 //				e1.printStackTrace();
 //			}
-      
-			
-			
+
 			startTime = System.currentTimeMillis();
 			pauseCounter++;
 			if (paused == false) {
@@ -489,19 +497,44 @@ public class Court extends JPanel implements Runnable {
 			}
 
 			if (ball != null) {
-				if (ball.isInAir()) {
-					if (!players.get(0).hasBall()) {
-//						System.out.println("Blocking!");
-						ball.block(me, 300);
-					}
-				} else if (ball.isOnGround()) {
-					ball.act(me, 300);
+//				if (ball.isOnGround() || ball.isInAir()) {
+//					ball.act(me, 300);
+//				} else if (me.hasBall()) {
+//					ball.act(me, 300);
+//				}
+				if (players.size() > 0) {
+					ball.block(me, players.get(0), 300);
 				}
-				if ((me.hasBall() || ball.isShooting()) && !players.get(0).hasBall()) {
-//					System.out.println("Has ball or shootin!");
+
+				if (me.hasBall() || me.isShooting() || ball.isOnGround()) {
 					ball.act(me, 300);
 				}
 			}
+
+//				if (ball.isInAir()) {
+//					if (players.size() > 0) {
+//						if (!players.get(0).hasBall()) {
+////							System.out.println("Blocking!");
+//							ball.block(me, 300);
+////							players.get(0).setShooting(false);
+//						}
+//					}
+//				} else if (ball.isOnGround()) {
+//					ball.act(me, 300);
+//				}
+//				if (players.size() > 0) {
+//					if ((me.hasBall() || me.isShooting()) && !players.get(0).hasBall() && !players.get(0).isShooting()) {
+//						ball.act(me, 300);
+//					}
+//				} 
+//				else {
+//					if ((me.hasBall() || ball.isShooting())) {
+////						System.out.println("Has ball or shootin!");
+//						ball.act(me, 300);
+//					}
+//				}
+//				
+//			}
 
 			me.act(obstacles, null);
 
@@ -544,6 +577,11 @@ public class Court extends JPanel implements Runnable {
 			} catch (InterruptedException e) {
 			}
 		}
+	}
+
+	public void removeInstructions() {
+		waiting = false;
+		this.remove(instructions);
 	}
 
 	public class KeyHandler implements KeyListener {
@@ -650,7 +688,9 @@ public class Court extends JPanel implements Runnable {
 			Player p = new Player(DRAWING_WIDTH / 2 - Player.MARIO_WIDTH / 2, 50, null, arg0.getKey(), false);
 			p.syncWithDataObject(arg0.getValue(PlayerData.class));
 			System.out.println(arg0.getValue(PlayerData.class));
+//			removeInstructions();
 			players.add(p);
+//			removeInstructions();
 		}
 
 		@Override

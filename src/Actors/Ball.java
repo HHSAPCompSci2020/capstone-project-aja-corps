@@ -26,6 +26,7 @@ public class Ball extends MovingImage {
 	private int bounceCount = 0;
 
 	private double[] equation;
+	private boolean blocked;
 
 	private String username;
 
@@ -47,21 +48,23 @@ public class Ball extends MovingImage {
 		this.username = username;
 	}
 	
-	public void block(Player p, double floorY) {
-		if (this.intersects(p) && inAir) {
-			if (playerDribbling != null) {
-				playerDribbling.setShooting(false);
+	public void block(Player p, Player player2, double floorY) {
+		if (p.isShooting()) {
+			if (this.intersects(player2)) {
+				p.setShooting(false);
+				inAir = false;
+				onGround = false;
+				shooting = false;
 				playerDribbling = null;
 			}
-//			p.setShooting(false);
-			shooting = false;
-			p.setHasBall(true);
-			this.setPlayer(p);
-			this.setDribbling(true);
-			inAir = false;
-			onGround = false;
-			y = 280;
-//			this.dataUpdated = true;
+		} else {
+			if (this.intersects(p) && inAir) {
+//				p.setShooting(false);
+				this.setPlayer(p);
+				this.setDribbling(true);
+				inAir = false;
+				y = 280;
+			}
 		}
 	}
 
@@ -77,22 +80,18 @@ public class Ball extends MovingImage {
 	public void act(Player p, double floorY) {
 	
 		
-		if (this.intersects(p) && onGround) {
+		if ((this.intersects(p) && (onGround))) {
+			System.out.println("intersection!");
 			p.setHasBall(true);
 			this.setPlayer(p);
 			this.setDribbling(true);
 			inAir = false;
 			onGround = false;
+			shooting = false;
 			this.dataUpdated = true;
 		}
-//		else if (this.intersects(p) && inAir) {
-//			p.setHasBall(true);
-//			this.setPlayer(p);
-//			this.setDribbling(true);
-//			inAir = false;
-//			onGround = false;
-//			this.dataUpdated = true;
-//		}
+		
+		
 
 		if (playerDribbling != null) {
 			if (dribbling)
@@ -136,6 +135,7 @@ public class Ball extends MovingImage {
 		yVelocity = 4;
 		this.dribbling = x;
 		this.bounce = false;
+		inAir = false;
 	}
 
 	/**
@@ -243,7 +243,7 @@ public class Ball extends MovingImage {
 //			playerDribbling = null;
 			playerDribbling.setHasBall(false);
 			inAir = true;
-			x += xVelocity;
+			x += xVelocity*0.2;
 //			x += 0.5;
 			y = f(x);
 		}
@@ -258,6 +258,7 @@ public class Ball extends MovingImage {
 				xVelocity = -1;
 			}
 			bounce = true;
+//			playerDribbling.setShooting(false);
 			shooting = false;
 			yVelocity = 5;
 		} else if (!playerDribbling.getDirection() && x <= hoopx) {
@@ -270,6 +271,7 @@ public class Ball extends MovingImage {
 				xVelocity = 1;
 			}
 			bounce = true;
+//			playerDribbling.setShooting(false);
 			shooting = false;
 			yVelocity = 5;
 		}
