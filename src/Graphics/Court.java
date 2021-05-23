@@ -23,6 +23,7 @@ import com.google.firebase.database.DatabaseReference.CompletionListener;
 
 import Actors.Ball;
 import Actors.Player;
+import Actors.Referee;
 import Data.BallData;
 import Data.PlayerData;
 import Data.SoundEffect;
@@ -68,6 +69,8 @@ public class Court extends JPanel implements Runnable {
 
 	private double randX;
 	
+	private boolean first = true;
+	
 	private long initialTime;
 	private long currentTime;
 	private int minutes;
@@ -103,6 +106,8 @@ public class Court extends JPanel implements Runnable {
 	
 	private JButton quitButton;
 	private JButton seeStats;
+	private Referee referee;
+//	private boolean gameStart;
 	
 	private boolean picked;
 	private boolean holding;
@@ -162,6 +167,8 @@ public class Court extends JPanel implements Runnable {
 
 		players = new ArrayList<Player>();
 		balls = new ArrayList<Ball>();
+		
+		referee = new Referee(383, 180);
 
 		if (playerType == 1) {
 			me = new Player(300, 288, playerName, myUserRef.getKey(), false);
@@ -273,6 +280,13 @@ public class Court extends JPanel implements Runnable {
 //			g.drawRect(130, 140, 20, 20); // ball class needs this for debugging, KEEP THIS IN
 //			g.drawRect(640, 140, 20, 20);
 //			g.drawLine(0, 50, width, 50);
+			
+			if(!waiting && first) {
+				Referee.blowWhistle();
+				first = false;
+			}
+			referee.draw(g2, this);
+			
 			for (int i = 0; i < players.size(); i++) {
 				players.get(i).draw(g2, this, me);
 			}
@@ -444,6 +458,7 @@ public class Court extends JPanel implements Runnable {
 			}
 
 			if (keyControl.isPressed(KeyEvent.VK_ENTER)) {
+				Referee.blowWhistle();
 				spawnNewBall();
 
 			}
