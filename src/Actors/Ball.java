@@ -1,6 +1,7 @@
 package Actors;
 
 import Data.BallData;
+import Data.Sound;
 import Data.SoundEffect;
 import Graphics.Home;
 import Graphics.PlayerStats;
@@ -30,6 +31,8 @@ public class Ball extends MovingImage {
 
 	private double[] equation;
 	private boolean blocked;
+	
+	private SoundEffect soundEffect;
 
 	private String username;
 
@@ -49,6 +52,8 @@ public class Ball extends MovingImage {
 		yVelocity = 4;
 		this.uniqueID = uniqueID;
 		this.username = username;
+		
+		//soundEffect = new SoundEffect();
 	}
 	
 	public void block(Player p, Player player2, double floorY) {
@@ -82,7 +87,7 @@ public class Ball extends MovingImage {
 	 */
 	public void act(Player p, double floorY) {
 	
-		
+		//System.out.println(p.getX());
 		if ((this.intersects(p) && (onGround))) {
 			System.out.println("intersection!");
 			p.setHasBall(true);
@@ -182,7 +187,7 @@ public class Ball extends MovingImage {
 			bounceCount++;
 			y = 270;
 			yVelocity = -(yVelocity * 0.7);
-//			SoundEffect.soundEffect(0);
+			//soundEffect.soundEffect(0);
 			// System.out.println(yVelocity);
 		} else {
 			yVelocity += CONSTANT;
@@ -209,7 +214,7 @@ public class Ball extends MovingImage {
 		floorY = 300; // hardcoded for now
 		if (y >= floorY) {
 			yVelocity = -yVelocity;
-//			SoundEffect.soundEffect(0);
+			//soundEffect.soundEffect(0);
 		} else if (y <= playerDribbling.getY() + 15) {
 			yVelocity = Math.abs(yVelocity);
 		}
@@ -230,6 +235,8 @@ public class Ball extends MovingImage {
 	 *       and velocities are updated
 	 */
 	public void shoot(double hoopx, double hoopy) {
+		boolean close = false;
+		boolean midrange = false;
 		if (dribbling) {
 			shotx = playerDribbling.getX() + 25;
 			shoty = hoopy;
@@ -247,16 +254,32 @@ public class Ball extends MovingImage {
 				} else if (shotx >= 382 && shotx < 487) {
 					xVelocity = 3;
 					probability = 0.75;
-				} else if (shotx >= 487) {
-					xVelocity = 1;
+				} else if (shotx >= 487 && playerDribbling.getX() <= 570){
+					xVelocity = 2;
+					probability = 0.85;
+					midrange = true;
+				} else if (shotx >= 570 && playerDribbling.getX() < 627) {
+					xVelocity = 1.25;
 					probability = 0.9;
+					close = true;
+				} else if(playerDribbling.getX() >= 627) {
+					dribbling = true;
+					return;
 				}
 			} else {
-				if (shotx < 275) {
-					xVelocity = -4;
+				if(playerDribbling.getX() <= 125) {
+					dribbling = true;
+					return;
+				} else if (playerDribbling.getX() < 210) {
+					close = true;
+					xVelocity = -0.5;
 					probability = 0.9;
+				} else if(shotx <= 275) {
+					xVelocity = -2;
+					probability = 0.85;
+					midrange = true;
 				} else if (shotx >= 275 && shotx < 382) {
-					xVelocity = -4;
+					xVelocity = -3;
 					probability = 0.75;
 				} else if (shotx >= 382 && shotx < 487) {
 					xVelocity = -4;
@@ -267,7 +290,12 @@ public class Ball extends MovingImage {
 				}
 			}
 			
-			calculateParabola(hoopx, hoopy);
+			if(close)
+				layupMotion(hoopx, hoopy);
+			else if(midrange)
+				midrangeMotion(hoopx, hoopy);
+			else
+				calculateParabola(hoopx, hoopy);
 			//if(playerDribbling.getDirection())
 			shooting = true;
 		}
@@ -309,6 +337,50 @@ public class Ball extends MovingImage {
 			yVelocity = 5;
 		}
 		
+	}
+	
+	private void midrangeMotion(double hoopx, double hoopy) {
+		equation = new double[3];
+		if (playerDribbling.getDirection()) {
+			x = 550;
+			shotx = x;
+			y = hoopy;
+			shoty = y;
+		} else {
+			x = 225;
+			shotx = x;
+			y = hoopy;
+			shoty = y;
+		}
+
+		double h = (hoopx + shotx) / 2;
+		double a = (shoty - 50) / Math.pow(shotx - h, 2);
+		double k = 50;
+		equation[0] = a;
+		equation[1] = h;
+		equation[2] = k;
+	}
+	
+	private void layupMotion(double hoopx, double hoopy) {
+		equation = new double[3];
+		if (playerDribbling.getDirection()) {
+			x = 600;
+			shotx = x;
+			y = hoopy;
+			shoty = y;
+		} else {
+			x = 150;
+			shotx = x;
+			y = hoopy;
+			shoty = y;
+		}
+
+		double h = (hoopx + shotx) / 2;
+		double a = (shoty - 50) / Math.pow(shotx - h, 2);
+		double k = 50;
+		equation[0] = a;
+		equation[1] = h;
+		equation[2] = k;
 	}
 	
 	public boolean isShooting() {
