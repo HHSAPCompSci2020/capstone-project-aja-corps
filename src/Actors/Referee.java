@@ -16,7 +16,7 @@ public class Referee extends MovingImage{
 	
 	private int count = 0;
 	
-	private static String filename = "img/standing.jpg";
+	private static String filename = "img/standing.png";
 	
 	public Referee(int x, int y) {
 		super(filename, x, y, MARIO_WIDTH, MARIO_HEIGHT);
@@ -36,11 +36,11 @@ public class Referee extends MovingImage{
 			count++;
 			g.setColor(Color.orange);
 
-			g.drawString("TWEET!", (int)x-50, (int)y);
+			g.drawString("TWEET!", (int)x, (int)y);
 			
 			g.setColor(c);
 			
-			g.drawImage((new ImageIcon("img/blowing.jpg")).getImage(), (int)x, (int)y, (int) width, (int) height, io);
+			g.drawImage((new ImageIcon("img/blowing.png")).getImage(), (int)x, (int)y, (int) width, (int) height, io);
 		} else if(blow && count >= 1000) {
 			blow = false;
 			count = 0;

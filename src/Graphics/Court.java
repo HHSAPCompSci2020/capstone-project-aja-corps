@@ -23,6 +23,7 @@ import com.google.firebase.database.DatabaseReference.CompletionListener;
 
 import Actors.Ball;
 import Actors.Player;
+import Actors.Referee;
 import Data.BallData;
 import Data.PlayerData;
 import Data.SoundEffect;
@@ -103,6 +104,8 @@ public class Court extends JPanel implements Runnable {
 	
 	private JButton quitButton;
 	private JButton seeStats;
+	private Referee referee;
+//	private boolean gameStart;
 	
 	// Database stuff
 	private DatabaseReference roomRef; // This is the database entry for the whole room
@@ -156,6 +159,8 @@ public class Court extends JPanel implements Runnable {
 
 		players = new ArrayList<Player>();
 		balls = new ArrayList<Ball>();
+		
+		referee = new Referee(383, 180);
 
 		if (playerType == 1) {
 			me = new Player(300, 288, playerName, myUserRef.getKey(), false);
@@ -267,6 +272,9 @@ public class Court extends JPanel implements Runnable {
 //			g.drawRect(130, 140, 20, 20); // ball class needs this for debugging, KEEP THIS IN
 //			g.drawRect(640, 140, 20, 20);
 //			g.drawLine(0, 50, width, 50);
+			
+			referee.draw(g2, this, !waiting);
+			
 			for (int i = 0; i < players.size(); i++) {
 				players.get(i).draw(g2, this, me);
 			}
