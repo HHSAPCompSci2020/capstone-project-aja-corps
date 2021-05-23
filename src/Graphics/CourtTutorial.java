@@ -53,11 +53,14 @@ public class CourtTutorial extends JPanel implements Runnable {
 	private boolean powerUp;
 	private boolean quit = true;
 	private boolean ePressed;
+	private double randX;
 
 	private int score;
 	private boolean chose;
 	private Image backgroundImage;
 	private Image pauseImage;
+	private Image jumpImage;
+	private Image speedImage;
 	private ArrayList<Shape> obstacles;
 
 	private KeyHandler keyControl;
@@ -84,6 +87,8 @@ public class CourtTutorial extends JPanel implements Runnable {
 		try {
 			backgroundImage = ImageIO.read(new File("img/court.jpg"));
 			pauseImage = ImageIO.read(new File("img/PauseScreen.png"));
+			jumpImage = ImageIO.read(new File("img/JumpPowerUp.png"));
+			speedImage = ImageIO.read(new File("img/SpeedPowerUp.png"));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -176,8 +181,21 @@ public class CourtTutorial extends JPanel implements Runnable {
 			if (ball != null) {
 				ball.draw(g2, this);
 			}
+			
+			if(me.getJumpPowerup()) {
+			
+				
+				g.drawImage(jumpImage,(int)randX, 260, 35, 35, this);
+			}
+			
+			
+			if(me.getSpeedPowerup()) {
+				
+					
+					g.drawImage(speedImage,(int)randX, 260, 35, 35, this);
+			}
 
-			me.draw(g2, this);
+			me.draw(g2, this, me);
 			scoreBoard.draw(g2);
 			g2.setTransform(at);
 			g2.setColor(new Color(255, 255, 255));
@@ -198,7 +216,7 @@ public class CourtTutorial extends JPanel implements Runnable {
 	}
 	
 	public void spawnNewPlayer(String playerName) {
-		me = new Player(300, 288, playerName, "test", false);
+		me = new Player(50, 288, playerName, "test", false);
 	}
 
 	/**
@@ -321,6 +339,7 @@ public class CourtTutorial extends JPanel implements Runnable {
 						instructions.setText(
 								"Power ups randomly spawn across the court. Blue boxes are jump boosts, and red boxes are speed boosts.");
 						if (!me.getPower()) {
+							randX = me.getPowerLoc();
 							me.spawnPowerup();
 						}
 					}
@@ -334,6 +353,7 @@ public class CourtTutorial extends JPanel implements Runnable {
 						instructions.setText(
 								"Power ups randomly spawn across the court. Blue boxes are jump boosts, and red boxes are speed boosts.");
 						if (!me.getPower()) {
+							randX = me.getPowerLoc();
 							me.spawnPowerup();
 						}
 					} else if (shot && dashed && me.getPower()) {
@@ -404,11 +424,14 @@ public class CourtTutorial extends JPanel implements Runnable {
 			}
 
 			if (ball != null) {
-				if (ball.isOnGround()) {
-					ball.act(me, 300);
-				} else if (me.hasBall()) {
-					ball.act(me, 300);
-				}
+//				if (players.size() > 0) {
+//					ball.block(me, players.get(0), 300);
+//				}
+//
+//				if (me.hasBall() || me.isShooting() || ball.isOnGround()) {
+//					ball.act(me, 300);
+//				}
+				ball.act(me, 300);
 			}
 
 			me.act(obstacles, null);
