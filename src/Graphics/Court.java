@@ -96,6 +96,7 @@ public class Court extends JPanel implements Runnable {
 	private JLabel instructions;
 	private boolean waiting;
 	private long joinTime;
+	private int playerType;
 	
 	private Image won;
 	private Image lost;
@@ -173,6 +174,7 @@ public class Court extends JPanel implements Runnable {
 		// myBallRef.setValueAsync(ball.getDataObject());
 
 		System.out.println(roomRef.child("users"));
+		this.playerType = playerType;
 
 		new Thread(this).start();
 	}
@@ -199,7 +201,7 @@ public class Court extends JPanel implements Runnable {
 			if (stats) {
 
 				g.drawString(
-						" type 1 if you are shooting on the left hoop, and type 2 if you are shooting on the right hoop",
+						" Press 1 if you are shooting on the left hoop, and press 2 if you are shooting on the right hoop",
 						104, 200);
 
 				if (chose) {
@@ -278,10 +280,18 @@ public class Court extends JPanel implements Runnable {
 			}
 
 			me.draw(g2, this, me);
-			g2.drawString(Integer.toString(me.getScore()), 370, 68);
-			for (int i = 0; i < players.size(); i++) {
-				g.drawString(Integer.toString(players.get(i).getScore()), 415, 68);
+			if (playerType == 1) {
+				g2.drawString(Integer.toString(me.getScore()), 415, 68);
+				for (int i = 0; i < players.size(); i++) {
+					g.drawString(Integer.toString(players.get(i).getScore()), 370, 68);
+				}
+			} else {
+				g2.drawString(Integer.toString(me.getScore()), 370, 68);
+				for (int i = 0; i < players.size(); i++) {
+					g.drawString(Integer.toString(players.get(i).getScore()), 415, 68);
+				}
 			}
+			
 			if (waiting) {
 				g2.setColor(new Color(255, 255, 255));
 				g2.fillRect(0, 0, 800, 30);
