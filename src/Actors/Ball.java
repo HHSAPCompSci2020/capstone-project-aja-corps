@@ -15,7 +15,7 @@ import Graphics.PlayerStats;
 public class Ball extends MovingImage {
 
 	private double xVelocity, yVelocity, shotx, shoty;
-	private boolean dribbling = true;
+	private boolean dribbling = false;
 	private Player playerDribbling;
 	private boolean shooting;
 	private boolean inAir;

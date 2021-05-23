@@ -322,7 +322,7 @@ public class Court extends JPanel implements Runnable {
 			if(picked) {
 				double shotTime = (currentTime-pickTime) ;
 				
-				int realtime =(int) (20 - (shotTime/1000));
+				int realtime =(int) (21 - (shotTime/1000));
 								
 				if(realtime <=0) {
 					realtime = 0;
@@ -342,7 +342,11 @@ public class Court extends JPanel implements Runnable {
 					
 				}
 				
-				g.drawString(Integer.toString(realtime),(int) me.getX(), (int)(me.getY()-60));
+				if(realtime>=10) {
+				g.drawString(Integer.toString(realtime),(int) me.getX()+11, (int)(me.getY()-60));
+				}else {
+				g.drawString(Integer.toString(realtime),(int) me.getX()+16, (int)(me.getY()-60));
+				}
 
 			}
 			
@@ -533,13 +537,13 @@ public class Court extends JPanel implements Runnable {
 //				e1.printStackTrace();
 //			}
 
-			if(ball!= null &&!picked && ball.getDribbling() && (ball.getX()<me.getCenterX()+10 && ball.getX()>me.getCenterX()-50)) {
+			if(ball!= null &&!picked && ball.getDribbling() ) {
 				picked = true;
 				pickTime = System.currentTimeMillis();
 			}
 			
 			
-			if(ball !=null && ball.getDribbling() && (ball.getX()<me.getCenterX()+10 && ball.getX()>me.getCenterX()-50)) {
+			if(ball !=null && ball.getDribbling() ) {
 				holding = true;
 			}else {
 				holding =false;
