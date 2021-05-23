@@ -69,6 +69,8 @@ public class Court extends JPanel implements Runnable {
 
 	private double randX;
 	
+	private boolean first = true;
+	
 	private long initialTime;
 	private long currentTime;
 	private int minutes;
@@ -273,7 +275,11 @@ public class Court extends JPanel implements Runnable {
 //			g.drawRect(640, 140, 20, 20);
 //			g.drawLine(0, 50, width, 50);
 			
-			referee.draw(g2, this, !waiting);
+			if(!waiting && first) {
+				Referee.blowWhistle();
+				first = false;
+			}
+			referee.draw(g2, this);
 			
 			for (int i = 0; i < players.size(); i++) {
 				players.get(i).draw(g2, this, me);
@@ -418,6 +424,7 @@ public class Court extends JPanel implements Runnable {
 			}
 
 			if (keyControl.isPressed(KeyEvent.VK_ENTER)) {
+				Referee.blowWhistle();
 				spawnNewBall();
 
 			}
