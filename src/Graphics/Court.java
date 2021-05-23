@@ -346,7 +346,7 @@ public class Court extends JPanel implements Runnable {
 		ball = new Ball(383, 288, 20, 20, "TestBall", myBallRef.getKey());
 		myBallRef.setValueAsync(ball.getDataObject());
 	}
-
+	
 	/**
 	 * Gets the key handler necessary to use the keyboard to make movements
 	 * 
