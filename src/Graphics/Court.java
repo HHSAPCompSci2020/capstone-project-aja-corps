@@ -95,7 +95,8 @@ public class Court extends JPanel implements Runnable {
 	private SoundEffect data;
 	private JLabel instructions;
 	private boolean waiting;
-
+	private long joinTime;
+	
 	// Database stuff
 	private DatabaseReference roomRef; // This is the database entry for the whole room
 	private DatabaseReference myUserRef; // This is the database entry for just our user's data. This allows us to more
@@ -150,11 +151,11 @@ public class Court extends JPanel implements Runnable {
 		if (playerType == 1) {
 			me = new Player(300, 288, playerName, myUserRef.getKey(), false);
 			waiting = true;
-			instructions = new JLabel(
-					"Welcome to Basketball All Stars! Use the left and right arrow keys to move left and right and the up arrow key to jump.");
+			instructions = new JLabel("Waiting for players...");
 			add(instructions);
 		} else {
 			me = new Player(500, 288, playerName, myUserRef.getKey(), false);
+			joinTime = System.currentTimeMillis();
 			me.setDirection(false);
 			spawnNewBall();
 		}
@@ -247,32 +248,37 @@ public class Court extends JPanel implements Runnable {
 
 			
 
-			seconds = (int) (currentTime - initialTime) / 1000 - (59 * minutes);
+			
+			if (!waiting) {
+				seconds = (int) (currentTime - joinTime) / 1000 - (59 * minutes);
 
-			if (seconds >= 59 && timeCounter % 20 == 0) {
-				minutes++;
-				seconds = 0;
-			}
+				if (seconds >= 59 && timeCounter % 20 == 0) {
+					minutes++;
+					seconds = 0;
+				}
 
-			if (seconds < 10) {
-				g.setColor(Color.white);
-				g.drawString(minutes + " : " + "0" + seconds, 379, 30);
-			} else {
-				g.setColor(Color.white);
-				g.drawString(minutes + " : " + seconds, 379, 30);
+				if (seconds < 10) {
+					g.setColor(Color.white);
+					g.drawString(minutes + " : " + "0" + seconds, 379, 30);
+				} else {
+					g.setColor(Color.white);
+					g.drawString(minutes + " : " + seconds, 379, 30);
+				}
+				if (minutes == 1) {
+					g.drawString(" Time is up, game over", 325, 258);
+					// paused = true;
+					quit = true;
+				}
 			}
+			
 
-			if (minutes == 15) {
-				g.drawString(" Time is up, game over", 325, 258);
-				// paused = true;
-				quit = true;
-			}
+			
 
 //			g.drawRect(130, 140, 20, 20); // ball class needs this for debugging, KEEP THIS IN
 //			g.drawRect(640, 140, 20, 20);
 //			g.drawLine(0, 50, width, 50);
 			for (int i = 0; i < players.size(); i++) {
-				players.get(i).draw(g2, this);
+				players.get(i).draw(g2, this, me);
 			}
 
 			// for (int i = 0; i < balls.size(); i++) {
@@ -283,7 +289,7 @@ public class Court extends JPanel implements Runnable {
 				ball.draw(g2, this);
 			}
 
-			me.draw(g2, this);
+			me.draw(g2, this, me);
 			g2.drawString(Integer.toString(me.getScore()), 370, 68);
 			for (int i = 0; i < players.size(); i++) {
 				g.drawString(Integer.toString(players.get(i).getScore()), 415, 68);
@@ -292,8 +298,9 @@ public class Court extends JPanel implements Runnable {
 				g2.setColor(new Color(255, 255, 255));
 				g2.fillRect(0, 0, 800, 30);
 				// scoreBoard.draw(g2);
-				g2.setTransform(at);
 			}
+			g2.setTransform(at);
+
 
 			// TODO Add any custom drawings here
 
@@ -524,11 +531,6 @@ public class Court extends JPanel implements Runnable {
 			}
 
 			if (ball != null) {
-//				if (ball.isOnGround() || ball.isInAir()) {
-//					ball.act(me, 300);
-//				} else if (me.hasBall()) {
-//					ball.act(me, 300);
-//				}
 				if (players.size() > 0) {
 					ball.block(me, players.get(0), 300);
 				}
@@ -537,31 +539,6 @@ public class Court extends JPanel implements Runnable {
 					ball.act(me, 300);
 				}
 			}
-
-//				if (ball.isInAir()) {
-//					if (players.size() > 0) {
-//						if (!players.get(0).hasBall()) {
-////							System.out.println("Blocking!");
-//							ball.block(me, 300);
-////							players.get(0).setShooting(false);
-//						}
-//					}
-//				} else if (ball.isOnGround()) {
-//					ball.act(me, 300);
-//				}
-//				if (players.size() > 0) {
-//					if ((me.hasBall() || me.isShooting()) && !players.get(0).hasBall() && !players.get(0).isShooting()) {
-//						ball.act(me, 300);
-//					}
-//				} 
-//				else {
-//					if ((me.hasBall() || ball.isShooting())) {
-////						System.out.println("Has ball or shootin!");
-//						ball.act(me, 300);
-//					}
-//				}
-//				
-//			}
 
 			me.act(obstacles, null);
 
@@ -608,7 +585,10 @@ public class Court extends JPanel implements Runnable {
 
 	public void removeInstructions() {
 		waiting = false;
-		this.remove(instructions);
+		joinTime = System.currentTimeMillis();
+		if (instructions != null) {
+			this.remove(instructions);
+		}
 	}
 
 	public class KeyHandler implements KeyListener {
@@ -717,7 +697,7 @@ public class Court extends JPanel implements Runnable {
 			System.out.println(arg0.getValue(PlayerData.class));
 //			removeInstructions();
 			players.add(p);
-//			removeInstructions();
+			removeInstructions();
 		}
 
 		@Override
