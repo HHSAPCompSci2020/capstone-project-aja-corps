@@ -363,7 +363,7 @@ public class Court extends JPanel implements Runnable {
 				dashCounter = -10;
 			}
 
-			if (keyControl.isPressed(KeyEvent.VK_SPACE) && shotCounter > 0 && ball.getDribbling()) {
+			if (keyControl.isPressed(KeyEvent.VK_SPACE) && shotCounter > 0 && ball!= null &&ball.getDribbling()) {
 
 				if (me.getEnergy() > 0) {
 					timeCounter = 0;
@@ -477,7 +477,7 @@ public class Court extends JPanel implements Runnable {
 	//				me.spawnPowerup();
 				}
 				//
-				if (powerCounter % 1200 == 0) {
+				if (powerCounter % 500 == 0) {
 					randX = me.getPowerLoc();
 					me.spawnPowerup();
 					//
