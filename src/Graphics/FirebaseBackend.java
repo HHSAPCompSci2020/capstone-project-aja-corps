@@ -161,6 +161,18 @@ public class FirebaseBackend extends JPanel implements ChildEventListener {
 
 				if (!snap.hasChildren())
 					return;
+				
+				for(DataSnapshot s: snap.getChildren()) {
+					for (DataSnapshot t: s.getChildren()) {
+						if (t.getKey().equals("users")) {
+							if (t.getChildrenCount() == 2) {
+								JOptionPane.showMessageDialog(FirebaseBackend.this, "Room is full!");
+								return;	
+							}
+						}
+					}
+				}
+//				System.out.println(snap.getChildren().next());
 
 				String playerName = JOptionPane.showInputDialog("Enter your username:");
 

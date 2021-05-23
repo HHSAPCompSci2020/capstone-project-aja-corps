@@ -1,9 +1,15 @@
 package Graphics;
 
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.geom.AffineTransform;
+import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -17,10 +23,18 @@ public class Home extends JPanel {
 	private JButton newRoomButton;
 	private JFrame theWindow;
 	private boolean outOfTutorial;
+	private Image backgroundImage;
 	
 	
 	
 	public Home() {
+		try {
+			backgroundImage = ImageIO.read(new File("img/TitleScreen.png"));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		ActionHandler actionEventHandler = new ActionHandler();
 		newRoomButton = new JButton("<html><center>Play Tutorial</center></html>");
 		newRoomButton.addActionListener(actionEventHandler);
@@ -31,14 +45,25 @@ public class Home extends JPanel {
 	}
 	
 	public void paintComponent(Graphics g) {
-		
+		Graphics2D g2 = (Graphics2D) g;
+
+		int width = getWidth();
+		int height = getHeight();
+
+		double ratioX = (double) width / 800;
+		double ratioY = (double) height / 316;
+
+		AffineTransform at = g2.getTransform();
+		g2.scale(ratioX, ratioY);
+		g.drawImage(backgroundImage, 0, 0, this);
+		g2.setTransform(at);
 	}
 
 	public void show() {
 
 		theWindow = new JFrame();
 		theWindow.add(this);
-		theWindow.setBounds(0, 0, 800, 600);
+		theWindow.setBounds(0, 0, 800, 316);
 		theWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		theWindow.setVisible(true);
 
