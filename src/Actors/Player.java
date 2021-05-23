@@ -679,7 +679,7 @@ public class Player extends MovingImage {
 	 * @param io Necessary to draw images
 	 * @post The screen is updated with drawn components
 	 */
-	public void draw(Graphics g, ImageObserver io) {
+	public void draw(Graphics g, ImageObserver io, Player me) {
 //		System.out.println((int) x + " " + (int) y);
 		// g.drawImage(img, x, y, width, height, observer)
 		g.setColor(Color.white);
@@ -695,19 +695,21 @@ public class Player extends MovingImage {
 //			g.fill3DRect(383, 260, 30, 30, false);
 //		}
 
-		g.setColor(Color.green);
+		if (me.getUsername() == this.username) {
+			g.setColor(Color.green);
 
-		g.drawRect((int) x + 10, (int) y - 50, 20, 30);
+			g.drawRect((int) x + 10, (int) y - 50, 20, 30);
 
-		if (energyState == 1) {
-			g.fillRect((int) x + 10, (int) y - 35, 20, 15);
+			if (energyState == 1) {
+				g.fillRect((int) x + 10, (int) y - 35, 20, 15);
+			}
+
+			if (energyState == 2) {
+
+				g.fillRect((int) x + 10, (int) y - 50, 20, 30);
+			}
 		}
-
-		if (energyState == 2) {
-
-			g.fillRect((int) x + 10, (int) y - 50, 20, 30);
-		}
-
+		
 		if (!hasBall) {
 			if (right) {
 				g.drawImage((new ImageIcon("img/player3.png")).getImage(), (int) x, (int) y, (int) width, (int) height,
