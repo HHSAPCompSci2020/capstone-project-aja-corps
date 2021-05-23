@@ -401,8 +401,9 @@ public class Court extends JPanel implements Runnable {
 					me.shoot();
 					if (me.getDirection())
 						ball.shoot(640, 140);
-					else
+					else {
 						ball.shoot(130, 140);
+					}
 
 				}
 				shotCounter = -10;
