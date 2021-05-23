@@ -32,7 +32,7 @@ public class Ball extends MovingImage {
 	private double[] equation;
 	private boolean blocked;
 	
-	private SoundEffect soundEffect = new SoundEffect();
+	private SoundEffect soundEffect;
 
 	private String username;
 
@@ -52,6 +52,8 @@ public class Ball extends MovingImage {
 		yVelocity = 4;
 		this.uniqueID = uniqueID;
 		this.username = username;
+		
+		//soundEffect = new SoundEffect();
 	}
 	
 	public void block(Player p, Player player2, double floorY) {
