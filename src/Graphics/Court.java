@@ -66,6 +66,8 @@ public class Court extends JPanel implements Runnable {
 	private double x = 450;
 	private double y = 260;
 
+	private double randX;
+	
 	private long initialTime;
 	private long currentTime;
 	private int minutes;
@@ -229,13 +231,19 @@ public class Court extends JPanel implements Runnable {
 			
 		
 			if(me.getJumpPowerup()) {
-			g.drawImage(jumpImage, 383, 260, 35, 35, this);
+			
+				
+				g.drawImage(jumpImage,(int)randX, 260, 35, 35, this);
 			}
 			
 			
 			if(me.getSpeedPowerup()) {
-			g.drawImage(speedImage, 383, 260, 35, 35, this);
+				
+					
+					g.drawImage(speedImage,(int)randX, 260, 35, 35, this);
 			}
+			
+		//	670 ;70
 
 			
 
@@ -437,6 +445,7 @@ public class Court extends JPanel implements Runnable {
 //				e1.printStackTrace();
 //			}
 
+			 
 			startTime = System.currentTimeMillis();
 			pauseCounter++;
 			if (paused == false) {
@@ -457,10 +466,12 @@ public class Court extends JPanel implements Runnable {
 				}
 				//
 				if (barCounter == 1) {
-					me.spawnPowerup();
+	//				randX = me.getPowerLoc();
+	//				me.spawnPowerup();
 				}
 				//
-				if (powerCounter % 1300 == 0) {
+				if (powerCounter % 1200 == 0) {
+					randX = me.getPowerLoc();
 					me.spawnPowerup();
 					//
 				}

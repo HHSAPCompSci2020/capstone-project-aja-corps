@@ -55,6 +55,8 @@ public class Player extends MovingImage {
 	private int dashes;
 	private int walks;
 	private int jumps;
+	
+	private double powerLoc;
 
 	/**
 	 * Instantiates a new Player at (x, y) with username, a unique identifier, and a
@@ -83,6 +85,8 @@ public class Player extends MovingImage {
 		energy = 2;
 	}
 
+	
+	
 	/**
 	 * 
 	 * @return returns the number of shots taken by the player
@@ -90,6 +94,18 @@ public class Player extends MovingImage {
 	public int getShots() {
 		return shots;
 	}
+	
+	public double getPowerLoc() {
+	  powerLoc = 383;
+		if(x<powerLoc) {
+			powerLoc = 383+Math.random()*280;
+		}else {
+			powerLoc = 70+313*Math.random();
+		}
+		
+		return powerLoc;
+	}
+	
 	
 	public void setStolen(boolean x) {
 		stolen = x;
@@ -380,12 +396,12 @@ public class Player extends MovingImage {
 		double width = getWidth();
 		double height = getHeight();
 
-		if (x > 383 & x < 413 & y > 230 & y < 300 & speedPowerup) {
+		if (x > powerLoc-20 & x < powerLoc+20 & y > 230 & y < 300 & speedPowerup) {
 			speedPowerup = false;
 			speedBoost = true;
 		}
 
-		if (x > 383 & x < 413 & y > 230 & y < 300 & jumpPowerup) {
+		if (x > powerLoc-20 & x < powerLoc+20 & y > 230 & y < 300 & jumpPowerup) {
 			jumpPowerup = false;
 			jumpBoost = true;
 		}
