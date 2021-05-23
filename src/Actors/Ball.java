@@ -259,7 +259,7 @@ public class Ball extends MovingImage {
 					probability = 0.85;
 					midrange = true;
 				} else if (shotx >= 570 && playerDribbling.getX() < 627) {
-					xVelocity = 1.25;
+					xVelocity = 0.5;
 					probability = 0.9;
 					close = true;
 				} else if(playerDribbling.getX() >= 627) {
@@ -364,7 +364,7 @@ public class Ball extends MovingImage {
 	private void layupMotion(double hoopx, double hoopy) {
 		equation = new double[3];
 		if (playerDribbling.getDirection()) {
-			x = 600;
+			x = 620;
 			shotx = x;
 			y = hoopy;
 			shoty = y;

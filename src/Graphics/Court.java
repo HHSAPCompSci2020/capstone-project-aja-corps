@@ -306,14 +306,14 @@ public class Court extends JPanel implements Runnable {
 					seconds = 0;
 				}
 
-				if (seconds < 10) {
+				if (seconds >= 50) {
 					g.setColor(Color.white);
-					g.drawString(minutes + " : " + "0" + seconds, 379, 30);
+					g.drawString(1-minutes + " : " + "0" + (59-seconds), 379, 30);
 				} else {
 					g.setColor(Color.white);
-					g.drawString(minutes + " : " + seconds, 379, 30);
+					g.drawString(1-minutes + " : " + (59-seconds), 379, 30);
 				}
-				if (minutes == 1) {
+				if (minutes == 2) {
 //					g.drawString(" Time is up, game over", 325, 258);
 					if (me.getScore() > players.get(0).getScore()) {
 						g.drawImage(won, 0, 0, this);
