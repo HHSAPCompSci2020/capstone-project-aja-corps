@@ -97,6 +97,12 @@ public class Court extends JPanel implements Runnable {
 	private boolean waiting;
 	private long joinTime;
 	
+	private Image won;
+	private Image lost;
+	
+	private JButton quitButton;
+	private JButton seeStats;
+	
 	// Database stuff
 	private DatabaseReference roomRef; // This is the database entry for the whole room
 	private DatabaseReference myUserRef; // This is the database entry for just our user's data. This allows us to more
@@ -122,6 +128,8 @@ public class Court extends JPanel implements Runnable {
 			pauseImage = ImageIO.read(new File("img/PauseScreen.png"));
 			jumpImage = ImageIO.read(new File("img/JumpPowerUp.png"));
 			speedImage = ImageIO.read(new File("img/SpeedPowerUp.png"));
+			won = ImageIO.read(new File("img/Won.png"));
+			lost = ImageIO.read(new File("img/Lost.png"));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -249,27 +257,7 @@ public class Court extends JPanel implements Runnable {
 			
 
 			
-			if (!waiting) {
-				seconds = (int) (currentTime - joinTime) / 1000 - (59 * minutes);
 
-				if (seconds >= 59 && timeCounter % 20 == 0) {
-					minutes++;
-					seconds = 0;
-				}
-
-				if (seconds < 10) {
-					g.setColor(Color.white);
-					g.drawString(minutes + " : " + "0" + seconds, 379, 30);
-				} else {
-					g.setColor(Color.white);
-					g.drawString(minutes + " : " + seconds, 379, 30);
-				}
-				if (minutes == 1) {
-					g.drawString(" Time is up, game over", 325, 258);
-					// paused = true;
-					quit = true;
-				}
-			}
 			
 
 			
@@ -298,6 +286,39 @@ public class Court extends JPanel implements Runnable {
 				g2.setColor(new Color(255, 255, 255));
 				g2.fillRect(0, 0, 800, 30);
 				// scoreBoard.draw(g2);
+			}
+			
+			if (!waiting) {
+				seconds = (int) (currentTime - joinTime) / 1000 - (59 * minutes);
+
+				if (seconds >= 59 && timeCounter % 20 == 0) {
+					minutes++;
+					seconds = 0;
+				}
+
+				if (seconds < 10) {
+					g.setColor(Color.white);
+					g.drawString(minutes + " : " + "0" + seconds, 379, 30);
+				} else {
+					g.setColor(Color.white);
+					g.drawString(minutes + " : " + seconds, 379, 30);
+				}
+				if (minutes == 1) {
+//					g.drawString(" Time is up, game over", 325, 258);
+					if (me.getScore() > players.get(0).getScore()) {
+						g.drawImage(won, 0, 0, this);
+						quitButton = new JButton("Quit");
+					    quitButton.setBounds(370, 200, 60, 30);
+						add(quitButton);
+					} else {
+						g.drawImage(lost, 0, 0, this);
+						quitButton = new JButton("Quit");
+					    quitButton.setBounds(370, 200, 60, 30);
+						add(quitButton);
+					}
+					// paused = true;
+					quit = true;
+				}
 			}
 			g2.setTransform(at);
 
