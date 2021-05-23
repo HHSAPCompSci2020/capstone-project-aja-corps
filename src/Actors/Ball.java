@@ -253,10 +253,10 @@ public class Ball extends MovingImage {
 				}
 			} else {
 				if (shotx < 275) {
-					xVelocity = -1;
+					xVelocity = -4;
 					probability = 0.9;
 				} else if (shotx >= 275 && shotx < 382) {
-					xVelocity = -3;
+					xVelocity = -4;
 					probability = 0.75;
 				} else if (shotx >= 382 && shotx < 487) {
 					xVelocity = -4;
@@ -268,6 +268,7 @@ public class Ball extends MovingImage {
 			}
 			
 			calculateParabola(hoopx, hoopy);
+			//if(playerDribbling.getDirection())
 			shooting = true;
 		}
 //		Player p = playerDribbling;
@@ -275,7 +276,7 @@ public class Ball extends MovingImage {
 //			playerDribbling = null;
 			playerDribbling.setHasBall(false);
 			inAir = true;
-			x += xVelocity*0.2;
+			x += xVelocity;
 //			x += 0.5;
 			y = f(x);
 		}
