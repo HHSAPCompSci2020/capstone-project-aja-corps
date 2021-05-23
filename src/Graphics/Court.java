@@ -104,13 +104,19 @@ public class Court extends JPanel implements Runnable {
 	private JButton quitButton;
 	private JButton seeStats;
 	
+	private boolean picked;
+	private boolean holding;
+	
+	private long pickTime;
+	private boolean forced;
+	
 	// Database stuff
 	private DatabaseReference roomRef; // This is the database entry for the whole room
 	private DatabaseReference myUserRef; // This is the database entry for just our user's data. This allows us to more
 											// easily update ourselves.
 	private DatabaseReference myBallRef;
 
-	private boolean currentlySending; // These field allows us to limit database writes by only sending data once
+	private boolean currentlySending;// These field allows us to limit database writes by only sending data once
 										// we've received confirmation the previous data went through.
 
 	/**
@@ -298,6 +304,34 @@ public class Court extends JPanel implements Runnable {
 				// scoreBoard.draw(g2);
 			}
 			
+			
+			if(picked) {
+				double shotTime = (currentTime-pickTime) ;
+				
+				int realtime =(int) (20 - (shotTime/1000));
+								
+				if(realtime <=0) {
+					realtime = 0;
+				
+					if (me.getEnergy() > 0 && ball!=null && ball.getDribbling()) {
+						timeCounter = 0;
+						me.shoot();
+						if (me.getDirection())
+							ball.shoot(640, 140);
+						else {
+							ball.shoot(130, 140);
+						}
+
+					}
+					shotCounter = -10;
+				}else {
+					
+				}
+				
+				g.drawString(Integer.toString(realtime),(int) me.getX(), (int)(me.getY()-60));
+
+			}
+			
 			if (!waiting) {
 				seconds = (int) (currentTime - joinTime) / 1000 - (59 * minutes);
 
@@ -381,7 +415,7 @@ public class Court extends JPanel implements Runnable {
 
 			}
 
-			if (keyControl.isPressed(KeyEvent.VK_SHIFT) && dashCounter > 0) {
+			if (keyControl.isPressed(KeyEvent.VK_SHIFT) && dashCounter > 0 ) {
 				if (me.getEnergy() > 0) {
 					timeCounter = 0;
 				}
@@ -484,7 +518,19 @@ public class Court extends JPanel implements Runnable {
 //				e1.printStackTrace();
 //			}
 
-			 
+			if(ball!= null &&!picked && ball.getDribbling() && (ball.getX()<me.getCenterX()+10 && ball.getX()>me.getCenterX()-50)) {
+				picked = true;
+				pickTime = System.currentTimeMillis();
+			}
+			
+			
+			if(ball !=null && ball.getDribbling() && (ball.getX()<me.getCenterX()+10 && ball.getX()>me.getCenterX()-50)) {
+				holding = true;
+			}else {
+				holding =false;
+				picked = false;
+			}
+			
 			startTime = System.currentTimeMillis();
 			pauseCounter++;
 			if (paused == false) {
