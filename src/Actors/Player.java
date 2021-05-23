@@ -55,7 +55,7 @@ public class Player extends MovingImage {
 	private int dashes;
 	private int walks;
 	private int jumps;
-	
+
 	private double powerLoc;
 
 	/**
@@ -85,8 +85,6 @@ public class Player extends MovingImage {
 		energy = 2;
 	}
 
-	
-	
 	/**
 	 * 
 	 * @return returns the number of shots taken by the player
@@ -94,19 +92,18 @@ public class Player extends MovingImage {
 	public int getShots() {
 		return shots;
 	}
-	
+
 	public double getPowerLoc() {
-	  powerLoc = 383;
-		if(x<powerLoc) {
-			powerLoc = 383+Math.random()*280;
-		}else {
-			powerLoc = 70+313*Math.random();
+		powerLoc = 383;
+		if (x < powerLoc) {
+			powerLoc = 383 + Math.random() * 280;
+		} else {
+			powerLoc = 70 + 313 * Math.random();
 		}
-		
+
 		return powerLoc;
 	}
-	
-	
+
 	public void setStolen(boolean x) {
 		stolen = x;
 	}
@@ -134,7 +131,7 @@ public class Player extends MovingImage {
 	public int getJumps() {
 		return jumps;
 	}
-	
+
 	public boolean hasStolen() {
 		if (stolen) {
 			return true;
@@ -340,7 +337,7 @@ public class Player extends MovingImage {
 		if (this.x > 700) {
 			this.x = 700;
 		}
-
+		
 		if (speedBoost) {
 			xVelocity += (double) dir;
 		} else {
@@ -390,18 +387,18 @@ public class Player extends MovingImage {
 //				this.dataUpdated = true;	
 //			}
 //		}
-		
+
 		double xCoord = getX();
 		double yCoord = getY();
 		double width = getWidth();
 		double height = getHeight();
 
-		if (x > powerLoc-20 & x < powerLoc+20 & y > 230 & y < 300 & speedPowerup) {
+		if (x > powerLoc - 20 & x < powerLoc + 20 & y > 230 & y < 300 & speedPowerup) {
 			speedPowerup = false;
 			speedBoost = true;
 		}
 
-		if (x > powerLoc-20 & x < powerLoc+20 & y > 230 & y < 300 & jumpPowerup) {
+		if (x > powerLoc - 20 & x < powerLoc + 20 & y > 230 & y < 300 & jumpPowerup) {
 			jumpPowerup = false;
 			jumpBoost = true;
 		}
@@ -418,6 +415,7 @@ public class Player extends MovingImage {
 			if (strechY.intersects(player2)) {
 //				this.hasBall = false;
 				xVelocity = -(xVelocity);
+//				this.x = player2.getX();
 			}
 //			if (player2.getX() - 80 == x) {
 //				this.hasBall = false;
@@ -645,9 +643,9 @@ public class Player extends MovingImage {
 	 */
 	public void shoot() {
 		ballInAir = true;
-		
+
 		if (energy > 0) {
-	
+
 			shots++;
 			this.shooting = true;
 
@@ -725,7 +723,7 @@ public class Player extends MovingImage {
 				g.fillRect((int) x + 10, (int) y - 50, 20, 30);
 			}
 		}
-		
+
 		if (!hasBall) {
 			if (right) {
 				g.drawImage((new ImageIcon("img/player3.png")).getImage(), (int) x, (int) y, (int) width, (int) height,
