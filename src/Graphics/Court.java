@@ -477,7 +477,7 @@ public class Court extends JPanel implements Runnable {
 	//				me.spawnPowerup();
 				}
 				//
-				if (powerCounter % 500 == 0) {
+				if (powerCounter % 1200 == 0) {
 					randX = me.getPowerLoc();
 					me.spawnPowerup();
 					//
