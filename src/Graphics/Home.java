@@ -18,6 +18,8 @@ public class Home extends JPanel {
 	private JFrame theWindow;
 	private boolean outOfTutorial;
 	
+	
+	
 	public Home() {
 		ActionHandler actionEventHandler = new ActionHandler();
 		newRoomButton = new JButton("<html><center>Play Tutorial</center></html>");

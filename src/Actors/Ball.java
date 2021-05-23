@@ -1,6 +1,8 @@
 package Actors;
 
 import Data.BallData;
+import Data.SoundEffect;
+import Graphics.Home;
 import Graphics.PlayerStats;
 
 /**
@@ -22,7 +24,8 @@ public class Ball extends MovingImage {
 	private boolean dataUpdated;
 	private boolean onGround = true;
 
-	private double CONSTANT = 0.3;
+	private final double CONSTANT = 0.3;
+	private double probability;
 	private int bounceCount = 0;
 
 	private double[] equation;
@@ -179,6 +182,7 @@ public class Ball extends MovingImage {
 			bounceCount++;
 			y = 270;
 			yVelocity = -(yVelocity * 0.7);
+			SoundEffect.soundEffect(0);
 			// System.out.println(yVelocity);
 		} else {
 			yVelocity += CONSTANT;
@@ -205,6 +209,7 @@ public class Ball extends MovingImage {
 		floorY = 300; // hardcoded for now
 		if (y >= floorY) {
 			yVelocity = -yVelocity;
+			SoundEffect.soundEffect(0);
 		} else if (y <= playerDribbling.getY() + 15) {
 			yVelocity = Math.abs(yVelocity);
 		}
@@ -231,10 +236,37 @@ public class Ball extends MovingImage {
 			x = shotx;
 			y = shoty;
 			dribbling = false;
-			if (playerDribbling.getDirection())
-				xVelocity = 5;
-			else
-				xVelocity = -5;
+			
+			if (playerDribbling.getDirection()) {
+				if (shotx < 275) {
+					xVelocity = 6;
+					probability = 0.4;
+				} else if (shotx >= 275 && shotx < 382) {
+					xVelocity = 4;
+					probability = 0.5;
+				} else if (shotx >= 382 && shotx < 487) {
+					xVelocity = 3;
+					probability = 0.75;
+				} else if (shotx >= 487) {
+					xVelocity = 1;
+					probability = 0.9;
+				}
+			} else {
+				if (shotx < 275) {
+					xVelocity = -1;
+					probability = 0.9;
+				} else if (shotx >= 275 && shotx < 382) {
+					xVelocity = -3;
+					probability = 0.75;
+				} else if (shotx >= 382 && shotx < 487) {
+					xVelocity = -4;
+					probability = 0.5;
+				} else if (shotx >= 487) {
+					xVelocity = -6;
+					probability = 0.4;
+				}
+			}
+			
 			calculateParabola(hoopx, hoopy);
 			shooting = true;
 		}
@@ -255,7 +287,7 @@ public class Ball extends MovingImage {
 				xVelocity = 0;
 			} else {
 				x -= 20;
-				xVelocity = -1;
+				xVelocity = -1.5;
 			}
 			bounce = true;
 //			playerDribbling.setShooting(false);
@@ -268,7 +300,7 @@ public class Ball extends MovingImage {
 				xVelocity = 0;
 			} else {
 				x += 20;
-				xVelocity = 1;
+				xVelocity = 1.5;
 			}
 			bounce = true;
 //			playerDribbling.setShooting(false);
@@ -283,8 +315,8 @@ public class Ball extends MovingImage {
 	}
 
 	private boolean makeShot() {
-		int r = (int) (Math.random() * 2);
-		if (r == 0)
+		double random = (Math.random());
+		if (random < probability)
 			return true;
 		else
 			return false;
