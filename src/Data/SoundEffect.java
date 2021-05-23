@@ -18,6 +18,7 @@ public class SoundEffect implements JayLayerListener{
 	private static JayLayer sound;
 	
 	public SoundEffect() {
+		super();
 		//String[] soundEffects = new String[] {"bounce.mp3", "jump.mp3", "steal.mp3", "swish.mp3", "rim.mp3", "crowd.mp3", "scoreboard.mp3"};
 		String[] songs = new String[] {"track1.mp3", "track2.mp3", "track3.mp3", "track4.mp3"};
 		String[] soundEffects = new String[] {"bounce.mp3", "swish.mp3"};
@@ -30,7 +31,8 @@ public class SoundEffect implements JayLayerListener{
 		sound.addJayLayerListener(this);
 	}
 	
-	public static void soundEffect(int i) {
+	public void soundEffect(int i) {
+		System.out.println(sound.getNumberOfSoundEffect());
 		sound.playSoundEffect(i);
 	}
 	
