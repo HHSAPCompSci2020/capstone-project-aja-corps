@@ -241,7 +241,7 @@ public class Player extends MovingImage {
 		dash = true;
 		if (energy > 0) {
 
-			if (player2 == null) {
+			if (player2 == null || Math.abs(player2.getX() - x) > 85) {
 				if (right)
 					x += 80;
 				else
