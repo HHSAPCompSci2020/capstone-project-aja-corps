@@ -32,6 +32,7 @@ public class Player extends MovingImage {
 	private boolean intersectsPlayer;
 	private boolean stolen;
 	private boolean ballInAir;
+	private boolean jumping;
 
 	private boolean right = true;
 	private boolean shooting;
@@ -353,7 +354,7 @@ public class Player extends MovingImage {
 	 * @post Y velocity of the player is updated
 	 */
 	public void jump() {
-
+		jumping = true;
 		if (onASurface) {
 			jumps++;
 			if (jumpBoost) {
@@ -426,6 +427,7 @@ public class Player extends MovingImage {
 			Shape standingSurface = null;
 			for (Shape s : obstacles) {
 				if (s.intersects(strechY)) {
+					jumping = false;
 					onASurface = true;
 					standingSurface = s;
 					yVelocity = 0;
@@ -514,6 +516,7 @@ public class Player extends MovingImage {
 		p.hasBall = hasBall;
 		p.score = score;
 		p.shooting = shooting;
+		p.jumping = jumping;
 		return p;
 	}
 
@@ -532,6 +535,7 @@ public class Player extends MovingImage {
 		this.hasBall = data.hasBall;
 		this.score = data.score;
 		this.shooting = data.shooting;
+		this.jumping = data.jumping;
 	}
 
 	/**
@@ -697,7 +701,7 @@ public class Player extends MovingImage {
 //		System.out.println((int) x + " " + (int) y);
 		// g.drawImage(img, x, y, width, height, observer)
 		g.setColor(Color.white);
-		g.drawString(this.username, (int) x, (int) y);
+		g.drawString(this.username, (int) x+10, (int) y);
 
 //		if (speedPowerup) {
 //			g.setColor(Color.red);
@@ -725,7 +729,13 @@ public class Player extends MovingImage {
 		}
 
 		if (!hasBall) {
-			if (right) {
+			if (jumping && right) {
+				g.drawImage((new ImageIcon("img/jumpingnew.png")).getImage(), (int) x, (int) y, (int) width, (int) height,
+						io);
+			} else if (jumping) {
+				g.drawImage((new ImageIcon("img/jumpingnew2.png")).getImage(), (int) x, (int) y, (int) width, (int) height,
+						io);
+			} else if (right) {
 				g.drawImage((new ImageIcon("img/player3.png")).getImage(), (int) x, (int) y, (int) width, (int) height,
 						io);
 			} else {

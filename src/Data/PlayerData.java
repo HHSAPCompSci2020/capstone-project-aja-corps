@@ -14,6 +14,7 @@ public class PlayerData {
 	public boolean right;
 	public boolean hasBall;
 	public boolean shooting;
+	public boolean jumping;
 	public int score;
 	
 	// One thing that is interesting is that the Firebase database cannot store arrays.
@@ -81,4 +82,7 @@ public class PlayerData {
 		return score;
 	}
 	
+	public boolean isJumping() {
+		return jumping;
+	}
 }
