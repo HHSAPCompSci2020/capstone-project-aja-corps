@@ -9,44 +9,53 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
+
+import jay.jaysound.JayLayer;
+import jay.jaysound.JayLayerListener;
   
-public class SoundEffect 
-{
-  
-    // to store current position
-    Long currentFrame;
-    Clip clip;
-      
-    // current status of clip
-    String status;
-      
-    AudioInputStream audioInputStream;
-    private String filePath;
-  
-    // constructor to initialize streams and clip
-    public SoundEffect(String filePath)
-        throws UnsupportedAudioFileException,
-        IOException, LineUnavailableException 
-    {
-        // create AudioInputStream object
-        audioInputStream = 
-                AudioSystem.getAudioInputStream(new File(filePath).getAbsoluteFile());
-          
-        // create clip reference
-        clip = AudioSystem.getClip();
-          
-        // open audioInputStream to the clip
-        clip.open(audioInputStream);
-          
-        clip.loop(Clip.LOOP_CONTINUOUSLY);
-    }
+public class SoundEffect implements JayLayerListener{
     
-    public void play() 
-    {
-        //start the clip
-        clip.start();
-          
-        status = "play";
-    }
-    
+	private static JayLayer sound;
+	
+	public SoundEffect() {
+		//String[] soundEffects = new String[] {"bounce.mp3", "jump.mp3", "steal.mp3", "swish.mp3", "rim.mp3", "crowd.mp3", "scoreboard.mp3"};
+		String[] songs = new String[] {"track1.mp3", "track2.mp3", "track3.mp3", "track4.mp3"};
+		String[] soundEffects = new String[] {"bounce.mp3", "swish.mp3"};
+		
+		sound = new JayLayer("audio/","audio/",false);
+		sound.addPlayList();
+		sound.addSongs(0, songs);
+		sound.addSoundEffects(soundEffects);
+		sound.changePlayList(0);
+		sound.addJayLayerListener(this);
+	}
+	
+	public static void soundEffect(int i) {
+		sound.playSoundEffect(i);
+	}
+	
+	@Override
+	public void musicStarted() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
+	public void musicStopped() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void playlistEnded() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void songEnded() {
+		// TODO Auto-generated method stub
+		
+	}
+	
 }

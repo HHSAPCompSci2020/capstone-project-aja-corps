@@ -1,6 +1,7 @@
 package Actors;
 
 import Data.BallData;
+import Data.SoundEffect;
 import Graphics.Home;
 import Graphics.PlayerStats;
 
@@ -181,7 +182,7 @@ public class Ball extends MovingImage {
 			bounceCount++;
 			y = 270;
 			yVelocity = -(yVelocity * 0.7);
-			Home.soundEffect(0);
+			SoundEffect.soundEffect(0);
 			// System.out.println(yVelocity);
 		} else {
 			yVelocity += CONSTANT;
@@ -208,7 +209,7 @@ public class Ball extends MovingImage {
 		floorY = 300; // hardcoded for now
 		if (y >= floorY) {
 			yVelocity = -yVelocity;
-			Home.soundEffect(0);
+			SoundEffect.soundEffect(0);
 		} else if (y <= playerDribbling.getY() + 15) {
 			yVelocity = Math.abs(yVelocity);
 		}
