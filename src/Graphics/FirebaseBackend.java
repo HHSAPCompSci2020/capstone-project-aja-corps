@@ -62,7 +62,7 @@ public class FirebaseBackend extends JPanel implements ChildEventListener {
 		roomList = new JList<String>();
 		roomList.setBorder(new EtchedBorder(EtchedBorder.RAISED));
 		cnPanel.add(roomList, BorderLayout.CENTER);
-		JLabel ah = new JLabel("Available Games");
+		JLabel ah = new JLabel("Select a game below and click join game to enter the room! Click Create Game to create a new room!");
 		ah.setHorizontalAlignment(JLabel.CENTER);
 		cnPanel.add(ah, BorderLayout.NORTH);
 		cnPanel.setBorder(new EtchedBorder(EtchedBorder.RAISED));
@@ -245,12 +245,12 @@ public class FirebaseBackend extends JPanel implements ChildEventListener {
 //					return;
 //				}
 
-				postsRef.push().child("name").setValue("Waiting for Player... (" + roomList.getModel().getSize() + ")",
+				postsRef.push().child("name").setValue("Game " + roomList.getModel().getSize(),
 						new CompletionListener() {
 
 							@Override
 							public void onComplete(DatabaseError arg0, DatabaseReference arg1) {
-								createRoom("Waiting for Player... (" + (roomList.getModel().getSize()-1) + ")");
+								createRoom("Game " + (roomList.getModel().getSize()-1));
 							}
 
 						});
