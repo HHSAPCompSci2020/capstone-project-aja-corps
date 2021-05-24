@@ -70,7 +70,7 @@ public class FirebaseBackend extends JPanel implements ChildEventListener {
 
 		JPanel ePanel = new JPanel();
 		ePanel.setLayout(new GridLayout(1, 5, 15, 15));
-		newRoomButton = new JButton("<html><center>Create<br>Grame</center></html>");
+		newRoomButton = new JButton("<html><center>Create<br>Game</center></html>");
 		newRoomButton.addActionListener(actionEventHandler);
 		connectButton = new JButton("<html><center>Join<br>Game</center></html>");
 		connectButton.addActionListener(actionEventHandler);
