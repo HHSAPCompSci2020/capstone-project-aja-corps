@@ -395,6 +395,28 @@ public class Court extends JPanel implements Runnable {
 					    
 						add(quitButton);
 					} else {
+						
+						if(me.getScore()==players.get(0).getScore()) {
+							
+							g.drawImage(tie, 0, 0, this);
+							quitButton = new JButton("Quit");
+						    quitButton.setBounds(370, 200, 60, 30);
+						    
+						    scoreBoard = new PlayerStats(me.getShots(), me.getDashes(), me.getWalks(), me.getJumps(), score,
+									startTime);
+							String[] arr;
+							arr = new String[3];
+
+							arr = scoreBoard.statString();
+
+							g.drawString(arr[0], 100, 260);
+							g.drawString(arr[1], 250, 280);
+							g.drawString(arr[2], 200, 300);
+							add(quitButton);
+							
+						}
+						
+						if(me.getScore() <players.get(0).getScore()) {
 						g.drawImage(lost, 0, 0, this);
 						quitButton = new JButton("Quit");
 					    quitButton.setBounds(370, 200, 60, 30);
@@ -410,7 +432,17 @@ public class Court extends JPanel implements Runnable {
 						g.drawString(arr[1], 250, 280);
 						g.drawString(arr[2], 200, 300);
 						add(quitButton);
+						
+						}
+					
+					
 					}
+					
+					
+					
+					
+					
+					
 					// paused = true;
 					quit = true;
 				}
