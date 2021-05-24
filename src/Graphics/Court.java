@@ -353,6 +353,14 @@ public class Court extends JPanel implements Runnable {
 			if (!waiting) {
 				seconds = (int) (currentTime - joinTime) / 1000 - (59 * minutes);
 
+				if(minutes == 1 && seconds ==40) {
+					ball.increaseProbability();
+			
+					g.drawString("ON FIRE", (int)me.getX(),(int)me.getY());
+					
+				}
+				
+				
 				if (seconds >= 59 && timeCounter % 20 == 0) {
 					minutes++;
 					seconds = 0;
@@ -365,17 +373,39 @@ public class Court extends JPanel implements Runnable {
 					g.setColor(Color.white);
 					g.drawString(1-minutes + " : " + (59-seconds), 379, 30);
 				}
-				if (minutes == 2) {
+				if (minutes ==2) {
 //					g.drawString(" Time is up, game over", 325, 258);
 					if (me.getScore() > players.get(0).getScore()) {
 						g.drawImage(won, 0, 0, this);
 						quitButton = new JButton("Quit");
 					    quitButton.setBounds(370, 200, 60, 30);
+					    scoreBoard = new PlayerStats(me.getShots(), me.getDashes(), me.getWalks(), me.getJumps(), score,
+								startTime);
+						String[] arr;
+						arr = new String[3];
+
+						arr = scoreBoard.statString();
+
+						g.drawString(arr[0], 100, 260);
+						g.drawString(arr[1], 250, 280);
+						g.drawString(arr[2], 200, 300);
+					    
 						add(quitButton);
 					} else {
 						g.drawImage(lost, 0, 0, this);
 						quitButton = new JButton("Quit");
 					    quitButton.setBounds(370, 200, 60, 30);
+					    
+					    scoreBoard = new PlayerStats(me.getShots(), me.getDashes(), me.getWalks(), me.getJumps(), score,
+								startTime);
+						String[] arr;
+						arr = new String[3];
+
+						arr = scoreBoard.statString();
+
+						g.drawString(arr[0], 100, 260);
+						g.drawString(arr[1], 250, 280);
+						g.drawString(arr[2], 200, 300);
 						add(quitButton);
 					}
 					// paused = true;
