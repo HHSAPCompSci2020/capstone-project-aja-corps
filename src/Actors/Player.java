@@ -136,6 +136,11 @@ public class Player extends MovingImage {
 		return jumps;
 	}
 
+	/**
+	 * 
+	 *
+	 * @return if the ball was stolen by the opponent
+	 */
 	public boolean hasStolen() {
 		if (stolen) {
 			return true;
@@ -239,7 +244,6 @@ public class Player extends MovingImage {
 	 * @post Dash is true and energy is decreased
 	 */
 	public void dash(Ball ball, Player player2) {
-		// System.out.println(energy);
 		dashes++;
 		dash = true;
 		if (energy > 0) {
@@ -265,37 +269,8 @@ public class Player extends MovingImage {
 			} else {
 				if (right) {
 					x = player2.getX() + 80;
-//					player2.setHasBall(false);
-//					System.out.println(this.hasBall);
-//					if (!hasBall) {
-////						player2.setHasBall(false);
-//					}
-//					System.out.println(player2.hasBall());
-//					if (!this.hasBall) {
-//						player2.setHasBall(false);
-//						this.hasBall = true;
-//						ball.setPlayer(this);
-//						dataUpdated = true;
-//					}
 				} else {
 					x = player2.getX() - 80;
-//					player2.setHasBall(false);
-//					System.out.println(this.hasBall);
-//					player2.setHasBall(false);
-//					this.hasBall = true;
-//					ball.setPlayer(this);
-//					ball.setDribbling(true);
-//					if (!hasBall) {
-////						ball.setPlayerDribbling();
-//						player2.setHasBall(false);
-//					}
-//					System.out.println(player2.hasBall());
-//					if (!this.hasBall) {
-//						player2.setHasBall(false);
-//						this.hasBall = true;
-//						ball.setPlayer(this);
-//						dataUpdated = true;
-//					}
 				}
 			}
 
@@ -303,13 +278,6 @@ public class Player extends MovingImage {
 
 			energy--;
 		}
-//		if (right) {
-//			if (x - 80 <= ball.getX() && x >= ball.getX())
-//				ball.setPlayer(this);
-//		} else {
-//			if (x + 80 >= ball.getX() && x <= ball.getX())
-//				ball.setPlayer(this);
-//		}
 
 	}
 
