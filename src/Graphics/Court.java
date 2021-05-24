@@ -103,6 +103,8 @@ public class Court extends JPanel implements Runnable {
 	
 	private Image won;
 	private Image lost;
+	private Image tie;
+	private Image fire;
 	
 	private JButton quitButton;
 	private JButton seeStats;
@@ -142,6 +144,8 @@ public class Court extends JPanel implements Runnable {
 			speedImage = ImageIO.read(new File("img/SpeedPowerUp.png"));
 			won = ImageIO.read(new File("img/Won.png"));
 			lost = ImageIO.read(new File("img/Lost.png"));
+			tie = ImageIO.read(new File("img/tie.png"));
+			fire = ImageIO.read(new File("img/onfire.png"));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
