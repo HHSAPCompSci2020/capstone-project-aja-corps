@@ -356,7 +356,7 @@ public class Court extends JPanel implements Runnable {
 			if (!waiting) {
 				seconds = (int) (currentTime - joinTime) / 1000 - (59 * minutes);
 
-				if(minutes == 1 && seconds ==40) {
+				if(minutes == 1 && seconds >=39) {
 					ball.increaseProbability();
 			
 					g.drawImage((new ImageIcon("img/onfire.png")).getImage(), 335, 75, 110, 110, this);
