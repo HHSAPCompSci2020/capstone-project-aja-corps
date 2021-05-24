@@ -103,6 +103,8 @@ public class Court extends JPanel implements Runnable {
 	
 	private Image won;
 	private Image lost;
+	private Image tie;
+	private Image fire;
 	
 	private JButton quitButton;
 	private JButton seeStats;
@@ -142,6 +144,8 @@ public class Court extends JPanel implements Runnable {
 			speedImage = ImageIO.read(new File("img/SpeedPowerUp.png"));
 			won = ImageIO.read(new File("img/Won.png"));
 			lost = ImageIO.read(new File("img/Lost.png"));
+			tie = ImageIO.read(new File("img/tie.png"));
+			fire = ImageIO.read(new File("img/onfire.png"));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -213,13 +217,9 @@ public class Court extends JPanel implements Runnable {
 
 			if (stats) {
 
-				g.drawString(
-						" Press 1 if you are shooting on the left hoop, and press 2 if you are shooting on the right hoop",
-						104, 200);
+				
 
-				if (chose) {
-
-					scoreBoard = new PlayerStats(me.getShots(), me.getDashes(), me.getWalks(), me.getJumps(), score,
+					scoreBoard = new PlayerStats(me.getShots(), me.getDashes(), me.getWalks(), me.getJumps(), me.getShotsMade(),
 							startTime);
 					String[] arr;
 					arr = new String[3];
@@ -232,8 +232,7 @@ public class Court extends JPanel implements Runnable {
 				}
 			}
 
-		}
-
+		
 		if (!paused) {
 
 			currentTime = System.currentTimeMillis();
@@ -349,14 +348,13 @@ public class Court extends JPanel implements Runnable {
 				}
 
 			}
-			
 			if (!waiting) {
 				seconds = (int) (currentTime - joinTime) / 1000 - (59 * minutes);
 
-				if(minutes == 1 && seconds ==40) {
+				if(minutes == 1 && seconds >=39) {
 					ball.increaseProbability();
 			
-					g.drawString("ON FIRE", (int)me.getX(),(int)me.getY());
+					g.drawImage((new ImageIcon("img/onfire.png")).getImage(), 335, 75, 110, 110, this);
 					
 				}
 				
@@ -377,9 +375,9 @@ public class Court extends JPanel implements Runnable {
 //					g.drawString(" Time is up, game over", 325, 258);
 					if (me.getScore() > players.get(0).getScore()) {
 						g.drawImage(won, 0, 0, this);
-						quitButton = new JButton("Quit");
-					    quitButton.setBounds(370, 200, 60, 30);
-					    scoreBoard = new PlayerStats(me.getShots(), me.getDashes(), me.getWalks(), me.getJumps(), score,
+						//quitButton = new JButton("Quit");
+					    //quitButton.setBounds(370, 200, 60, 30);
+					    scoreBoard = new PlayerStats(me.getShots(), me.getDashes(), me.getWalks(), me.getJumps(), me.getShotsMade(),
 								startTime);
 						String[] arr;
 						arr = new String[3];
@@ -390,13 +388,35 @@ public class Court extends JPanel implements Runnable {
 						g.drawString(arr[1], 250, 280);
 						g.drawString(arr[2], 200, 300);
 					    
-						add(quitButton);
+						//add(quitButton);
 					} else {
+						
+						if(me.getScore()==players.get(0).getScore()) {
+							
+							g.drawImage(tie, 0, 0, this);
+							//quitButton = new JButton("Quit");
+						    //quitButton.setBounds(370, 200, 60, 30);
+						    
+						    scoreBoard = new PlayerStats(me.getShots(), me.getDashes(), me.getWalks(), me.getJumps(), me.getShotsMade(),
+									startTime);
+							String[] arr;
+							arr = new String[3];
+
+							arr = scoreBoard.statString();
+
+							g.drawString(arr[0], 100, 260);
+							g.drawString(arr[1], 250, 280);
+							g.drawString(arr[2], 200, 300);
+							//add(quitButton);
+							
+						}
+						
+						if(me.getScore() <players.get(0).getScore()) {
 						g.drawImage(lost, 0, 0, this);
-						quitButton = new JButton("Quit");
-					    quitButton.setBounds(370, 200, 60, 30);
+						//quitButton = new JButton("Quit");
+					    //quitButton.setBounds(370, 200, 60, 30);
 					    
-					    scoreBoard = new PlayerStats(me.getShots(), me.getDashes(), me.getWalks(), me.getJumps(), score,
+					    scoreBoard = new PlayerStats(me.getShots(), me.getDashes(), me.getWalks(), me.getJumps(), me.getShotsMade(),
 								startTime);
 						String[] arr;
 						arr = new String[3];
@@ -406,8 +426,18 @@ public class Court extends JPanel implements Runnable {
 						g.drawString(arr[0], 100, 260);
 						g.drawString(arr[1], 250, 280);
 						g.drawString(arr[2], 200, 300);
-						add(quitButton);
+						//add(quitButton);
+						
+						}
+					
+					
 					}
+					
+					
+					
+					
+					
+					
 					// paused = true;
 					quit = true;
 				}
@@ -449,12 +479,12 @@ public class Court extends JPanel implements Runnable {
 			// me.setShooting(false);
 			if (keyControl.isPressed(KeyEvent.VK_LEFT)) {
 				me.setDirection(false);
-				me.walk(-1);
+				me.walk(-0.85);
 			}
 
 			if (keyControl.isPressed(KeyEvent.VK_RIGHT)) {
 				me.setDirection(true);
-				me.walk(1);
+				me.walk(0.85);
 			}
 
 			if (keyControl.isPressed(KeyEvent.VK_UP) && barCounter > 35) {
@@ -532,15 +562,7 @@ public class Court extends JPanel implements Runnable {
 			stats = true;
 		}
 
-		if (keyControl.isPressed(KeyEvent.VK_1) && stats) {
-			score = 1;
-			chose = true;
-		}
-
-		if (keyControl.isPressed(KeyEvent.VK_2) && stats) {
-			score = 2;
-			chose = true;
-		}
+		
 	}
 
 	/**
