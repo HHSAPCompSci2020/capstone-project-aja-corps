@@ -219,7 +219,7 @@ public class CourtTutorial extends JPanel implements Runnable {
 	}
 
 	public void spawnNewPlayer(String playerName) {
-		me = new Player(50, 288, playerName, "test", false);
+		me = new Player(50, 288, playerName, "test", false, 0);
 	}
 
 	/**
