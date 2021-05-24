@@ -21,6 +21,7 @@ import com.google.firebase.database.DatabaseReference.CompletionListener;
 public class Home extends JPanel {
 	private JButton connectButton;
 	private JButton newRoomButton;
+	private JButton soloButton;
 	private JFrame theWindow;
 	private boolean outOfTutorial;
 	private Image backgroundImage;
@@ -36,12 +37,16 @@ public class Home extends JPanel {
 		}
 		
 		ActionHandler actionEventHandler = new ActionHandler();
-		newRoomButton = new JButton("<html><center>Play Tutorial</center></html>");
+		newRoomButton = new JButton("Play Tutorial");
 		newRoomButton.addActionListener(actionEventHandler);
-		connectButton = new JButton("<html><center>Play Online</center></html>");
+		connectButton = new JButton("Play Online");
 		connectButton.addActionListener(actionEventHandler);
+		soloButton = new JButton("Play Solo");
+		soloButton.addActionListener(actionEventHandler);
+		
 		this.add(newRoomButton);
 		this.add(connectButton);
+		this.add(soloButton);
 	}
 	
 	public void paintComponent(Graphics g) {
@@ -57,6 +62,9 @@ public class Home extends JPanel {
 		g2.scale(ratioX, ratioY);
 		g.drawImage(backgroundImage, 0, 0, this);
 		g2.setTransform(at);
+		connectButton.setBounds(410, 200, 130, 30);
+		newRoomButton.setBounds(260, 200, 130, 30);
+		soloButton.setBounds(350, 225, 100, 30);
 	}
 
 	public void show() {
@@ -91,14 +99,31 @@ public class Home extends JPanel {
 		theWindow.dispose();
 	}
 	
+	public void playSolo() {
+		theWindow.setVisible(false);
+
+		JFrame window = new JFrame();
+
+		window.setBounds(100, 100, 800, 322);
+		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		CourtSolo panel = new CourtSolo("TestPlayer");
+		window.addKeyListener(panel.getKeyHandler());
+		window.add(panel);
+		window.setVisible(true);
+
+		theWindow.dispose();
+	}
+	
 	private class ActionHandler implements ActionListener {
 
 		public void actionPerformed(ActionEvent e) {
 			Object source = e.getSource();
 			if (source == newRoomButton) {
 				runTutorial();
-			} else {
+			} else if (source == connectButton) {
 				playOnline();
+			} else {
+				playSolo();
 			}
 		}
 	}
