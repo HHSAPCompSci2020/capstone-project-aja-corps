@@ -1,8 +1,6 @@
 package Actors;
 
 import Data.BallData;
-import Data.Sound;
-import Data.SoundEffect;
 import Graphics.Home;
 import Graphics.PlayerStats;
 
@@ -32,8 +30,6 @@ public class Ball extends MovingImage {
 	private double[] equation;
 	private boolean blocked;
 	
-	private SoundEffect soundEffect;
-
 	private String username;
 
 	/**

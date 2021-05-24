@@ -26,7 +26,6 @@ import Actors.Player;
 import Actors.Referee;
 import Data.BallData;
 import Data.PlayerData;
-import Data.SoundEffect;
 
 import java.util.Timer;
 
@@ -95,7 +94,6 @@ public class Court extends JPanel implements Runnable {
 	private ArrayList<Player> players;
 	private ArrayList<Ball> balls;
 	private PlayerStats scoreBoard;
-	private SoundEffect data;
 	private JLabel instructions;
 	private boolean waiting;
 	private long joinTime;
