@@ -378,7 +378,11 @@ public class Ball extends MovingImage {
 		}
 		
 	}
-	
+	/**
+	 * 
+	 * @param hoopx the hoop at which the shot starts
+	 * @param hoopy the hoop at which the shot ends
+	 */
 	private void midrangeMotion(double hoopx, double hoopy) {
 		equation = new double[3];
 		if (playerDribbling.getDirection()) {
@@ -432,6 +436,10 @@ public class Ball extends MovingImage {
 		return shooting;
 	}
 
+	/**
+	 * 
+	 * @return returns wether or not the shot will go in
+	 */
 	private boolean makeShot() {
 		double random = (Math.random());
 		probability += factor;
@@ -449,6 +457,11 @@ public class Ball extends MovingImage {
 		double k = equation[2];
 		return (a * Math.pow(x - h, 2) + k);
 	}
+	/**
+	 * 
+	 * @param hoopx the x coord of the hoop
+	 * @param hoopy the y coord of the hoop
+	 */
 
 	private void calculateParabola(double hoopx, double hoopy) {
 		equation = new double[3];

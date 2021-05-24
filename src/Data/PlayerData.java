@@ -77,11 +77,17 @@ public class PlayerData {
 	public double getY() {
 		return y;
 	}
-	
+	/**
+	 * 
+	 * @return returns the score corresponding to the player
+	 */
 	public int getScore() {
 		return score;
 	}
-	
+	/**
+	 * 
+	 * @return returns true if the player is currently in a jumping motion
+	 */
 	public boolean isJumping() {
 		return jumping;
 	}

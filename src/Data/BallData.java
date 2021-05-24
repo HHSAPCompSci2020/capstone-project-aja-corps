@@ -62,6 +62,10 @@ public class BallData {
 		return onGround;
 	}
 	
+	/**
+	 * 
+	 * @return returns true if ball is in the air
+	 */
 	public boolean isInAir() {
 		return inAir;
 	}

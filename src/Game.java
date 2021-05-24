@@ -5,9 +5,17 @@ import Graphics.FirebaseBackend;
 import Graphics.Home;
 
 import java.awt.*;
-
+/**
+ * 
+ * @author adityapanikkar
+ *
+ */
 public class Game extends JFrame {
 
+	/**
+	 * 
+	 * @param title the title which is the tital of the excecutable
+	 */
 	public Game(String title) {
 		super(title);
 	}

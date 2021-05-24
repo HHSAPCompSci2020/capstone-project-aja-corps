@@ -8,6 +8,11 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
+/**
+ * 
+ * @author adityapanikkar
+ *
+ */
 public class Referee extends MovingImage{
 
 	public static final int MARIO_WIDTH = 40;
@@ -19,7 +24,11 @@ public class Referee extends MovingImage{
 	private int count = 0;
 	
 	private static String filename = "img/standing.png";
-	
+	/**
+	 * 
+	 * @param x x coord of where the ref will spawn
+	 * @param y y coord of where the ref will spawn
+	 */
 	public Referee(int x, int y) {
 		super(filename, x, y, MARIO_WIDTH, MARIO_HEIGHT);
 		this.x = x;

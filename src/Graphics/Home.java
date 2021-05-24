@@ -1,6 +1,8 @@
 package Graphics;
 
+
 import java.awt.Graphics;
+
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
@@ -18,6 +20,12 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.DatabaseReference.CompletionListener;
 
+
+/**
+ * 
+ * @author anirudhv
+ *
+ */
 public class Home extends JPanel {
 	private JButton connectButton;
 	private JButton newRoomButton;
@@ -49,6 +57,9 @@ public class Home extends JPanel {
 		this.add(connectButton);
 		this.add(soloButton);
 	}
+	/**
+	 * @param g - the graphics object which the program is drawn on
+	 */
 	
 	public void paintComponent(Graphics g) {
 		Graphics2D g2 = (Graphics2D) g;
@@ -67,6 +78,10 @@ public class Home extends JPanel {
 		newRoomButton.setBounds(260, 200, 130, 30);
 		soloButton.setBounds(350, 225, 100, 30);
 	}
+	
+	/**
+	 * draws the actual game
+	 */
 
 	public void show() {
 
@@ -78,6 +93,9 @@ public class Home extends JPanel {
 
 	}
 	
+	/**
+	 * runs the interactive tutorial
+	 */
 	public void runTutorial() {
 		theWindow.setVisible(false);
 
@@ -93,6 +111,9 @@ public class Home extends JPanel {
 		theWindow.dispose();
 	}
 	
+	/**
+	 * runs the main online game mode
+	 */
 	public void playOnline() {
 		theWindow.setVisible(false);
 		FirebaseBackend panel = new FirebaseBackend();
@@ -100,6 +121,9 @@ public class Home extends JPanel {
 		theWindow.dispose();
 	}
 	
+	/**
+	 * runs the solo game mode
+	 */
 	public void playSolo() {
 		theWindow.setVisible(false);
 

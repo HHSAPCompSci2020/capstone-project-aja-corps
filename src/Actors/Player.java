@@ -100,6 +100,11 @@ public class Player extends MovingImage {
 		return shots;
 	}
 
+	/**
+	 * Finds and gets the location of the powerup
+	 * 
+	 * @return Double that represents the x coordinate of the powerup
+	 */
 	public double getPowerLoc() {
 		powerLoc = 383;
 		if (x < powerLoc) {
@@ -111,6 +116,12 @@ public class Player extends MovingImage {
 		return powerLoc;
 	}
 
+	/**
+	 * Sets the stolen field to specified boolean value
+	 * 
+	 * @param x True if the ball has been stolen, false if not
+	 * @post Stolen field is updated
+	 */
 	public void setStolen(boolean x) {
 		stolen = x;
 	}
@@ -356,6 +367,13 @@ public class Player extends MovingImage {
 		}
 	}
 
+	/**
+	 * Increases the score by the specified amount
+	 * 
+	 * @param score The amount to increase the score by
+	 * @pre The referee has been instantiated
+	 * @post The score has increased and the referee blows whistle
+	 */
 	public void increaseScore(int score) {
 		shotsMade++;
 		this.score += score;
@@ -363,6 +381,11 @@ public class Player extends MovingImage {
 		Referee.blowWhistle();
 	}
 	
+	/**
+	 * Finds and gets the number of shots made
+	 * 
+	 * @return Integer representing amount of shots made
+	 */
 	public int getShotsMade() {
 		return shotsMade;
 	}
@@ -712,6 +735,11 @@ public class Player extends MovingImage {
 		return this.energyState;
 	}
 
+	/**
+	 * Finds and returns the score
+	 * 
+	 * @return Integer representing the current score
+	 */
 	public int getScore() {
 		return this.score;
 	}
