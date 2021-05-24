@@ -241,6 +241,12 @@ public class Ball extends MovingImage {
 	 *       and velocities are updated
 	 */
 	public void shoot(double hoopx, double hoopy) {
+		if (playerDribbling.playerType == 1 && !playerDribbling.getDirection()) {
+			return;
+		} else if (playerDribbling.playerType == 2 && playerDribbling.getDirection()) {
+			return;
+		}
+		
 		boolean close = false;
 		boolean midrange = false;
 		if (dribbling) {

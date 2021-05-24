@@ -33,6 +33,7 @@ public class Player extends MovingImage {
 	private boolean stolen;
 	private boolean ballInAir;
 	private boolean jumping;
+	public int playerType;
 
 	private boolean right = true;
 	private boolean shooting;
@@ -69,11 +70,12 @@ public class Player extends MovingImage {
 	 * @param uniqueID The unique identifier of each player
 	 * @param hasBall  True if player has ball and false if not
 	 */
-	public Player(int x, int y, String username, String uniqueID, boolean hasBall) {
+	public Player(int x, int y, String username, String uniqueID, boolean hasBall, int playerType) {
 		super(filename, x, y, MARIO_WIDTH, MARIO_HEIGHT);
 		this.x = x;
 		this.y = y;
 		this.hasBall = hasBall;
+		this.playerType = playerType;
 		xVelocity = 0;
 		yVelocity = 0;
 		onASurface = false;
@@ -426,22 +428,7 @@ public class Player extends MovingImage {
 
 		onASurface = false;
 
-		if (player2 != null) {
-			if (jumping && (Math.abs(player2.getX() - x) < 30)) {
-//				x -= 20;	`
-				System.out.println("near!");
-			} else if (strechY.intersects(player2)) {
-//				this.hasBall = false;
-//				this.x = player2.getX();
-				xVelocity = -(xVelocity);
-			}
-			
-			
-			
-//			if (player2.getX() - 80 == x) {
-//				this.hasBall = false;
-//			}
-		}
+
 
 		if (yVelocity > 0) {
 			Shape standingSurface = null;
@@ -477,8 +464,45 @@ public class Player extends MovingImage {
 		// ***********X AXIS***********
 
 		xVelocity *= friction;
+		
+		if (player2 != null) {
+			if (strechY.intersects(player2)) {
+//				this.x = player2.getX() + player2.width;
+//				this.y = yCoord;
+//				moveToLocation(xCoord, yCoord2);
+//				dataUpdated = true;
+//				int dir;
+//				if (right) {
+//					dir = 1;
+//				} else {
+//					dir = -1;
+//				}
+				
+				
+				xVelocity = -(xVelocity);
+//				return;
+			} else if (jumping && (Math.abs(player2.getX() - x) < 30)) {
+				if (right) {
+					xCoord -= 20;
+				} else {
+					xCoord += 20;
+				}
+//				System.out.println("near!");
+			} 
+			
+			
+			
+			
+//			if (player2.getX() - 80 == x) {
+//				this.hasBall = false;
+//			}
+		}
+		
+		
 
 		double xCoord2 = xCoord + xVelocity;
+		
+
 
 		Rectangle2D.Double strechX = new Rectangle2D.Double(Math.min(xCoord, xCoord2), yCoord2,
 				width + Math.abs(xVelocity), height);
@@ -511,6 +535,9 @@ public class Player extends MovingImage {
 
 		if (Math.abs(xVelocity) < .2)
 			xVelocity = 0;
+		
+		
+
 
 		this.x = xCoord2;
 		this.y = yCoord2;
