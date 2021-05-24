@@ -255,13 +255,13 @@ public class Ball extends MovingImage {
 			if (playerDribbling.getDirection()) {
 				if (shotx < 275) {
 					xVelocity = 6;
-					probability = 0.4;
+					probability = 0.25;
 				} else if (shotx >= 275 && shotx < 382) {
 					xVelocity = 4;
-					probability = 0.5;
+					probability = 0.3;
 				} else if (shotx >= 382 && shotx < 487) {
 					xVelocity = 3;
-					probability = 0.75;
+					probability = 0.5;
 				} else if (shotx >= 487 && playerDribbling.getX() <= 570){
 					xVelocity = 2;
 					probability = 0.85;
@@ -288,13 +288,13 @@ public class Ball extends MovingImage {
 					midrange = true;
 				} else if (shotx >= 275 && shotx < 382) {
 					xVelocity = -3;
-					probability = 0.75;
+					probability = 0.5;
 				} else if (shotx >= 382 && shotx < 487) {
 					xVelocity = -4;
-					probability = 0.5;
+					probability = 0.3;
 				} else if (shotx >= 487) {
 					xVelocity = -6;
-					probability = 0.4;
+					probability = 0.25;
 				}
 			}
 			
@@ -320,7 +320,10 @@ public class Ball extends MovingImage {
 		if (playerDribbling.getDirection() && x >= hoopx) {
 			if (makeShot()) {
 //				PlayerStats.score2++;
-				playerDribbling.increaseScore();
+				if(probability <= 0.5)
+					playerDribbling.increaseScore(3);
+				else
+					playerDribbling.increaseScore(2);
 				xVelocity = 0;
 			} else {
 				x -= 20;
@@ -333,7 +336,10 @@ public class Ball extends MovingImage {
 		} else if (!playerDribbling.getDirection() && x <= hoopx) {
 			if (makeShot()) {
 //				PlayerStats.score1++;
-				playerDribbling.increaseScore();
+				if(probability <= 0.5)
+					playerDribbling.increaseScore(3);
+				else
+					playerDribbling.increaseScore(2);
 				xVelocity = 0;
 			} else {
 				x += 20;
