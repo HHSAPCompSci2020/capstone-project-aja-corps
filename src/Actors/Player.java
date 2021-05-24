@@ -242,10 +242,23 @@ public class Player extends MovingImage {
 		if (energy > 0) {
 
 			if (player2 == null || Math.abs(player2.getX() - x) > 85) {
-				if (right)
-					x += 80;
-				else
-					x -= 80;
+				if (right) {
+					
+				walk(8);
+				walk(8);
+				walk(8);
+				walk(8);
+				walk(8);
+				
+				}else {
+				walk(-8);
+				walk(-8);
+				walk(-8);
+				walk(-8);
+				walk(-8);
+					
+						
+				}
 			} else {
 				if (right) {
 					x = player2.getX() + 80;
@@ -340,7 +353,7 @@ public class Player extends MovingImage {
 		}
 		
 		if (speedBoost) {
-			xVelocity += (double) dir;
+			xVelocity += (0.9) *(double)dir;
 		} else {
 
 			xVelocity += (0.5) * (double) dir;

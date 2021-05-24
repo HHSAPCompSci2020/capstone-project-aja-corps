@@ -376,7 +376,7 @@ public class CourtTutorial extends JPanel implements Runnable {
 				
 				
 
-				if (shot && dashed && powerCounter>=200) {
+				if (shot && dashed && powerCounter>=250) {
 					finished = true;
 					
 			}
