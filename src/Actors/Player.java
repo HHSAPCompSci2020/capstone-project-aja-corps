@@ -734,7 +734,15 @@ public class Player extends MovingImage {
 //		}
 
 		if (me.getUsername() == this.username) {
+			
+			
 			g.setColor(Color.green);
+			
+			if(getPower()) {
+				g.setColor(Color.yellow);
+			}
+			
+			
 
 			g.drawRect((int) x + 10, (int) y - 50, 20, 30);
 
