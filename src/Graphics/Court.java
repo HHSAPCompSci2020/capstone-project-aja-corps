@@ -169,12 +169,12 @@ public class Court extends JPanel implements Runnable {
 		referee = new Referee(383, 180);
 
 		if (playerType == 1) {
-			me = new Player(300, 288, playerName, myUserRef.getKey(), false);
+			me = new Player(300, 288, playerName, myUserRef.getKey(), false, 1);
 			waiting = true;
 			instructions = new JLabel("Waiting for players...");
 			add(instructions);
 		} else {
-			me = new Player(500, 288, playerName, myUserRef.getKey(), false);
+			me = new Player(500, 288, playerName, myUserRef.getKey(), false, 2);
 			joinTime = System.currentTimeMillis();
 			me.setDirection(false);
 			spawnNewBall();
@@ -787,7 +787,7 @@ public class Court extends JPanel implements Runnable {
 				return;
 
 //			System.out.println(arg0);
-			Player p = new Player(DRAWING_WIDTH / 2 - Player.MARIO_WIDTH / 2, 50, null, arg0.getKey(), false);
+			Player p = new Player(DRAWING_WIDTH / 2 - Player.MARIO_WIDTH / 2, 50, null, arg0.getKey(), false, 0);
 			p.syncWithDataObject(arg0.getValue(PlayerData.class));
 //			System.out.println(arg0.getValue(PlayerData.class));
 //			removeInstructions();
