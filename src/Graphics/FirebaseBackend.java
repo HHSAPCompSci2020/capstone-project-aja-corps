@@ -148,6 +148,7 @@ public class FirebaseBackend extends JPanel implements ChildEventListener {
 
 			@Override
 			public void onCancelled(DatabaseError arg0) {
+				theWindow.dispose();
 			}
 		});
 
@@ -192,6 +193,7 @@ public class FirebaseBackend extends JPanel implements ChildEventListener {
 
 			@Override
 			public void onCancelled(DatabaseError arg0) {
+				theWindow.dispose();
 			}
 		});
 
