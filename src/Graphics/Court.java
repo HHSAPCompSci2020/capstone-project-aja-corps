@@ -186,7 +186,7 @@ public class Court extends JPanel implements Runnable {
 		myUserRef.setValueAsync(me.getDataObject());
 		// myBallRef.setValueAsync(ball.getDataObject());
 
-		System.out.println(roomRef.child("users"));
+//		System.out.println(roomRef.child("users"));
 		this.playerType = playerType;
 
 		new Thread(this).start();
@@ -788,10 +788,10 @@ public class Court extends JPanel implements Runnable {
 			if (me.idMatch(arg0.getKey()))
 				return;
 
-			System.out.println(arg0);
+//			System.out.println(arg0);
 			Player p = new Player(DRAWING_WIDTH / 2 - Player.MARIO_WIDTH / 2, 50, null, arg0.getKey(), false);
 			p.syncWithDataObject(arg0.getValue(PlayerData.class));
-			System.out.println(arg0.getValue(PlayerData.class));
+//			System.out.println(arg0.getValue(PlayerData.class));
 //			removeInstructions();
 			players.add(p);
 			removeInstructions();

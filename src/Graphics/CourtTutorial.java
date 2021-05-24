@@ -54,7 +54,8 @@ public class CourtTutorial extends JPanel implements Runnable {
 	private boolean quit = true;
 	private boolean ePressed;
 	private double randX;
-
+	private boolean powerUpspawned;
+	
 	private int score;
 	private boolean chose;
 	private Image backgroundImage;
@@ -338,9 +339,10 @@ public class CourtTutorial extends JPanel implements Runnable {
 //						powerUp = true;
 						instructions.setText(
 								"Power ups randomly spawn across the court. Blue boxes are jump boosts, and red boxes are speed boosts.");
-						if (!me.getPower()) {
+						if (!powerUpspawned) {
 							randX = me.getPowerLoc();
 							me.spawnPowerup();
+							powerUpspawned = true;
 						}
 					}
 					if (shot && dashed && me.getPower()) {
@@ -352,9 +354,10 @@ public class CourtTutorial extends JPanel implements Runnable {
 //						powerUp = true;
 						instructions.setText(
 								"Power ups randomly spawn across the court. Blue boxes are jump boosts, and red boxes are speed boosts.");
-						if (!me.getPower()) {
+						if (!powerUpspawned) {
 							randX = me.getPowerLoc();
 							me.spawnPowerup();
+							powerUpspawned = true;
 						}
 					} else if (shot && dashed && me.getPower()) {
 						instructions.setText("Press escape to pause and exit the game. You are ready to play online!");

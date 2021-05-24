@@ -414,11 +414,17 @@ public class Player extends MovingImage {
 		onASurface = false;
 
 		if (player2 != null) {
-			if (strechY.intersects(player2)) {
+			if (jumping && (Math.abs(player2.getX() - x) < 30)) {
+//				x -= 20;	`
+				System.out.println("near!");
+			} else if (strechY.intersects(player2)) {
 //				this.hasBall = false;
-				xVelocity = -(xVelocity);
 //				this.x = player2.getX();
+				xVelocity = -(xVelocity);
 			}
+			
+			
+			
 //			if (player2.getX() - 80 == x) {
 //				this.hasBall = false;
 //			}
@@ -702,7 +708,7 @@ public class Player extends MovingImage {
 //		System.out.println((int) x + " " + (int) y);
 		// g.drawImage(img, x, y, width, height, observer)
 		g.setColor(Color.white);
-		g.drawString(this.username, (int) x+10, (int) y);
+		g.drawString(this.username, (int) x+5, (int) y);
 
 //		if (speedPowerup) {
 //			g.setColor(Color.red);

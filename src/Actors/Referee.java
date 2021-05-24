@@ -33,7 +33,7 @@ public class Referee extends MovingImage{
 		Color c = g.getColor();
 		
 		if(blow && count < 100) {
-			System.out.println(count);
+//			System.out.println(count);
 			count++;
 			g.setColor(Color.orange);
 
