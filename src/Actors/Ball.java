@@ -54,6 +54,14 @@ public class Ball extends MovingImage {
 		//soundEffect = new SoundEffect();
 	}
 	
+	/**
+	 * Executes actions that allow the players to block each other's shots
+	 * 
+	 * @param p Player currently shooting the ball
+	 * @param player2 Opponent who is able to block the shot
+	 * @param floorY The Y coordinate of the floor
+	 * @post The ball is either blocked or continues on its path
+	 */
 	public void block(Player p, Player player2, double floorY) {
 		if (p.isShooting()) {
 			if (this.intersects(player2)) {
@@ -132,6 +140,11 @@ public class Ball extends MovingImage {
 		this.dataUpdated = true;
 	}
 
+	/**
+	 * Updates the player who is dribbling to null and gets rid of ownership of the ball
+	 * 
+	 * @post Player currently dribbling the ball is null
+	 */
 	public void setPlayerDribbling() {
 		this.playerDribbling = null;
 		this.playerDribbling.setHasBall(false);
@@ -213,6 +226,7 @@ public class Ball extends MovingImage {
 	 * The action of the ball being dribbled by a player
 	 * 
 	 * @param floorY The y coordinate of the floor
+	 * @pre The player dribbling the ball is not null
 	 * @post Appropriate x, y, and velocities are updated
 	 */
 	public void dribble(double floorY) {
@@ -401,6 +415,11 @@ public class Ball extends MovingImage {
 		equation[2] = k;
 	}
 	
+	/**
+	 * Finds and gets to see if the ball is currently in the shooting process or not
+	 * 
+	 * @return True if the ball is shooting and false if not
+	 */
 	public boolean isShooting() {
 		return shooting;
 	}
@@ -563,10 +582,20 @@ public class Ball extends MovingImage {
 		return y;
 	}
 	
+	/**
+	 * Increases the probability of the player making a shot
+	 * 
+	 * @post the percentage is increased by 20 percent
+	 */
 	public void increaseProbability() {
 		factor = 0.2;
 	}
 	
+	/**
+	 * Returns the probability of making a shot back to normal
+	 * 
+	 * @post the percentage of making a shot is back to normal
+	 */
 	public void decreaseProbability() {
 		factor = 0;
 	}
@@ -580,6 +609,11 @@ public class Ball extends MovingImage {
 		return onGround;
 	}
 	
+	/**
+	 * Checks to see if the ball is in the air or not
+	 * 
+	 * @return True if the ball is in air, and false if not
+	 */
 	public boolean isInAir() {
 		return inAir;
 	}
