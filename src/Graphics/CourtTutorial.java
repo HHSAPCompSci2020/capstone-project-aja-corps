@@ -122,14 +122,14 @@ public class CourtTutorial extends JPanel implements Runnable {
 		if (paused) {
 			g.drawImage(pauseImage, 0, 0, this);
 			g.setColor(Color.white);
-			g.drawString(" Press ESC to return to the game and E to exit", 260, 160);
+			g.drawString(" Press ESC to return to the game", 300, 160);
 			// g.drawString(" Press S to see your statistics", 285, 180);
 
-			if (ePressed) {
+		
 				g.drawString(
 						" Thanks for playing the tutorial! Now that you know how to play the game, you can relaunch the game and begin online play!",
 						5, 200);
-			}
+			
 
 			if (stats) {
 

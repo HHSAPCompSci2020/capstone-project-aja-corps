@@ -40,6 +40,8 @@ import java.net.URL;
  * Represents the court for the game
  * 
  * @author anirudhv
+ * @author adityapanikkar
+ * @author josh_choi
  *
  */
 public class Court extends JPanel implements Runnable {

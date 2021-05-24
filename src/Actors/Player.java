@@ -81,7 +81,7 @@ public class Player extends MovingImage {
 		onASurface = false;
 		gravity = 0.7;
 		friction = .85;
-		jumpStrength = 14.5;
+		jumpStrength = 13;
 		this.username = username;
 		this.uniqueID = uniqueID;
 		dataUpdated = false;
@@ -761,7 +761,15 @@ public class Player extends MovingImage {
 //		}
 
 		if (me.getUsername() == this.username) {
+			
+			
 			g.setColor(Color.green);
+			
+			if(getPower()) {
+				g.setColor(Color.yellow);
+			}
+			
+			
 
 			g.drawRect((int) x + 10, (int) y - 50, 20, 30);
 
