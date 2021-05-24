@@ -1,5 +1,12 @@
 package Actors;
 
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.image.ImageObserver;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
+
 import Data.BallData;
 import Graphics.Home;
 import Graphics.PlayerStats;
@@ -33,6 +40,7 @@ public class Ball extends MovingImage {
 	private boolean blocked;
 	
 	private String username;
+//	private static Image ballimg = ImageIO.read(getClass().getClassLoader().getResource("img/basketball.png"));
 
 	/**
 	 * Instantiates a new Ball at initial coordinates (x, y) with the specified size
@@ -616,5 +624,15 @@ public class Ball extends MovingImage {
 	 */
 	public boolean isInAir() {
 		return inAir;
+	}
+	
+	@Override
+	public void draw(Graphics g, ImageObserver io) {
+		try {
+			g.drawImage(ImageIO.read(getClass().getClassLoader().getResource("img/basketball.png")), (int) x, (int) y, (int) width, (int) height, io);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }

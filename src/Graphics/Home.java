@@ -30,7 +30,8 @@ public class Home extends JPanel {
 	
 	public Home() {
 		try {
-			backgroundImage = ImageIO.read(new File("img/TitleScreen.png"));
+//			backgroundImage = ImageIO.read(new File("img/TitleScreen.png"));
+			backgroundImage = ImageIO.read(getClass().getClassLoader().getResource("img/TitleScreen.png"));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

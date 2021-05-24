@@ -3,8 +3,11 @@ package Actors;
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.ImageObserver;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.*;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
 import Data.PlayerData;
@@ -243,7 +246,7 @@ public class Player extends MovingImage {
 	 * Makes player dash
 	 * 
 	 * @param ball ball associated with the player
-	 * @param player2 player the current player is dashing past
+	 * @param player2 player the current player is dashing 
 	 */
 	public void dash(Ball ball, Player player2) {
 		dashes++;
@@ -761,25 +764,56 @@ public class Player extends MovingImage {
 
 		if (!hasBall) {
 			if (jumping && right) {
-				g.drawImage((new ImageIcon("img/jumpingnew.png")).getImage(), (int) x, (int) y, (int) width, (int) height,
-						io);
+//				backgroundImage = ImageIO.read(getClass().getClassLoader().getResource("img/court.jpg"));
+				try {
+					g.drawImage(ImageIO.read(getClass().getClassLoader().getResource("img/jumpingnew.png")), (int) x, (int) y, (int) width, (int) height,
+							io);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			} else if (jumping) {
-				g.drawImage((new ImageIcon("img/jumpingnew2.png")).getImage(), (int) x, (int) y, (int) width, (int) height,
-						io);
+				try {
+					g.drawImage(ImageIO.read(getClass().getClassLoader().getResource("img/jumpingnew2.png")), (int) x, (int) y, (int) width, (int) height,
+							io);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			} else if (right) {
-				g.drawImage((new ImageIcon("img/player3.png")).getImage(), (int) x, (int) y, (int) width, (int) height,
-						io);
+				try {
+					g.drawImage(ImageIO.read(getClass().getClassLoader().getResource("img/player3.png")), (int) x, (int) y, (int) width, (int) height,
+							io);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			} else {
-				g.drawImage((new ImageIcon("img/player4.png")).getImage(), (int) x, (int) y, (int) width, (int) height,
-						io);
+				try {
+					g.drawImage(ImageIO.read(getClass().getClassLoader().getResource("img/player4.png")), (int) x, (int) y, (int) width, (int) height,
+							io);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 //		} else if (shooting) {
 //			g.drawImage((new ImageIcon("img/playershoot.png")).getImage(), (int) x, (int) y, (int) width, (int) height,
 //					io);
 		} else if (right) {
-			g.drawImage((new ImageIcon(filename)).getImage(), (int) x, (int) y, (int) width, (int) height, io);
+			try {
+				g.drawImage(ImageIO.read(getClass().getClassLoader().getResource("img/player.png")), (int) x, (int) y, (int) width, (int) height, io);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		} else {
-			g.drawImage((new ImageIcon("img/player2.png")).getImage(), (int) x, (int) y, (int) width, (int) height, io);
+			try {
+				g.drawImage(ImageIO.read(getClass().getClassLoader().getResource("img/player2.png")), (int) x, (int) y, (int) width, (int) height, io);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 
 	}

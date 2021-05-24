@@ -3,7 +3,9 @@ package Actors;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.ImageObserver;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
 public class Referee extends MovingImage{
@@ -51,14 +53,24 @@ public class Referee extends MovingImage{
 			
 			g.setColor(c);
 			
-			g.drawImage((new ImageIcon("img/blowing.png")).getImage(), (int)x, (int)y, (int) width, (int) height, io);
+			try {
+				g.drawImage(ImageIO.read(getClass().getClassLoader().getResource("img/blowing.png")), (int)x, (int)y, (int) width, (int) height, io);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		} else if(blow && count >= 100) {
 			blow = false;
 			count = 0;
 		}
 		
 		if(!blow){
-			g.drawImage((new ImageIcon(filename)).getImage(), (int)x, (int)y, (int) width, (int) height, io);
+			try {
+				g.drawImage(ImageIO.read(getClass().getClassLoader().getResource("img/standing.png")), (int)x, (int)y, (int) width, (int) height, io);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 
 		g.setColor(c);

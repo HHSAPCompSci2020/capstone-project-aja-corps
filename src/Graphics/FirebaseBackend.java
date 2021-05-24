@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.InetAddress;
 import java.util.ArrayList;
 
@@ -81,10 +82,11 @@ public class FirebaseBackend extends JPanel implements ChildEventListener {
 		cnPanel.add(ePanel, BorderLayout.SOUTH);
 
 		// DATABASE SETUP
-		FileInputStream refreshToken;
+		InputStream refreshToken;
 		try {
 
-			refreshToken = new FileInputStream("src/BasketballAllStars.json");
+			refreshToken = this.getClass().getClassLoader().getResourceAsStream("BasketballAllStars.json");
+//			refreshToken = new FileInputStream("./BasketballAllStars.json");
 
 			FirebaseOptions options = new FirebaseOptions.Builder()
 					.setCredentials(GoogleCredentials.fromStream(refreshToken))

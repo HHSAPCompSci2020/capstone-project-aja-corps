@@ -88,10 +88,10 @@ public class CourtTutorial extends JPanel implements Runnable {
 		add(instructions);
 
 		try {
-			backgroundImage = ImageIO.read(new File("img/court.jpg"));
-			pauseImage = ImageIO.read(new File("img/PauseScreen.png"));
-			jumpImage = ImageIO.read(new File("img/JumpPowerUp.png"));
-			speedImage = ImageIO.read(new File("img/SpeedPowerUp.png"));
+			backgroundImage = ImageIO.read(getClass().getClassLoader().getResource("img/court.jpg"));
+			pauseImage = ImageIO.read(getClass().getClassLoader().getResource("img/PauseScreen.png"));
+			jumpImage = ImageIO.read(getClass().getClassLoader().getResource("img/JumpPowerUp.png"));
+			speedImage = ImageIO.read(getClass().getClassLoader().getResource("img/SpeedPowerUp.png"));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

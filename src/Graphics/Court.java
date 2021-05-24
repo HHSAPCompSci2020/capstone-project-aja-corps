@@ -138,14 +138,14 @@ public class Court extends JPanel implements Runnable {
 //		data = new SoundEffect();
 
 		try {
-			backgroundImage = ImageIO.read(new File("img/court.jpg"));
-			pauseImage = ImageIO.read(new File("img/PauseScreen.png"));
-			jumpImage = ImageIO.read(new File("img/JumpPowerUp.png"));
-			speedImage = ImageIO.read(new File("img/SpeedPowerUp.png"));
-			won = ImageIO.read(new File("img/Won.png"));
-			lost = ImageIO.read(new File("img/Lost.png"));
-			tie = ImageIO.read(new File("img/tie.png"));
-			fire = ImageIO.read(new File("img/onfire.png"));
+			backgroundImage = ImageIO.read(getClass().getClassLoader().getResource("img/court.jpg"));
+			pauseImage = ImageIO.read(getClass().getClassLoader().getResource("img/PauseScreen.png"));
+			jumpImage = ImageIO.read(getClass().getClassLoader().getResource("img/JumpPowerUp.png"));
+			speedImage = ImageIO.read(getClass().getClassLoader().getResource("img/SpeedPowerUp.png"));
+			won = ImageIO.read(getClass().getClassLoader().getResource("img/Won.png"));
+			lost = ImageIO.read(getClass().getClassLoader().getResource("img/Lost.png"));
+			tie = ImageIO.read(getClass().getClassLoader().getResource("img/tie.png"));
+			fire = ImageIO.read(getClass().getClassLoader().getResource("img/onfire.png"));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
