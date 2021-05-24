@@ -58,6 +58,7 @@ public class Player extends MovingImage {
 	private int walks;
 	private int jumps;
 
+	private int shotsMade;
 	private double powerLoc;
 
 	/**
@@ -383,9 +384,14 @@ public class Player extends MovingImage {
 	}
 
 	public void increaseScore(int score) {
+		shotsMade++;
 		this.score += score;
 		this.dataUpdated = true;
 		Referee.blowWhistle();
+	}
+	
+	public int getShotsMade() {
+		return shotsMade;
 	}
 
 	/**

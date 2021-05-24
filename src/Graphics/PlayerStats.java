@@ -58,11 +58,8 @@ public class PlayerStats {
 		double distance = Math.round(walknum * 0.7 + dashes *1.4)/12;
 		double percent;
 		int scorecount;
-		if(score == 1) {
-			scorecount = score1;
-		}else {
-			scorecount = score2;
-		}
+		
+		scorecount = score;
 		
 		if(shots ==0) {
 			 percent = 0;

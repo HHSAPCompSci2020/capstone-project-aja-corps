@@ -217,13 +217,9 @@ public class Court extends JPanel implements Runnable {
 
 			if (stats) {
 
-				g.drawString(
-						" Press 1 if you are shooting on the left hoop, and press 2 if you are shooting on the right hoop",
-						104, 200);
+				
 
-				if (chose) {
-
-					scoreBoard = new PlayerStats(me.getShots(), me.getDashes(), me.getWalks(), me.getJumps(), score,
+					scoreBoard = new PlayerStats(me.getShots(), me.getDashes(), me.getWalks(), me.getJumps(), me.getShotsMade(),
 							startTime);
 					String[] arr;
 					arr = new String[3];
@@ -236,8 +232,7 @@ public class Court extends JPanel implements Runnable {
 				}
 			}
 
-		}
-
+		
 		if (!paused) {
 
 			currentTime = System.currentTimeMillis();
@@ -382,7 +377,7 @@ public class Court extends JPanel implements Runnable {
 						g.drawImage(won, 0, 0, this);
 						//quitButton = new JButton("Quit");
 					    //quitButton.setBounds(370, 200, 60, 30);
-					    scoreBoard = new PlayerStats(me.getShots(), me.getDashes(), me.getWalks(), me.getJumps(), score,
+					    scoreBoard = new PlayerStats(me.getShots(), me.getDashes(), me.getWalks(), me.getJumps(), me.getShotsMade(),
 								startTime);
 						String[] arr;
 						arr = new String[3];
@@ -402,7 +397,7 @@ public class Court extends JPanel implements Runnable {
 							//quitButton = new JButton("Quit");
 						    //quitButton.setBounds(370, 200, 60, 30);
 						    
-						    scoreBoard = new PlayerStats(me.getShots(), me.getDashes(), me.getWalks(), me.getJumps(), score,
+						    scoreBoard = new PlayerStats(me.getShots(), me.getDashes(), me.getWalks(), me.getJumps(), me.getShotsMade(),
 									startTime);
 							String[] arr;
 							arr = new String[3];
@@ -421,7 +416,7 @@ public class Court extends JPanel implements Runnable {
 						//quitButton = new JButton("Quit");
 					    //quitButton.setBounds(370, 200, 60, 30);
 					    
-					    scoreBoard = new PlayerStats(me.getShots(), me.getDashes(), me.getWalks(), me.getJumps(), score,
+					    scoreBoard = new PlayerStats(me.getShots(), me.getDashes(), me.getWalks(), me.getJumps(), me.getShotsMade(),
 								startTime);
 						String[] arr;
 						arr = new String[3];
@@ -567,15 +562,7 @@ public class Court extends JPanel implements Runnable {
 			stats = true;
 		}
 
-		if (keyControl.isPressed(KeyEvent.VK_1) && stats) {
-			score = 1;
-			chose = true;
-		}
-
-		if (keyControl.isPressed(KeyEvent.VK_2) && stats) {
-			score = 2;
-			chose = true;
-		}
+		
 	}
 
 	/**
