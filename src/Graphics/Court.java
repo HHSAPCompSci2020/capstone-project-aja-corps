@@ -484,12 +484,12 @@ public class Court extends JPanel implements Runnable {
 			// me.setShooting(false);
 			if (keyControl.isPressed(KeyEvent.VK_LEFT)) {
 				me.setDirection(false);
-				me.walk(-1);
+				me.walk(-0.85);
 			}
 
 			if (keyControl.isPressed(KeyEvent.VK_RIGHT)) {
 				me.setDirection(true);
-				me.walk(1);
+				me.walk(0.85);
 			}
 
 			if (keyControl.isPressed(KeyEvent.VK_UP) && barCounter > 35) {

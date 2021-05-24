@@ -340,7 +340,7 @@ public class Player extends MovingImage {
 	 * @post X, Y, xvelocity, and yvelocity are updated according to actions
 	 *       executed
 	 */
-	public void walk(int dir) {
+	public void walk(double dir) {
 		walks++;
 		intersectsPlayer = false;
 
