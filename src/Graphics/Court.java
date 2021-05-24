@@ -380,8 +380,8 @@ public class Court extends JPanel implements Runnable {
 //					g.drawString(" Time is up, game over", 325, 258);
 					if (me.getScore() > players.get(0).getScore()) {
 						g.drawImage(won, 0, 0, this);
-						quitButton = new JButton("Quit");
-					    quitButton.setBounds(370, 200, 60, 30);
+						//quitButton = new JButton("Quit");
+					    //quitButton.setBounds(370, 200, 60, 30);
 					    scoreBoard = new PlayerStats(me.getShots(), me.getDashes(), me.getWalks(), me.getJumps(), score,
 								startTime);
 						String[] arr;
