@@ -26,6 +26,8 @@ public class Ball extends MovingImage {
 	private final double CONSTANT = 0.3;
 	private double probability;
 	private int bounceCount = 0;
+	
+	private double factor = 0;
 
 	private double[] equation;
 	private boolean blocked;
@@ -399,6 +401,7 @@ public class Ball extends MovingImage {
 
 	private boolean makeShot() {
 		double random = (Math.random());
+		probability += factor;
 		if (random < probability)
 			return true;
 		else
@@ -552,6 +555,14 @@ public class Ball extends MovingImage {
 	 */
 	public double getY() {
 		return y;
+	}
+	
+	public void increaseProbability() {
+		factor = 0.2;
+	}
+	
+	public void decreaseProbability() {
+		factor = 0;
 	}
 
 	/**
