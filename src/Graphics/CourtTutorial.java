@@ -54,7 +54,10 @@ public class CourtTutorial extends JPanel implements Runnable {
 	private boolean quit = true;
 	private boolean ePressed;
 	private double randX;
-
+	private boolean spawned = false;
+	private boolean finished = false;
+	private boolean taken;
+	
 	private int score;
 	private boolean chose;
 	private Image backgroundImage;
@@ -324,7 +327,9 @@ public class CourtTutorial extends JPanel implements Runnable {
 	 */
 	public void run() {
 
-		while (quit) { // Modify this to allow quitting
+		while (quit) {
+			// Modify this to allow quitting
+			
 			long startTime = System.currentTimeMillis();
 			pauseCounter++;
 			if (moveLeftAndRight) {
@@ -337,10 +342,12 @@ public class CourtTutorial extends JPanel implements Runnable {
 					if (shot && dashed) {
 //						powerUp = true;
 						instructions.setText(
-								"Power ups randomly spawn across the court. Blue boxes are jump boosts, and red boxes are speed boosts.");
-						if (!me.getPower()) {
+								"Power ups randomly spawn across the court. Red powerups are jump boosts, and Blue powerups are speed boosts.");
+						if (!me.getPower() && !spawned) {
 							randX = me.getPowerLoc();
 							me.spawnPowerup();
+							
+							spawned = true;
 						}
 					}
 					if (shot && dashed && me.getPower()) {
@@ -351,10 +358,11 @@ public class CourtTutorial extends JPanel implements Runnable {
 					if (shot && dashed) {
 //						powerUp = true;
 						instructions.setText(
-								"Power ups randomly spawn across the court. Blue boxes are jump boosts, and red boxes are speed boosts.");
-						if (!me.getPower()) {
+								"Power ups randomly spawn across the court. Blue powerups are jump boosts, and red powerups are speed boosts.");
+						if (!me.getPower() && !spawned) {
 							randX = me.getPowerLoc();
 							me.spawnPowerup();
+							spawned = true;
 						}
 					} else if (shot && dashed && me.getPower()) {
 						instructions.setText("Press escape to pause and exit the game. You are ready to play online!");
@@ -364,13 +372,28 @@ public class CourtTutorial extends JPanel implements Runnable {
 				} else {
 					instructions.setText("Great! Now go pick up the ball!");
 				}
+				
+				
+				
+
+				if (shot && dashed && powerCounter>=200) {
+					finished = true;
+					
+			}
+				
+				if(finished) {
+					instructions.setText("Press escape to pause and exit the game. You are ready to play online!");
+				}
 			}
 
 			if (paused == false) {
 				// System.out.println(me.hasBall());
 				timeCounter++;
 				barCounter++;
+				
+				if(me.getPower()) {
 				powerCounter++;
+			}
 				stopCounter++;
 				dashCounter++;
 				shotCounter++;

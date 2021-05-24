@@ -88,6 +88,14 @@ public class Ball extends MovingImage {
 	public void act(Player p, double floorY) {
 	
 		//System.out.println(p.getX());
+		
+		if (this.x < 45) {
+			this.x = 45;
+		}
+
+	if (this.x > 700) {
+		this.x = 700;
+	}
 		if ((this.intersects(p) && (onGround))) {
 			System.out.println("intersection!");
 			p.setHasBall(true);
