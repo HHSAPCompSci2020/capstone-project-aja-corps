@@ -380,8 +380,8 @@ public class Player extends MovingImage {
 		}
 	}
 
-	public void increaseScore() {
-		this.score++;
+	public void increaseScore(int score) {
+		this.score += score;
 		this.dataUpdated = true;
 		Referee.blowWhistle();
 	}
