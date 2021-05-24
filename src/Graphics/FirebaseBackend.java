@@ -44,42 +44,42 @@ import com.google.firebase.database.FirebaseDatabase;
 public class FirebaseBackend extends JPanel implements ChildEventListener {
 	private JFrame theWindow;
 
-	private ArrayList<String> rooms;
+	public ArrayList<String> rooms;
 	private JList<String> roomList;
 
 	private JButton connectButton;
 	private JButton newRoomButton;
 
-	private DatabaseReference postsRef;
+	public DatabaseReference postsRef;
 
 	public FirebaseBackend() {
 		rooms = new ArrayList<String>();
-
-		ActionHandler actionEventHandler = new ActionHandler();
-
-		setLayout(new BorderLayout());
-		JPanel cnPanel = new JPanel();
-		cnPanel.setLayout(new BorderLayout());
-		roomList = new JList<String>();
-		roomList.setBorder(new EtchedBorder(EtchedBorder.RAISED));
-		cnPanel.add(roomList, BorderLayout.CENTER);
-		JLabel ah = new JLabel("Select a game below and click join game to enter the room! Click Create Game to create a new room!");
-		ah.setHorizontalAlignment(JLabel.CENTER);
-		cnPanel.add(ah, BorderLayout.NORTH);
-		cnPanel.setBorder(new EtchedBorder(EtchedBorder.RAISED));
-		add(cnPanel);
-
-		JPanel ePanel = new JPanel();
-		ePanel.setLayout(new GridLayout(1, 5, 15, 15));
-		newRoomButton = new JButton("<html><center>Create<br>Game</center></html>");
-		newRoomButton.addActionListener(actionEventHandler);
-		connectButton = new JButton("<html><center>Join<br>Game</center></html>");
-		connectButton.addActionListener(actionEventHandler);
-
-		ePanel.add(newRoomButton);
-		ePanel.add(connectButton);
-
-		cnPanel.add(ePanel, BorderLayout.SOUTH);
+//
+//		ActionHandler actionEventHandler = new ActionHandler();
+//
+//		setLayout(new BorderLayout());
+//		JPanel cnPanel = new JPanel();
+//		cnPanel.setLayout(new BorderLayout());
+//		roomList = new JList<String>();
+//		roomList.setBorder(new EtchedBorder(EtchedBorder.RAISED));
+//		cnPanel.add(roomList, BorderLayout.CENTER);
+//		JLabel ah = new JLabel("Select a game below and click join game to enter the room! Click Create Game to create a new room!");
+//		ah.setHorizontalAlignment(JLabel.CENTER);
+//		cnPanel.add(ah, BorderLayout.NORTH);
+//		cnPanel.setBorder(new EtchedBorder(EtchedBorder.RAISED));
+//		add(cnPanel);
+//
+//		JPanel ePanel = new JPanel();
+//		ePanel.setLayout(new GridLayout(1, 5, 15, 15));
+//		newRoomButton = new JButton("<html><center>Create<br>Game</center></html>");
+//		newRoomButton.addActionListener(actionEventHandler);
+//		connectButton = new JButton("<html><center>Join<br>Game</center></html>");
+//		connectButton.addActionListener(actionEventHandler);
+//
+//		ePanel.add(newRoomButton);
+//		ePanel.add(connectButton);
+//
+//		cnPanel.add(ePanel, BorderLayout.SOUTH);
 
 		// DATABASE SETUP
 		InputStream refreshToken;
@@ -150,7 +150,7 @@ public class FirebaseBackend extends JPanel implements ChildEventListener {
 
 			@Override
 			public void onCancelled(DatabaseError arg0) {
-				theWindow.dispose();
+//				theWindow.dispose();
 			}
 		});
 
@@ -210,7 +210,9 @@ public class FirebaseBackend extends JPanel implements ChildEventListener {
 	@Override
 	public void onChildAdded(DataSnapshot arg0, String arg1) {
 		rooms.add(arg0.child("name").getValue(String.class));
-		roomList.setListData(rooms.toArray(new String[rooms.size()]));
+//		System.out.println("HELLO!");
+
+//		roomList.setListData(rooms.toArray(new String[rooms.size()]));
 	}
 
 	@Override
