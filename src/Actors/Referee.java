@@ -24,10 +24,20 @@ public class Referee extends MovingImage{
 		this.y = y;
 	}
 	
+	/**
+	 * Blows the whistle for the referee
+	 * 
+	 */
 	public static void blowWhistle() {
 		blow = true;
 	}
 	
+	/**
+	 * Draws the referee
+	 * 
+	 * @param g Graphics needed to draw to screen
+	 * @param io Image observer needed to draw image
+	 */
 	public void draw(Graphics g, ImageObserver io) {
 		
 		Color c = g.getColor();

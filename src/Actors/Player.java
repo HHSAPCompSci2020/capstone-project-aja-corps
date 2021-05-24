@@ -238,10 +238,12 @@ public class Player extends MovingImage {
 		}
 	}
 
+	
 	/**
 	 * Makes player dash
 	 * 
-	 * @post Dash is true and energy is decreased
+	 * @param ball ball associated with the player
+	 * @param player2 player the current player is dashing past
 	 */
 	public void dash(Ball ball, Player player2) {
 		dashes++;
