@@ -350,7 +350,7 @@ public class CourtTutorial extends JPanel implements Runnable {
 						}
 					}
 					if (shot && dashed && me.getPower()) {
-						instructions.setText("Press escape to pause and exit the game. You are ready to play online!");
+						instructions.setText("Press escape to pause and exit the game. In a real game, you can only pause when you have the ball");
 					}
 				} else if (shot) {
 					// instructions.setText("Awesome! Now try dashing - press shift. Dashing also
@@ -365,7 +365,7 @@ public class CourtTutorial extends JPanel implements Runnable {
 							spawned = true;
 						}
 					} else if (shot && dashed && me.getPower()) {
-						instructions.setText("Press escape to pause and exit the game. You are ready to play online!");
+						instructions.setText("Press escape to pause and exit the game. In a real game, you can only pause when you have the ball");
 					} else {
 						instructions.setText("Awesome! Now try dashing - press shift. Dashing also takes up 1 energy.");
 					}
@@ -379,7 +379,7 @@ public class CourtTutorial extends JPanel implements Runnable {
 				}
 
 				if (finished) {
-					instructions.setText("Press escape to pause and exit the game. You are ready to play online!");
+					instructions.setText("Press escape to pause and exit the game. In a real game, you can only pause when you have the ball");
 				}
 			}
 

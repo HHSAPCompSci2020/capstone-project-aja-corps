@@ -184,13 +184,9 @@ public class CourtSolo extends JPanel implements Runnable {
 
 			if (stats) {
 
-				g.drawString(
-						" Press 1 if you are shooting on the left hoop, and press 2 if you are shooting on the right hoop",
-						104, 200);
+				
 
-				if (chose) {
-
-					scoreBoard = new PlayerStats(me.getShots(), me.getDashes(), me.getWalks(), me.getJumps(), score,
+					scoreBoard = new PlayerStats(me.getShots(), me.getDashes(), me.getWalks(), me.getJumps(), me.getShotsMade(),
 							startTime);
 					String[] arr;
 					arr = new String[3];
@@ -202,8 +198,7 @@ public class CourtSolo extends JPanel implements Runnable {
 					g.drawString(arr[2], 200, 260);
 				}
 			}
-
-		}
+		
 
 		if (!paused) {
 
@@ -368,9 +363,7 @@ public class CourtSolo extends JPanel implements Runnable {
 			timesPaused++;
 			pauseTime = 0;
 
-			if (paused && iPaused == false) {
-				return;
-			}
+			
 
 			paused = !paused;
 			iPaused = !iPaused;
@@ -397,15 +390,7 @@ public class CourtSolo extends JPanel implements Runnable {
 			stats = true;
 		}
 
-		if (keyControl.isPressed(KeyEvent.VK_1) && stats) {
-			score = 1;
-			chose = true;
-		}
-
-		if (keyControl.isPressed(KeyEvent.VK_2) && stats) {
-			score = 2;
-			chose = true;
-		}
+		
 	}
 
 	/**
@@ -471,9 +456,9 @@ public class CourtSolo extends JPanel implements Runnable {
 
 			pauseTime++;
 
-			if (ball != null && paused == true) {
-				paused = false;
-			}
+	//		if (ball != null && paused == true) {
+	//			paused = false;
+	//		}
 
 
 			enableKeys();
