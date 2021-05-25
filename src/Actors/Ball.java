@@ -40,7 +40,6 @@ public class Ball extends MovingImage {
 	private boolean blocked;
 	
 	private String username;
-//	private static Image ballimg = ImageIO.read(getClass().getClassLoader().getResource("img/basketball.png"));
 
 	/**
 	 * Instantiates a new Ball at initial coordinates (x, y) with the specified size
@@ -58,8 +57,6 @@ public class Ball extends MovingImage {
 		yVelocity = 4;
 		this.uniqueID = uniqueID;
 		this.username = username;
-		
-		//soundEffect = new SoundEffect();
 	}
 	
 	/**
@@ -81,7 +78,6 @@ public class Ball extends MovingImage {
 			}
 		} else {
 			if (this.intersects(p) && inAir) {
-//				p.setShooting(false);
 				this.setPlayer(p);
 				this.setDribbling(true);
 				inAir = false;
@@ -100,9 +96,6 @@ public class Ball extends MovingImage {
 	 *       booleans are changed according to action
 	 */
 	public void act(Player p, double floorY) {
-	
-		//System.out.println(p.getX());
-		
 		if (this.x < 45) {
 			this.x = 45;
 		}
@@ -135,16 +128,11 @@ public class Ball extends MovingImage {
 		}
 
 		if (bounce) {
-//			System.out.println("bouncing");
 			bounce(p);
 		}
 
 		if (y > floorY)
 			moveToGround();
-
-		// if(x > 800)
-		// setDribbling(true);
-
 		this.dataUpdated = true;
 	}
 
@@ -214,8 +202,6 @@ public class Ball extends MovingImage {
 			bounceCount++;
 			y = 270;
 			yVelocity = -(yVelocity * 0.7);
-			//soundEffect.soundEffect(0);
-			// System.out.println(yVelocity);
 		} else {
 			yVelocity += CONSTANT;
 		}
@@ -239,10 +225,9 @@ public class Ball extends MovingImage {
 	 */
 	public void dribble(double floorY) {
 
-		floorY = 300; // hardcoded for now
+		floorY = 300;
 		if (y >= floorY) {
 			yVelocity = -yVelocity;
-			//soundEffect.soundEffect(0);
 		} else if (y <= playerDribbling.getY() + 15) {
 			yVelocity = Math.abs(yVelocity);
 		}
@@ -330,22 +315,17 @@ public class Ball extends MovingImage {
 				midrangeMotion(hoopx, hoopy);
 			else
 				calculateParabola(hoopx, hoopy);
-			//if(playerDribbling.getDirection())
 			shooting = true;
 		}
-//		Player p = playerDribbling;
 		if (shooting == true) {
-//			playerDribbling = null;
 			playerDribbling.setHasBall(false);
 			inAir = true;
 			x += xVelocity;
-//			x += 0.5;
 			y = f(x);
 		}
 
 		if (playerDribbling.getDirection() && x >= hoopx) {
 			if (makeShot()) {
-//				PlayerStats.score2++;
 				if(probability <= 0.5)
 					playerDribbling.increaseScore(3);
 				else
@@ -356,12 +336,10 @@ public class Ball extends MovingImage {
 				xVelocity = -1.5;
 			}
 			bounce = true;
-//			playerDribbling.setShooting(false);
 			shooting = false;
 			yVelocity = 5;
 		} else if (!playerDribbling.getDirection() && x <= hoopx) {
 			if (makeShot()) {
-//				PlayerStats.score1++;
 				if(probability <= 0.5)
 					playerDribbling.increaseScore(3);
 				else
@@ -372,7 +350,6 @@ public class Ball extends MovingImage {
 				xVelocity = 1.5;
 			}
 			bounce = true;
-//			playerDribbling.setShooting(false);
 			shooting = false;
 			yVelocity = 5;
 		}
