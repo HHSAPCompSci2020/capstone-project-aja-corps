@@ -40,7 +40,7 @@ public class Ball extends MovingImage {
 	private String username;
 	
 	/**
-	 * Instantiates a new Ball at initial coordinates (x, y) with the specified size
+	 * Instantiates a new Ball at initial coordinates (x, y) with the specified size of width and heights
 	 * 
 	 * @param x        Initial X-Coordinate of the ball
 	 * @param y        Initial Y-Coordinate of the ball
@@ -63,6 +63,7 @@ public class Ball extends MovingImage {
 	 * @param p       Player currently shooting the ball
 	 * @param player2 Opponent who is able to block the shot
 	 * @param floorY  The Y coordinate of the floor
+	 * @pre Players have been instantiated and are not null
 	 * @post The ball is either blocked or continues on its path
 	 */
 	public void block(Player p, Player player2, double floorY) {
@@ -90,6 +91,7 @@ public class Ball extends MovingImage {
 	 * 
 	 * @param p      The player that is doing the action upon the ball
 	 * @param floorY The Y-Coordinate of the floor
+	 * @pre Player p is not null
 	 * @post X-coordinate, Y-Coordinate, X velocity, Y velocity, and appropriate
 	 *       booleans are changed according to action
 	 */
@@ -135,7 +137,7 @@ public class Ball extends MovingImage {
 	 * Updates the player who is dribbling to null and gets rid of ownership of the
 	 * ball
 	 * 
-	 * @post Player currently dribbling the ball is null
+	 * @post Player currently dribbling the ball is null and the player is also set to not having the ball
 	 */
 	public void setPlayerDribbling() {
 		this.playerDribbling = null;
@@ -146,7 +148,7 @@ public class Ball extends MovingImage {
 	 * Updates the dribbling status of the ball
 	 * 
 	 * @param x True if the ball should start dribbling and false if not
-	 * @post The ball stops horizontally moving but vertically by default moves down
+	 * @post The ball stops horizontally moving but vertically by default moves down and begins to dribble if parameter is true
 	 */
 	public void setDribbling(boolean x) {
 		bounceCount = 0;
@@ -173,8 +175,9 @@ public class Ball extends MovingImage {
 	 * The action of the ball bouncing
 	 * 
 	 * @param p The player that was bouncing the ball
+	 * @pre Player p is not null
 	 * @post The x and y coordinates are updated as well as the appropriate
-	 *       velocities of the ball
+	 *       velocities of the ball as it begins the bouncing motion
 	 */
 	public void bounce(Player p) {
 		if (bounceCount >= 5) {
@@ -215,7 +218,7 @@ public class Ball extends MovingImage {
 	 * 
 	 * @param floorY The y coordinate of the floor
 	 * @pre The player dribbling the ball is not null
-	 * @post Appropriate x, y, and velocities are updated
+	 * @post Appropriate x, y, and velocities are updated as the ball begins to dribble
 	 */
 	public void dribble(double floorY) {
 		floorY = 300;
@@ -236,8 +239,10 @@ public class Ball extends MovingImage {
 	 * 
 	 * @param hoopx The x coordinate of the hoop
 	 * @param hoopy The y coordinate of the hoop
+	 * @pre A player is currently dribbling the ball
 	 * @post The ball is on its trajectory in the arc motion towards the hoop. X, Y,
-	 *       and velocities are updated
+	 *       and velocities are updated. Also, the score is updated in addition to the probability of
+	 *       making a shot.
 	 */
 	public void shoot(double hoopx, double hoopy) {
 		if (playerDribbling.playerType == 1 && !playerDribbling.getDirection())
@@ -347,11 +352,6 @@ public class Ball extends MovingImage {
 
 	}
 
-	/**
-	 * 
-	 * @param hoopx the hoop at which the shot starts
-	 * @param hoopy the hoop at which the shot ends
-	 */
 	private void midrangeMotion(double hoopx, double hoopy) {
 		equation = new double[3];
 		if (playerDribbling.getDirection()) {
@@ -405,10 +405,6 @@ public class Ball extends MovingImage {
 		return shooting;
 	}
 
-	/**
-	 * 
-	 * @return returns wether or not the shot will go in
-	 */
 	private boolean makeShot() {
 		double random = (Math.random());
 		probability += factor;
@@ -426,12 +422,6 @@ public class Ball extends MovingImage {
 		double k = equation[2];
 		return (a * Math.pow(x - h, 2) + k);
 	}
-
-	/**
-	 * 
-	 * @param hoopx the x coord of the hoop
-	 * @param hoopy the y coord of the hoop
-	 */
 
 	private void calculateParabola(double hoopx, double hoopy) {
 		equation = new double[3];
@@ -467,7 +457,7 @@ public class Ball extends MovingImage {
 	 * Sets the player to having possession of the ball
 	 * 
 	 * @param p The player who possesses the ball
-	 * @post The player who owns the ball is updated
+	 * @post The player who owns the ball is updated in addition to the state of the player being updated
 	 */
 	public void setPlayer(Player p) {
 		if (playerDribbling != null)
@@ -497,7 +487,7 @@ public class Ball extends MovingImage {
 	}
 
 	/**
-	 * Syncs the ball with the current ball data object
+	 * Syncs the ball with the current ball data object for firebase purposes
 	 * 
 	 * @param data The ball data object used
 	 * @post Data about ball is updated
@@ -540,6 +530,7 @@ public class Ball extends MovingImage {
 	}
 
 	/**
+	 * Finds and gets the state of if the ball is being dribbled or not
 	 * 
 	 * @return returns true if the ball is being dribbled
 	 */
@@ -577,7 +568,7 @@ public class Ball extends MovingImage {
 	/**
 	 * Increases the probability of the player making a shot
 	 * 
-	 * @post the percentage is increased by 20 percent
+	 * @post the percentage of making a shot is increased by 20 percent
 	 */
 	public void increaseProbability() {
 		factor = 0.2;
@@ -586,7 +577,7 @@ public class Ball extends MovingImage {
 	/**
 	 * Returns the probability of making a shot back to normal
 	 * 
-	 * @post the percentage of making a shot is back to normal
+	 * @post the percentage of making a shot is back to normal and not affected by a factor
 	 */
 	public void decreaseProbability() {
 		factor = 0;
@@ -611,6 +602,14 @@ public class Ball extends MovingImage {
 	}
 
 	@Override
+	/**
+	 * Draws the ball using image and graphics
+	 * 
+	 * @param g Graphics object used for drawing the image
+	 * @param io ImageObserver object used to read and get the image from folder
+	 * @pre Graphics and ImageObserver objects are not null
+	 * @post Image of the ball is either drawn to the screen or an error message is displayed if the image is not found
+	 */
 	public void draw(Graphics g, ImageObserver io) {
 		try {
 			g.drawImage(ImageIO.read(getClass().getClassLoader().getResource("img/basketball.png")), (int) x, (int) y,
