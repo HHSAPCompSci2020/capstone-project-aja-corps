@@ -33,12 +33,12 @@ public class Ball extends MovingImage {
 	private final double CONSTANT = 0.3;
 	private double probability;
 	private int bounceCount = 0;
-	
+
 	private double factor = 0;
 
 	private double[] equation;
 	private boolean blocked;
-	
+
 	private String username;
 
 	/**
@@ -58,13 +58,13 @@ public class Ball extends MovingImage {
 		this.uniqueID = uniqueID;
 		this.username = username;
 	}
-	
+
 	/**
 	 * Executes actions that allow the players to block each other's shots
 	 * 
-	 * @param p Player currently shooting the ball
+	 * @param p       Player currently shooting the ball
 	 * @param player2 Opponent who is able to block the shot
-	 * @param floorY The Y coordinate of the floor
+	 * @param floorY  The Y coordinate of the floor
 	 * @post The ball is either blocked or continues on its path
 	 */
 	public void block(Player p, Player player2, double floorY) {
@@ -100,9 +100,9 @@ public class Ball extends MovingImage {
 			this.x = 45;
 		}
 
-	if (this.x > 700) {
-		this.x = 700;
-	}
+		if (this.x > 700) {
+			this.x = 700;
+		}
 		if ((this.intersects(p) && (onGround))) {
 			System.out.println("intersection!");
 			p.setHasBall(true);
@@ -113,8 +113,6 @@ public class Ball extends MovingImage {
 			shooting = false;
 			this.dataUpdated = true;
 		}
-		
-		
 
 		if (playerDribbling != null) {
 			if (dribbling)
@@ -137,7 +135,8 @@ public class Ball extends MovingImage {
 	}
 
 	/**
-	 * Updates the player who is dribbling to null and gets rid of ownership of the ball
+	 * Updates the player who is dribbling to null and gets rid of ownership of the
+	 * ball
 	 * 
 	 * @post Player currently dribbling the ball is null
 	 */
@@ -145,7 +144,7 @@ public class Ball extends MovingImage {
 		this.playerDribbling = null;
 		this.playerDribbling.setHasBall(false);
 	}
-	
+
 	/**
 	 * Updates the dribbling status of the ball
 	 * 
@@ -253,7 +252,7 @@ public class Ball extends MovingImage {
 		} else if (playerDribbling.playerType == 2 && playerDribbling.getDirection()) {
 			return;
 		}
-		
+
 		boolean close = false;
 		boolean midrange = false;
 		if (dribbling) {
@@ -262,7 +261,7 @@ public class Ball extends MovingImage {
 			x = shotx;
 			y = shoty;
 			dribbling = false;
-			
+
 			if (playerDribbling.getDirection()) {
 				if (shotx < 275) {
 					xVelocity = 6;
@@ -273,7 +272,7 @@ public class Ball extends MovingImage {
 				} else if (shotx >= 382 && shotx < 487) {
 					xVelocity = 3;
 					probability = 0.5;
-				} else if (shotx >= 487 && playerDribbling.getX() <= 570){
+				} else if (shotx >= 487 && playerDribbling.getX() <= 570) {
 					xVelocity = 2;
 					probability = 0.85;
 					midrange = true;
@@ -281,19 +280,19 @@ public class Ball extends MovingImage {
 					xVelocity = 0.5;
 					probability = 0.9;
 					close = true;
-				} else if(playerDribbling.getX() >= 627) {
+				} else if (playerDribbling.getX() >= 627) {
 					dribbling = true;
 					return;
 				}
 			} else {
-				if(playerDribbling.getX() <= 125) {
+				if (playerDribbling.getX() <= 125) {
 					dribbling = true;
 					return;
 				} else if (playerDribbling.getX() < 210) {
 					close = true;
 					xVelocity = -0.5;
 					probability = 0.9;
-				} else if(shotx <= 275) {
+				} else if (shotx <= 275) {
 					xVelocity = -2;
 					probability = 0.85;
 					midrange = true;
@@ -308,10 +307,10 @@ public class Ball extends MovingImage {
 					probability = 0.25;
 				}
 			}
-			
-			if(close)
+
+			if (close)
 				layupMotion(hoopx, hoopy);
-			else if(midrange)
+			else if (midrange)
 				midrangeMotion(hoopx, hoopy);
 			else
 				calculateParabola(hoopx, hoopy);
@@ -326,7 +325,7 @@ public class Ball extends MovingImage {
 
 		if (playerDribbling.getDirection() && x >= hoopx) {
 			if (makeShot()) {
-				if(probability <= 0.5)
+				if (probability <= 0.5)
 					playerDribbling.increaseScore(3);
 				else
 					playerDribbling.increaseScore(2);
@@ -340,7 +339,7 @@ public class Ball extends MovingImage {
 			yVelocity = 5;
 		} else if (!playerDribbling.getDirection() && x <= hoopx) {
 			if (makeShot()) {
-				if(probability <= 0.5)
+				if (probability <= 0.5)
 					playerDribbling.increaseScore(3);
 				else
 					playerDribbling.increaseScore(2);
@@ -353,8 +352,9 @@ public class Ball extends MovingImage {
 			shooting = false;
 			yVelocity = 5;
 		}
-		
+
 	}
+
 	/**
 	 * 
 	 * @param hoopx the hoop at which the shot starts
@@ -381,7 +381,7 @@ public class Ball extends MovingImage {
 		equation[1] = h;
 		equation[2] = k;
 	}
-	
+
 	private void layupMotion(double hoopx, double hoopy) {
 		equation = new double[3];
 		if (playerDribbling.getDirection()) {
@@ -403,7 +403,7 @@ public class Ball extends MovingImage {
 		equation[1] = h;
 		equation[2] = k;
 	}
-	
+
 	/**
 	 * Finds and gets to see if the ball is currently in the shooting process or not
 	 * 
@@ -434,6 +434,7 @@ public class Ball extends MovingImage {
 		double k = equation[2];
 		return (a * Math.pow(x - h, 2) + k);
 	}
+
 	/**
 	 * 
 	 * @param hoopx the x coord of the hoop
@@ -545,6 +546,7 @@ public class Ball extends MovingImage {
 	public boolean isDataChanged() {
 		return dataUpdated;
 	}
+
 	/**
 	 * 
 	 * @return returns true if the ball is being dribbled
@@ -579,7 +581,7 @@ public class Ball extends MovingImage {
 	public double getY() {
 		return y;
 	}
-	
+
 	/**
 	 * Increases the probability of the player making a shot
 	 * 
@@ -588,7 +590,7 @@ public class Ball extends MovingImage {
 	public void increaseProbability() {
 		factor = 0.2;
 	}
-	
+
 	/**
 	 * Returns the probability of making a shot back to normal
 	 * 
@@ -606,7 +608,7 @@ public class Ball extends MovingImage {
 	public boolean isOnGround() {
 		return onGround;
 	}
-	
+
 	/**
 	 * Checks to see if the ball is in the air or not
 	 * 
@@ -615,11 +617,12 @@ public class Ball extends MovingImage {
 	public boolean isInAir() {
 		return inAir;
 	}
-	
+
 	@Override
 	public void draw(Graphics g, ImageObserver io) {
 		try {
-			g.drawImage(ImageIO.read(getClass().getClassLoader().getResource("img/basketball.png")), (int) x, (int) y, (int) width, (int) height, io);
+			g.drawImage(ImageIO.read(getClass().getClassLoader().getResource("img/basketball.png")), (int) x, (int) y,
+					(int) width, (int) height, io);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
