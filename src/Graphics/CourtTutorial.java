@@ -28,7 +28,7 @@ import java.util.Queue;
 import java.io.Serializable;
 
 /**
- * Represents the court for the game
+ * Represents the court tutorial for the game
  * 
  * @author anirudhv
  *
@@ -74,17 +74,14 @@ public class CourtTutorial extends JPanel implements Runnable {
 	private PlayerStats scoreBoard;
 
 	/**
-	 * Instantiates a new court at the database reference in Firebase and with the
-	 * name of the player
+	 * Instantiates a new court with the player's given username
 	 * 
-	 * @param roomRef    Firebase database reference
 	 * @param playerName Player username
 	 */
 	public CourtTutorial(String playerName) {
 		super();
 		instructions = new JLabel(
 				"Welcome to Basketball All Stars! Use the left and right arrow keys to move left and right and the up arrow key to jump.");
-		//
 		add(instructions);
 
 		try {
@@ -104,7 +101,6 @@ public class CourtTutorial extends JPanel implements Runnable {
 
 		players = new ArrayList<Player>();
 
-		// me = new Player(200, 50, playerName, "Test", false);
 		spawnNewPlayer(playerName);
 		new Thread(this).start();
 	}
@@ -125,11 +121,9 @@ public class CourtTutorial extends JPanel implements Runnable {
 			g.drawString(" Press ESC to return to the game", 300, 160);
 			// g.drawString(" Press S to see your statistics", 285, 180);
 
-		
-				g.drawString(
-						" Thanks for playing the tutorial! Now that you know how to play the game, you can relaunch the game and begin online play!",
-						5, 200);
-			
+			g.drawString(
+					" Thanks for playing the tutorial! Now that you know how to play the game, you can relaunch the game and begin online play!",
+					5, 200);
 
 			if (stats) {
 
@@ -165,24 +159,16 @@ public class CourtTutorial extends JPanel implements Runnable {
 			g2.scale(ratioX, ratioY);
 
 			g.setColor(new Color(205, 102, 29));
-			// g.fill();
 			for (Shape s : obstacles) {
 				g2.fill(s);
 			}
 
 			g.drawImage(backgroundImage, 0, 0, this);
 
-			// g.drawRect(130, 140, 20, 20); // ball class needs this for debugging, KEEP
-			// THIS IN
-			// g.drawRect(640, 140, 20, 20);
-			// g.drawLine(0, 50, width, 50);
 			for (int i = 0; i < players.size(); i++) {
 				players.get(i).draw(g2, this);
 			}
 
-			// for (int i = 0; i < balls.size(); i++) {
-			// balls.get(i).draw(g2, this);
-			// }
 
 			if (ball != null) {
 				ball.draw(g2, this);
@@ -204,18 +190,17 @@ public class CourtTutorial extends JPanel implements Runnable {
 			g2.setColor(new Color(255, 255, 255));
 			g2.fillRect(0, 0, 800, 30);
 
-			// TODO Add any custom drawings here
-
 		}
 
 	}
 
 	/**
 	 * Spawns a new ball in the court
+	 * 
+	 * @post Instantiates the field ball
 	 */
 	public void spawnNewBall() {
 		ball = new Ball(300, 288, 20, 20, "TestBall", "TestBall");
-		// myBallRef.setValueAsync(ball.getDataObject());
 	}
 
 	public void spawnNewPlayer(String playerName) {
@@ -294,14 +279,6 @@ public class CourtTutorial extends JPanel implements Runnable {
 			stats = false;
 		}
 
-		if (keyControl.isPressed(KeyEvent.VK_S) && paused) {
-			// stats = true;
-		}
-
-		if (keyControl.isPressed(KeyEvent.VK_E) && paused) {
-			// stats = true;
-		}
-
 		if (keyControl.isPressed(KeyEvent.VK_1) && stats) {
 			score = 1;
 			chose = true;
@@ -320,15 +297,15 @@ public class CourtTutorial extends JPanel implements Runnable {
 	}
 
 	/**
-	 * Overide method from the Runnable class that allows the game to run over and
-	 * over again in this method
+	 * Overridden method from the Runnable class that allows the game to run over
+	 * and over again in this method
 	 * 
+	 * @post repaints the JPanel, updates the state of the player (energy bar), and
+	 *       causes the ball and player to both act based on their surroundings
 	 */
 	public void run() {
 
 		while (quit) {
-			// Modify this to allow quitting
-
 			long startTime = System.currentTimeMillis();
 			pauseCounter++;
 			if (moveLeftAndRight) {
@@ -350,13 +327,11 @@ public class CourtTutorial extends JPanel implements Runnable {
 						}
 					}
 					if (shot && dashed && me.getPower()) {
-						instructions.setText("Press escape to pause and exit the game. In a real game, you can only pause when you have the ball");
+						instructions.setText(
+								"Press escape to pause and exit the game. In a real game, you can only pause when you have the ball");
 					}
 				} else if (shot) {
-					// instructions.setText("Awesome! Now try dashing - press shift. Dashing also
-					// takes up 1 energy.");
 					if (shot && dashed) {
-						// powerUp = true;
 						instructions.setText(
 								"Power ups randomly spawn across the court. Blue powerups are jump boosts, and red powerups are speed boosts.");
 						if (!me.getPower() && !spawned) {
@@ -365,7 +340,8 @@ public class CourtTutorial extends JPanel implements Runnable {
 							spawned = true;
 						}
 					} else if (shot && dashed && me.getPower()) {
-						instructions.setText("Press escape to pause and exit the game. In a real game, you can only pause when you have the ball");
+						instructions.setText(
+								"Press escape to pause and exit the game. In a real game, you can only pause when you have the ball");
 					} else {
 						instructions.setText("Awesome! Now try dashing - press shift. Dashing also takes up 1 energy.");
 					}
@@ -379,12 +355,12 @@ public class CourtTutorial extends JPanel implements Runnable {
 				}
 
 				if (finished) {
-					instructions.setText("Press escape to pause and exit the game. In a real game, you can only pause when you have the ball");
+					instructions.setText(
+							"Press escape to pause and exit the game. In a real game, you can only pause when you have the ball");
 				}
 			}
 
 			if (paused == false) {
-				// System.out.println(me.hasBall());
 				timeCounter++;
 				barCounter++;
 
@@ -398,14 +374,6 @@ public class CourtTutorial extends JPanel implements Runnable {
 				if (me.getPower() == false) {
 					stopCounter = 0;
 				}
-
-				// if (barCounter == 1) {
-				// me.spawnPowerup();
-				// }
-				//
-				// if (powerCounter % 1500 == 0) {
-				// me.spawnPowerup();
-				// }
 
 				if (stopCounter == 300) {
 					me.powerOff();
@@ -444,13 +412,6 @@ public class CourtTutorial extends JPanel implements Runnable {
 			}
 
 			if (ball != null) {
-				// if (players.size() > 0) {
-				// ball.block(me, players.get(0), 300);
-				// }
-				//
-				// if (me.hasBall() || me.isShooting() || ball.isOnGround()) {
-				// ball.act(me, 300);
-				// }
 				ball.act(me, 300);
 			}
 
@@ -470,7 +431,12 @@ public class CourtTutorial extends JPanel implements Runnable {
 			}
 		}
 	}
-
+	
+	/**
+	 * 
+	 * @author anirudhv
+	 *
+	 */
 	public class KeyHandler implements KeyListener {
 
 		private ArrayList<Integer> keys;
@@ -513,7 +479,6 @@ public class CourtTutorial extends JPanel implements Runnable {
 		 * @return true or false if the key is pressed or not respectively
 		 */
 		public boolean isPressed(int code) {
-			// System.out.println(keys);
 			return keys.contains(code);
 		}
 	}

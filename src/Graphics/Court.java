@@ -50,7 +50,6 @@ public class Court extends JPanel implements Runnable {
 
 	private Rectangle screenRect;
 	private int timeCounter;
-	// private int barCounter;
 	private int powerCounter;
 	private int stopCounter;
 	private int pauseCounter;
@@ -69,9 +68,9 @@ public class Court extends JPanel implements Runnable {
 	private double y = 260;
 
 	private double randX;
-	
+
 	private boolean first = true;
-	
+
 	private long initialTime;
 	private long currentTime;
 	private int minutes;
@@ -81,7 +80,6 @@ public class Court extends JPanel implements Runnable {
 
 	private int score;
 	private boolean chose;
-	// private Ball ball;
 	private Image backgroundImage;
 	private Image pauseImage;
 	private Image jumpImage;
@@ -100,43 +98,37 @@ public class Court extends JPanel implements Runnable {
 	private boolean waiting;
 	private long joinTime;
 	private int playerType;
-	
+
 	private Image won;
 	private Image lost;
 	private Image tie;
 	private Image fire;
-	
+
 	private JButton quitButton;
 	private JButton seeStats;
 	private Referee referee;
-//	private boolean gameStart;
-	
+
 	private boolean picked;
 	private boolean holding;
-	
+
 	private long pickTime;
 	private boolean forced;
-	
-	// Database stuff
-	private DatabaseReference roomRef; // This is the database entry for the whole room
-	private DatabaseReference myUserRef; // This is the database entry for just our user's data. This allows us to more
-											// easily update ourselves.
-	private DatabaseReference myBallRef;
 
-	private boolean currentlySending;// These field allows us to limit database writes by only sending data once
-										// we've received confirmation the previous data went through.
+	private DatabaseReference roomRef;
+	private DatabaseReference myUserRef;
+	private DatabaseReference myBallRef;
+	private boolean currentlySending;
 
 	/**
-	 * Instantiates a new court at the database reference in Firebase and with the
-	 * name of the player
+	 * Instantiates a court with a database reference in firebase, the name of the
+	 * player in the court, the if the player
 	 * 
-	 * @param roomRef    Firebase database reference
-	 * @param playerName Player username
+	 * @param roomRef
+	 * @param playerName
+	 * @param playerType
 	 */
 	public Court(DatabaseReference roomRef, String playerName, int playerType) {
 		super();
-//		data = new SoundEffect();
-
 		try {
 			backgroundImage = ImageIO.read(getClass().getClassLoader().getResource("img/court.jpg"));
 			pauseImage = ImageIO.read(getClass().getClassLoader().getResource("img/PauseScreen.png"));
@@ -164,14 +156,12 @@ public class Court extends JPanel implements Runnable {
 		roomRef.child("users").addChildEventListener(new UserChangeListener());
 		roomRef.child("balls").addChildEventListener(new BallChangeListener());
 
-		// DatabaseReference x = roomRef.child("users");
-
 		myUserRef = roomRef.child("users").push();
 		myBallRef = roomRef.child("balls").push();
 
 		players = new ArrayList<Player>();
 		balls = new ArrayList<Ball>();
-		
+
 		referee = new Referee(383, 180);
 
 		if (playerType == 1) {
@@ -185,12 +175,9 @@ public class Court extends JPanel implements Runnable {
 			me.setDirection(false);
 			spawnNewBall();
 		}
-		// ball = new Ball(300, 288, 20, 20, "TestBall", myBallRef.getKey());
 
 		myUserRef.setValueAsync(me.getDataObject());
-		// myBallRef.setValueAsync(ball.getDataObject());
 
-//		System.out.println(roomRef.child("users"));
 		this.playerType = playerType;
 
 		new Thread(this).start();
@@ -217,22 +204,19 @@ public class Court extends JPanel implements Runnable {
 
 			if (stats) {
 
-				
+				scoreBoard = new PlayerStats(me.getShots(), me.getDashes(), me.getWalks(), me.getJumps(),
+						me.getShotsMade(), startTime);
+				String[] arr;
+				arr = new String[3];
 
-					scoreBoard = new PlayerStats(me.getShots(), me.getDashes(), me.getWalks(), me.getJumps(), me.getShotsMade(),
-							startTime);
-					String[] arr;
-					arr = new String[3];
+				arr = scoreBoard.statString();
 
-					arr = scoreBoard.statString();
-
-					g.drawString(arr[0], 100, 220);
-					g.drawString(arr[1], 250, 240);
-					g.drawString(arr[2], 200, 260);
-				}
+				g.drawString(arr[0], 100, 220);
+				g.drawString(arr[1], 250, 240);
+				g.drawString(arr[2], 200, 260);
 			}
+		}
 
-		
 		if (!paused) {
 
 			currentTime = System.currentTimeMillis();
@@ -251,48 +235,26 @@ public class Court extends JPanel implements Runnable {
 			}
 
 			g.drawImage(backgroundImage, 0, 0, this);
-			
-		
-			if(me.getJumpPowerup()) {
-			
-				
-				g.drawImage(jumpImage,(int)randX, 260, 35, 35, this);
+
+			if (me.getJumpPowerup()) {
+
+				g.drawImage(jumpImage, (int) randX, 260, 35, 35, this);
 			}
-			
-			
-			if(me.getSpeedPowerup()) {
-				
-					
-					g.drawImage(speedImage,(int)randX, 260, 35, 35, this);
+
+			if (me.getSpeedPowerup()) {
+
+				g.drawImage(speedImage, (int) randX, 260, 35, 35, this);
 			}
-			
-		//	670 ;70
 
-			
-
-			
-
-			
-
-			
-
-//			g.drawRect(130, 140, 20, 20); // ball class needs this for debugging, KEEP THIS IN
-//			g.drawRect(640, 140, 20, 20);
-//			g.drawLine(0, 50, width, 50);
-			
-			if(!waiting && first) {
+			if (!waiting && first) {
 				Referee.blowWhistle();
 				first = false;
 			}
 			referee.draw(g2, this);
-			
+
 			for (int i = 0; i < players.size(); i++) {
 				players.get(i).draw(g2, this, me);
 			}
-
-			// for (int i = 0; i < balls.size(); i++) {
-			// balls.get(i).draw(g2, this);
-			// }
 
 			if (ball != null) {
 				ball.draw(g2, this);
@@ -310,23 +272,21 @@ public class Court extends JPanel implements Runnable {
 					g.drawString(Integer.toString(players.get(i).getScore()), 415, 68);
 				}
 			}
-			
+
 			if (waiting) {
 				g2.setColor(new Color(255, 255, 255));
 				g2.fillRect(0, 0, 800, 30);
-				// scoreBoard.draw(g2);
 			}
-			
-			
-			if(picked) {
-				double shotTime = (currentTime-pickTime) ;
-				
-				int realtime =(int) (21 - (shotTime/1000));
-								
-				if(realtime <=0) {
+
+			if (picked) {
+				double shotTime = (currentTime - pickTime);
+
+				int realtime = (int) (21 - (shotTime / 1000));
+
+				if (realtime <= 0) {
 					realtime = 0;
-				
-					if (me.getEnergy() > 0 && ball!=null && ball.getDribbling()) {
+
+					if (me.getEnergy() > 0 && ball != null && ball.getDribbling()) {
 						timeCounter = 0;
 						me.shoot();
 						if (me.getDirection())
@@ -337,28 +297,27 @@ public class Court extends JPanel implements Runnable {
 
 					}
 					shotCounter = -10;
-				}else {
-					
+				} else {
+
 				}
-				
-				if(realtime>=10) {
-				g.drawString(Integer.toString(realtime),(int) me.getX()+11, (int)(me.getY()-60));
-				}else {
-				g.drawString(Integer.toString(realtime),(int) me.getX()+16, (int)(me.getY()-60));
+
+				if (realtime >= 10) {
+					g.drawString(Integer.toString(realtime), (int) me.getX() + 11, (int) (me.getY() - 60));
+				} else {
+					g.drawString(Integer.toString(realtime), (int) me.getX() + 16, (int) (me.getY() - 60));
 				}
 
 			}
 			if (!waiting) {
 				seconds = (int) (currentTime - joinTime) / 1000 - (59 * minutes);
 
-				if(minutes == 1 && seconds >=39) {
+				if (minutes == 1 && seconds >= 39) {
 					ball.increaseProbability();
-			
+
 					g.drawImage((new ImageIcon("img/onfire.png")).getImage(), 335, 75, 110, 110, this);
-					
+
 				}
-				
-				
+
 				if (seconds >= 59 && timeCounter % 20 == 0) {
 					minutes++;
 					seconds = 0;
@@ -366,19 +325,16 @@ public class Court extends JPanel implements Runnable {
 
 				if (seconds >= 50) {
 					g.setColor(Color.white);
-					g.drawString(1-minutes + " : " + "0" + (59-seconds), 379, 30);
+					g.drawString(1 - minutes + " : " + "0" + (59 - seconds), 379, 30);
 				} else {
 					g.setColor(Color.white);
-					g.drawString(1-minutes + " : " + (59-seconds), 379, 30);
+					g.drawString(1 - minutes + " : " + (59 - seconds), 379, 30);
 				}
-				if (minutes ==2) {
-//					g.drawString(" Time is up, game over", 325, 258);
+				if (minutes == 2) {
 					if (me.getScore() > players.get(0).getScore()) {
 						g.drawImage(won, 0, 0, this);
-						//quitButton = new JButton("Quit");
-					    //quitButton.setBounds(370, 200, 60, 30);
-					    scoreBoard = new PlayerStats(me.getShots(), me.getDashes(), me.getWalks(), me.getJumps(), me.getShotsMade(),
-								startTime);
+						scoreBoard = new PlayerStats(me.getShots(), me.getDashes(), me.getWalks(), me.getJumps(),
+								me.getShotsMade(), startTime);
 						String[] arr;
 						arr = new String[3];
 
@@ -387,18 +343,14 @@ public class Court extends JPanel implements Runnable {
 						g.drawString(arr[0], 100, 260);
 						g.drawString(arr[1], 250, 280);
 						g.drawString(arr[2], 200, 300);
-					    
-						//add(quitButton);
 					} else {
-						
-						if(me.getScore()==players.get(0).getScore()) {
-							
+
+						if (me.getScore() == players.get(0).getScore()) {
+
 							g.drawImage(tie, 0, 0, this);
-							//quitButton = new JButton("Quit");
-						    //quitButton.setBounds(370, 200, 60, 30);
-						    
-						    scoreBoard = new PlayerStats(me.getShots(), me.getDashes(), me.getWalks(), me.getJumps(), me.getShotsMade(),
-									startTime);
+
+							scoreBoard = new PlayerStats(me.getShots(), me.getDashes(), me.getWalks(), me.getJumps(),
+									me.getShotsMade(), startTime);
 							String[] arr;
 							arr = new String[3];
 
@@ -407,45 +359,31 @@ public class Court extends JPanel implements Runnable {
 							g.drawString(arr[0], 100, 260);
 							g.drawString(arr[1], 250, 280);
 							g.drawString(arr[2], 200, 300);
-							//add(quitButton);
-							
-						}
-						
-						if(me.getScore() <players.get(0).getScore()) {
-						g.drawImage(lost, 0, 0, this);
-						//quitButton = new JButton("Quit");
-					    //quitButton.setBounds(370, 200, 60, 30);
-					    
-					    scoreBoard = new PlayerStats(me.getShots(), me.getDashes(), me.getWalks(), me.getJumps(), me.getShotsMade(),
-								startTime);
-						String[] arr;
-						arr = new String[3];
 
-						arr = scoreBoard.statString();
-
-						g.drawString(arr[0], 100, 260);
-						g.drawString(arr[1], 250, 280);
-						g.drawString(arr[2], 200, 300);
-						//add(quitButton);
-						
 						}
-					
-					
+
+						if (me.getScore() < players.get(0).getScore()) {
+							g.drawImage(lost, 0, 0, this);
+
+							scoreBoard = new PlayerStats(me.getShots(), me.getDashes(), me.getWalks(), me.getJumps(),
+									me.getShotsMade(), startTime);
+							String[] arr;
+							arr = new String[3];
+
+							arr = scoreBoard.statString();
+
+							g.drawString(arr[0], 100, 260);
+							g.drawString(arr[1], 250, 280);
+							g.drawString(arr[2], 200, 300);
+
+						}
+
 					}
-					
-					
-					
-					
-					
-					
-					// paused = true;
+
 					quit = true;
 				}
 			}
 			g2.setTransform(at);
-
-
-			// TODO Add any custom drawings here
 
 		}
 
@@ -453,12 +391,14 @@ public class Court extends JPanel implements Runnable {
 
 	/**
 	 * Spawns a new ball in the court
+	 * 
+	 * @post Instantiates the field ball and syncs its data with firebase
 	 */
 	public void spawnNewBall() {
 		ball = new Ball(383, 288, 20, 20, "TestBall", myBallRef.getKey());
 		myBallRef.setValueAsync(ball.getDataObject());
 	}
-	
+
 	/**
 	 * Gets the key handler necessary to use the keyboard to make movements
 	 * 
@@ -493,7 +433,7 @@ public class Court extends JPanel implements Runnable {
 
 			}
 
-			if (keyControl.isPressed(KeyEvent.VK_SHIFT) && dashCounter > 0 ) {
+			if (keyControl.isPressed(KeyEvent.VK_SHIFT) && dashCounter > 0) {
 				if (me.getEnergy() > 0) {
 					timeCounter = 0;
 				}
@@ -506,7 +446,7 @@ public class Court extends JPanel implements Runnable {
 				dashCounter = -10;
 			}
 
-			if (keyControl.isPressed(KeyEvent.VK_SPACE) && shotCounter > 0 && ball!= null &&ball.getDribbling()) {
+			if (keyControl.isPressed(KeyEvent.VK_SPACE) && shotCounter > 0 && ball != null && ball.getDribbling()) {
 
 				if (me.getEnergy() > 0) {
 					timeCounter = 0;
@@ -562,50 +502,34 @@ public class Court extends JPanel implements Runnable {
 			stats = true;
 		}
 
-		
 	}
 
 	/**
-	 * Overide method from the Runnable class that allows the game to run over and
-	 * over again in this method
+	 * Overridden method from the Runnable class that allows the game to run over
+	 * and over again in this method
 	 * 
+	 * @post repaints the JPanel, updates the state of the player (energy bar), and
+	 *       causes the ball and player to both act based on their surroundings
 	 */
 	public void run() {
 
-		while (!quit) { // Modify this to allow quitting
-//			data.playSound();
-//			SoundEffect audioPlayer;
-//			try {
-//				audioPlayer = new SoundEffect("./sounds/swish.wav");
-//				audioPlayer.play();
-//			} catch (UnsupportedAudioFileException e1) {
-//				// TODO Auto-generated catch block
-//				e1.printStackTrace();
-//			} catch (IOException e1) {
-//				// TODO Auto-generated catch block
-//				e1.printStackTrace();
-//			} catch (LineUnavailableException e1) {
-//				// TODO Auto-generated catch block
-//				e1.printStackTrace();
-//			}
+		while (!quit) {
 
-			if(ball!= null &&!picked && ball.getDribbling() ) {
+			if (ball != null && !picked && ball.getDribbling()) {
 				picked = true;
 				pickTime = System.currentTimeMillis();
 			}
-			
-			
-			if(ball !=null && ball.getDribbling() ) {
+
+			if (ball != null && ball.getDribbling()) {
 				holding = true;
-			}else {
-				holding =false;
+			} else {
+				holding = false;
 				picked = false;
 			}
-			
+
 			startTime = System.currentTimeMillis();
 			pauseCounter++;
 			if (paused == false) {
-				// System.out.println(me.hasBall());
 				timeCounter++;
 				barCounter++;
 				powerCounter++;
@@ -613,23 +537,13 @@ public class Court extends JPanel implements Runnable {
 				dashCounter++;
 				shotCounter++;
 
-				// if (barCounter == 1) {
-				// spawnNewBall();
-				// }
-
 				if (me.getPower() == false) {
 					stopCounter = 0;
 				}
-				//
-				if (barCounter == 1) {
-	//				randX = me.getPowerLoc();
-	//				me.spawnPowerup();
-				}
-				//
+
 				if (powerCounter % 1200 == 0) {
 					randX = me.getPowerLoc();
 					me.spawnPowerup();
-					//
 				}
 
 				if (stopCounter == 300) {
@@ -732,6 +646,11 @@ public class Court extends JPanel implements Runnable {
 		}
 	}
 
+	/**
+	 * Removes the "Waiting for Player" tag on the top
+	 * 
+	 * @post Changes the waiting variable and changes the appearance of the JPanel
+	 */
 	public void removeInstructions() {
 		waiting = false;
 		joinTime = System.currentTimeMillis();
@@ -740,6 +659,11 @@ public class Court extends JPanel implements Runnable {
 		}
 	}
 
+	/**
+	 * 
+	 * @author anirudhv
+	 *
+	 */
 	public class KeyHandler implements KeyListener {
 
 		private ArrayList<Integer> keys;
@@ -787,6 +711,11 @@ public class Court extends JPanel implements Runnable {
 		}
 	}
 
+	/**
+	 * 
+	 * @author anirudhv
+	 *
+	 */
 	class BallChangeListener implements ChildEventListener {
 		@Override
 		public void onCancelled(DatabaseError arg0) {
@@ -827,6 +756,11 @@ public class Court extends JPanel implements Runnable {
 		}
 	}
 
+	/**
+	 * 
+	 * @author anirudhv
+	 *
+	 */
 	class UserChangeListener implements ChildEventListener {
 
 		@Override
@@ -840,11 +774,8 @@ public class Court extends JPanel implements Runnable {
 			if (me.idMatch(arg0.getKey()))
 				return;
 
-//			System.out.println(arg0);
 			Player p = new Player(DRAWING_WIDTH / 2 - Player.MARIO_WIDTH / 2, 50, null, arg0.getKey(), false, 0);
 			p.syncWithDataObject(arg0.getValue(PlayerData.class));
-//			System.out.println(arg0.getValue(PlayerData.class));
-//			removeInstructions();
 			players.add(p);
 			removeInstructions();
 		}

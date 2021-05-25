@@ -35,15 +35,12 @@ public class Home extends JPanel {
 	private JButton soloButton;
 	private JButton joinGame;
 	private JFrame theWindow;
-	private boolean outOfTutorial;
 	private Image backgroundImage;
-	private ArrayList<String> rooms;
 	FirebaseBackend backend;
 	private boolean openRoom;
-	
+
 	public Home() {
 		try {
-//			backgroundImage = ImageIO.read(new File("img/TitleScreen.png"));
 			backgroundImage = ImageIO.read(getClass().getClassLoader().getResource("img/TitleScreen.png"));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -51,7 +48,6 @@ public class Home extends JPanel {
 		}
 
 		backend = new FirebaseBackend();
-		rooms = new ArrayList<>();
 		ActionHandler actionEventHandler = new ActionHandler();
 		tutorialButton = new JButton("Play Tutorial");
 		tutorialButton.addActionListener(actionEventHandler);
@@ -61,7 +57,7 @@ public class Home extends JPanel {
 		soloButton.addActionListener(actionEventHandler);
 		joinGame = new JButton("Join Online Game");
 		joinGame.addActionListener(actionEventHandler);
-		
+
 		this.add(tutorialButton);
 		this.add(connectButton);
 		this.add(soloButton);
@@ -69,9 +65,13 @@ public class Home extends JPanel {
 	}
 
 	/**
-	 * @param g - the graphics object which the program is drawn on
+	 * Overridden paintComponent method from JPanel used to draw components and
+	 * images to the window
+	 * 
+	 * @param Graphics g necessary to draw components to the panel
+	 * @post Draws the necessary components (images and buttons) to the JPanel and
+	 *       sets the bounds of the buttons
 	 */
-
 	public void paintComponent(Graphics g) {
 		Graphics2D g2 = (Graphics2D) g;
 
@@ -92,9 +92,9 @@ public class Home extends JPanel {
 	}
 
 	/**
-	 * draws the actual game
+	 * Surrounds the panel in JFrame and sets its visibility
+	 * 
 	 */
-
 	public void show() {
 
 		theWindow = new JFrame();
@@ -106,7 +106,9 @@ public class Home extends JPanel {
 	}
 
 	/**
-	 * runs the interactive tutorial
+	 * Opens the JPanel for the interactive tutorial
+	 * 
+	 * @post Sets the current window visibility as false and disposes of it
 	 */
 	public void runTutorial() {
 		theWindow.setVisible(false);
@@ -123,6 +125,12 @@ public class Home extends JPanel {
 		theWindow.dispose();
 	}
 
+	/**
+	 * Creates a new room in firebase with the specified room name
+	 * 
+	 * @param name necessary for the room
+	 * @post Sets the current window visibility as false and disposes of it
+	 */
 	public void createRoom(String name) {
 
 		backend.postsRef.orderByChild("name").equalTo(name).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -150,12 +158,17 @@ public class Home extends JPanel {
 
 			@Override
 			public void onCancelled(DatabaseError arg0) {
-//				theWindow.dispose();
 			}
 		});
 
 	}
-	
+
+	/**
+	 * Selects an already made room in firebase with the given name
+	 * 
+	 * @param name of the room to join in firebase
+	 * @post Sets the current window visibility as false and disposes of it
+	 */
 	public void selectRoom(String name) {
 
 		backend.postsRef.orderByChild("name").equalTo(name).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -164,13 +177,11 @@ public class Home extends JPanel {
 
 				if (!snap.hasChildren())
 					return;
-				
-				for(DataSnapshot s: snap.getChildren()) {
-					for (DataSnapshot t: s.getChildren()) {
+
+				for (DataSnapshot s : snap.getChildren()) {
+					for (DataSnapshot t : s.getChildren()) {
 						if (t.getKey().equals("users")) {
 							if (t.getChildrenCount() == 1) {
-//								System.out.println(snap.getChildren().next());
-
 								openRoom = true;
 								String playerName = JOptionPane.showInputDialog("Enter your username:");
 
@@ -191,9 +202,6 @@ public class Home extends JPanel {
 						}
 					}
 				}
-				
-//				JOptionPane.showMessageDialog(Home.this, "Room is full!");
-
 			}
 
 			@Override
@@ -201,41 +209,34 @@ public class Home extends JPanel {
 				theWindow.dispose();
 			}
 		});
-		
+
 		if (openRoom) {
 			return;
 		} else {
 			openRoom = false;
 		}
-		
+
 	}
-	
-	
+
 	/**
-	 * runs the main online game mode
+	 * Creates a new room in firebase with the name "Game X" where X is the total
+	 * number of rooms in firebase plus one
+	 * 
 	 */
 	public void playOnline() {
-//		theWindow.setVisible(false);
-//		System.out.println(postsRef);
-//		System.out.println(backend.rooms.zi)
-		backend.postsRef.push().child("name").setValue("Game " + backend.rooms.size(),
-				new CompletionListener() {
-					@Override
-					public void onComplete(DatabaseError arg0, DatabaseReference arg1) {
-//						System.out.println(backend.rooms.size());
-						createRoom("Game " + (backend.rooms.size()-1));
-					}
+		backend.postsRef.push().child("name").setValue("Game " + backend.rooms.size(), new CompletionListener() {
+			@Override
+			public void onComplete(DatabaseError arg0, DatabaseReference arg1) {
+				createRoom("Game " + (backend.rooms.size() - 1));
+			}
 
-				});
-
-		
-//		panel.show();
-//		theWindow.dispose();
-		
+		});
 	}
 
 	/**
-	 * runs the solo game mode
+	 * Opens the JPanel for the solo gamemode
+	 * 
+	 * @post Sets the current window visibility as false and disposes of it
 	 */
 	public void playSolo() {
 		theWindow.setVisible(false);
@@ -252,8 +253,22 @@ public class Home extends JPanel {
 		theWindow.dispose();
 	}
 
+	/**
+	 * ActionHandler class necessary to execute and determine button functions and
+	 * clicks
+	 * 
+	 * @author anirudhv
+	 *
+	 */
 	private class ActionHandler implements ActionListener {
 
+		/**
+		 * Overridden method from ActionListener which selects playing option based on
+		 * the type of button clicked
+		 * 
+		 * @param ActionEvent e ActionEvent which occurred
+		 * @post Either calls the tutorial, online game, or solo game
+		 */
 		public void actionPerformed(ActionEvent e) {
 			Object source = e.getSource();
 			if (source == tutorialButton) {
@@ -264,7 +279,6 @@ public class Home extends JPanel {
 				for (int i = 0; i < backend.rooms.size(); i++) {
 					selectRoom("Game " + i);
 				}
-				JOptionPane.showMessageDialog(Home.this, "All Rooms Full!");
 
 			} else {
 				playSolo();

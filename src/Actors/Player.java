@@ -399,14 +399,6 @@ public class Player extends MovingImage {
 	 * @post X, Y, and velocities are updated according to actions executed
 	 */
 	public void act(ArrayList<Shape> obstacles, Player player2) {
-//		if (player2 != null) {
-//			if (player2.dash && this.hasBall) {
-//				this.hasBall = false;
-//				System.out.println(player2.dash);
-//				this.dataUpdated = true;	
-//			}
-//		}
-
 		double xCoord = getX();
 		double yCoord = getY();
 		double width = getWidth();
@@ -469,35 +461,14 @@ public class Player extends MovingImage {
 		
 		if (player2 != null) {
 			if (strechY.intersects(player2)) {
-//				this.x = player2.getX() + player2.width;
-//				this.y = yCoord;
-//				moveToLocation(xCoord, yCoord2);
-//				dataUpdated = true;
-//				int dir;
-//				if (right) {
-//					dir = 1;
-//				} else {
-//					dir = -1;
-//				}
-				
-				
 				xVelocity = -(xVelocity);
-//				return;
 			} else if (jumping && (Math.abs(player2.getX() - x) < 30)) {
 				if (right) {
 					xCoord -= 20;
 				} else {
 					xCoord += 20;
 				}
-//				System.out.println("near!");
 			} 
-			
-			
-			
-			
-//			if (player2.getX() - 80 == x) {
-//				this.hasBall = false;
-//			}
 		}
 		
 		
@@ -752,24 +723,10 @@ public class Player extends MovingImage {
 	 * @post The screen is updated with drawn components
 	 */
 	public void draw(Graphics g, ImageObserver io, Player me) {
-//		System.out.println((int) x + " " + (int) y);
-		// g.drawImage(img, x, y, width, height, observer)
 		g.setColor(Color.white);
 		g.drawString(this.username, (int) x+5, (int) y);
-
-//		if (speedPowerup) {
-//			g.setColor(Color.red);
-//			g.fill3DRect(383, 260, 30, 30, false);
-//		}
-
-//		if (jumpPowerup) {
-//			g.setColor(Color.blue);
-//			g.fill3DRect(383, 260, 30, 30, false);
-//		}
-
+		
 		if (me.getUsername() == this.username) {
-			
-			
 			g.setColor(Color.green);
 			
 			if(getPower()) {
@@ -792,7 +749,6 @@ public class Player extends MovingImage {
 
 		if (!hasBall) {
 			if (jumping && right) {
-//				backgroundImage = ImageIO.read(getClass().getClassLoader().getResource("img/court.jpg"));
 				try {
 					g.drawImage(ImageIO.read(getClass().getClassLoader().getResource("img/jumpingnew.png")), (int) x, (int) y, (int) width, (int) height,
 							io);
@@ -825,9 +781,6 @@ public class Player extends MovingImage {
 					e.printStackTrace();
 				}
 			}
-//		} else if (shooting) {
-//			g.drawImage((new ImageIcon("img/playershoot.png")).getImage(), (int) x, (int) y, (int) width, (int) height,
-//					io);
 		} else if (right) {
 			try {
 				g.drawImage(ImageIO.read(getClass().getClassLoader().getResource("img/player.png")), (int) x, (int) y, (int) width, (int) height, io);

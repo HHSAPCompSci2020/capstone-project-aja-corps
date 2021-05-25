@@ -8,7 +8,7 @@ import java.util.ArrayList;
  *
  */
 public class PlayerData {
-	
+
 	public String username;
 	public double x, y;
 	public boolean right;
@@ -16,19 +16,21 @@ public class PlayerData {
 	public boolean shooting;
 	public boolean jumping;
 	public int score;
-	
-	// One thing that is interesting is that the Firebase database cannot store arrays.
-	// So, if you want to use a library class that uses arrays (the Color class is one such example), then
+
+	// One thing that is interesting is that the Firebase database cannot store
+	// arrays.
+	// So, if you want to use a library class that uses arrays (the Color class is
+	// one such example), then
 	// you need to store the data a different, simpler way yourself.
 	// Note that ArrayLists *can* be stored.
-	
+
 	/**
 	 * Instantiates playerdata to be stored in the firebase
 	 */
 	public PlayerData() {
-		
+
 	}
-	
+
 	/**
 	 * Gets the direction of the player
 	 * 
@@ -37,7 +39,7 @@ public class PlayerData {
 	public boolean getRight() {
 		return right;
 	}
-	
+
 	/**
 	 * Checks if player has the ball
 	 * 
@@ -46,11 +48,11 @@ public class PlayerData {
 	public boolean hasBall() {
 		return hasBall;
 	}
-	
+
 	public boolean isShooting() {
 		return shooting;
 	}
-	
+
 	/**
 	 * Gets the username of the player
 	 * 
@@ -77,6 +79,7 @@ public class PlayerData {
 	public double getY() {
 		return y;
 	}
+
 	/**
 	 * 
 	 * @return returns the score corresponding to the player
@@ -84,6 +87,7 @@ public class PlayerData {
 	public int getScore() {
 		return score;
 	}
+
 	/**
 	 * 
 	 * @return returns true if the player is currently in a jumping motion

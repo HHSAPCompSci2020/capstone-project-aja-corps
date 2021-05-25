@@ -10,20 +10,21 @@ import javax.swing.ImageIcon;
 
 /**
  * 
- * @author adityapanikkar
+ * @author josh_choi
  *
  */
-public class Referee extends MovingImage{
+public class Referee extends MovingImage {
 
 	public static final int MARIO_WIDTH = 40;
 	public static final int MARIO_HEIGHT = 60;
-	
+
 	private double x, y;
 	private static boolean blow;
-	
+
 	private int count = 0;
-	
+
 	private static String filename = "img/standing.png";
+
 	/**
 	 * 
 	 * @param x x coord of where the ref will spawn
@@ -34,7 +35,7 @@ public class Referee extends MovingImage{
 		this.x = x;
 		this.y = y;
 	}
-	
+
 	/**
 	 * Blows the whistle for the referee
 	 * 
@@ -42,40 +43,42 @@ public class Referee extends MovingImage{
 	public static void blowWhistle() {
 		blow = true;
 	}
-	
+
 	/**
 	 * Draws the referee
 	 * 
-	 * @param g Graphics needed to draw to screen
+	 * @param g  Graphics needed to draw to screen
 	 * @param io Image observer needed to draw image
 	 */
 	public void draw(Graphics g, ImageObserver io) {
-		
+
 		Color c = g.getColor();
-		
-		if(blow && count < 100) {
+
+		if (blow && count < 100) {
 //			System.out.println(count);
 			count++;
 			g.setColor(Color.orange);
 
-			g.drawString("TWEET!", (int)x, (int)y);
-			
+			g.drawString("TWEET!", (int) x, (int) y);
+
 			g.setColor(c);
-			
+
 			try {
-				g.drawImage(ImageIO.read(getClass().getClassLoader().getResource("img/blowing.png")), (int)x, (int)y, (int) width, (int) height, io);
+				g.drawImage(ImageIO.read(getClass().getClassLoader().getResource("img/blowing.png")), (int) x, (int) y,
+						(int) width, (int) height, io);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		} else if(blow && count >= 100) {
+		} else if (blow && count >= 100) {
 			blow = false;
 			count = 0;
 		}
-		
-		if(!blow){
+
+		if (!blow) {
 			try {
-				g.drawImage(ImageIO.read(getClass().getClassLoader().getResource("img/standing.png")), (int)x, (int)y, (int) width, (int) height, io);
+				g.drawImage(ImageIO.read(getClass().getClassLoader().getResource("img/standing.png")), (int) x, (int) y,
+						(int) width, (int) height, io);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -84,6 +87,5 @@ public class Referee extends MovingImage{
 
 		g.setColor(c);
 	}
-	
-	
+
 }

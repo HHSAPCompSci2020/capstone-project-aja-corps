@@ -37,7 +37,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 /**
- * Represents the court for the game
+ * Represents the solo court for the game
  * 
  * @author anirudhv
  * @author adityapanikkar
@@ -50,7 +50,6 @@ public class CourtSolo extends JPanel implements Runnable {
 
 	private Rectangle screenRect;
 	private int timeCounter;
-	// private int barCounter;
 	private int powerCounter;
 	private int stopCounter;
 	private int pauseCounter;
@@ -81,7 +80,6 @@ public class CourtSolo extends JPanel implements Runnable {
 
 	private int score;
 	private boolean chose;
-	// private Ball ball;
 	private Image backgroundImage;
 	private Image pauseImage;
 	private Image jumpImage;
@@ -107,22 +105,12 @@ public class CourtSolo extends JPanel implements Runnable {
 	private JButton quitButton;
 	private JButton seeStats;
 	private Referee referee;
-//	private boolean gameStart;
 
 	private boolean picked;
 	private boolean holding;
 
 	private long pickTime;
 	private boolean forced;
-
-	// Database stuff
-	private DatabaseReference roomRef; // This is the database entry for the whole room
-	private DatabaseReference myUserRef; // This is the database entry for just our user's data. This allows us to more
-											// easily update ourselves.
-	private DatabaseReference myBallRef;
-
-	private boolean currentlySending;// These field allows us to limit database writes by only sending data once
-										// we've received confirmation the previous data went through.
 
 	/**
 	 * Instantiates a new court at the database reference in Firebase and with the
@@ -133,8 +121,6 @@ public class CourtSolo extends JPanel implements Runnable {
 	 */
 	public CourtSolo(String playerName) {
 		super();
-//		data = new SoundEffect();
-
 		try {
 			backgroundImage = ImageIO.read(getClass().getClassLoader().getResource("img/court.jpg"));
 			pauseImage = ImageIO.read(getClass().getClassLoader().getResource("img/PauseScreen.png"));
@@ -152,7 +138,6 @@ public class CourtSolo extends JPanel implements Runnable {
 		obstacles = new ArrayList<Shape>();
 		obstacles.add(new Rectangle(0, 300, 800, 22));
 		initialTime = System.currentTimeMillis();
-		currentlySending = false;
 
 		referee = new Referee(383, 180);
 		me = new Player(50, 288, playerName, "Testplayer", false, 0);
@@ -233,10 +218,6 @@ public class CourtSolo extends JPanel implements Runnable {
 			}
 			referee.draw(g2, this);
 
-			// for (int i = 0; i < balls.size(); i++) {
-			// balls.get(i).draw(g2, this);
-			// }
-
 			if (ball != null) {
 				ball.draw(g2, this);
 			}
@@ -276,15 +257,14 @@ public class CourtSolo extends JPanel implements Runnable {
 			}
 
 			g2.setTransform(at);
-
-			// TODO Add any custom drawings here
-
 		}
 
 	}
 
 	/**
 	 * Spawns a new ball in the court
+	 * 
+	 * @post Instantiates the field ball
 	 */
 	public void spawnNewBall() {
 		ball = new Ball(383, 288, 20, 20, "TestBall", "test");
@@ -371,14 +351,6 @@ public class CourtSolo extends JPanel implements Runnable {
 				y = ball.getCenterY();
 			}
 
-//			if (iPaused) {
-//
-//				ball = null;
-//			}
-
-//			if (!iPaused && ball == null) {
-//				ball = new Ball((int) x, (int) y, 20, 20, "TestBall", myBallRef.getKey());
-//			}
 			pauseCounter = -10;
 			stats = false;
 
@@ -454,22 +426,10 @@ public class CourtSolo extends JPanel implements Runnable {
 
 			pauseTime++;
 
-	//		if (ball != null && paused == true) {
-	//			paused = false;
-	//		}
-
-
 			enableKeys();
 
 
 			if (ball != null) {
-//				if (players.size() > 0) {
-//					ball.block(me, players.get(0), 300);
-//				}
-//
-//				if (me.hasBall() || me.isShooting() || ball.isOnGround()) {
-//					ball.act(me, 300);
-//				}
 				ball.act(me, 300);
 			}
 
@@ -490,14 +450,11 @@ public class CourtSolo extends JPanel implements Runnable {
 		}
 	}
 
-	public void removeInstructions() {
-		waiting = false;
-		joinTime = System.currentTimeMillis();
-		if (instructions != null) {
-			this.remove(instructions);
-		}
-	}
-
+	/**
+	 * 
+	 * @author anirudhv
+	 *
+	 */
 	public class KeyHandler implements KeyListener {
 
 		private ArrayList<Integer> keys;
@@ -540,7 +497,6 @@ public class CourtSolo extends JPanel implements Runnable {
 		 * @return true or false if the key is pressed or not respectively
 		 */
 		public boolean isPressed(int code) {
-			// System.out.println(keys);
 			return keys.contains(code);
 		}
 	}
