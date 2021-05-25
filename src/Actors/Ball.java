@@ -18,29 +18,27 @@ import Graphics.PlayerStats;
  *
  */
 public class Ball extends MovingImage {
-
-	private double xVelocity, yVelocity, shotx, shoty;
-	private boolean dribbling = false;
-	private Player playerDribbling;
 	private boolean shooting;
 	private boolean inAir;
 	private boolean bounce = false;
-
-	private String uniqueID;
 	private boolean dataUpdated;
 	private boolean onGround = true;
+	private boolean dribbling = false;
 
-	private final double CONSTANT = 0.3;
-	private double probability;
 	private int bounceCount = 0;
-
+	
+	private double xVelocity, yVelocity, shotx, shoty;
+	private double probability;
 	private double factor = 0;
-
+	private final double CONSTANT = 0.3;
+	
 	private double[] equation;
-	private boolean blocked;
-
+	
+	private Player playerDribbling;
+	
+	private String uniqueID;
 	private String username;
-
+	
 	/**
 	 * Instantiates a new Ball at initial coordinates (x, y) with the specified size
 	 * 
@@ -96,13 +94,12 @@ public class Ball extends MovingImage {
 	 *       booleans are changed according to action
 	 */
 	public void act(Player p, double floorY) {
-		if (this.x < 45) {
+		if (this.x < 45)
 			this.x = 45;
-		}
 
-		if (this.x > 700) {
+		if (this.x > 700)
 			this.x = 700;
-		}
+		
 		if ((this.intersects(p) && (onGround))) {
 			System.out.println("intersection!");
 			p.setHasBall(true);
@@ -125,12 +122,12 @@ public class Ball extends MovingImage {
 			}
 		}
 
-		if (bounce) {
+		if (bounce)
 			bounce(p);
-		}
 
 		if (y > floorY)
 			moveToGround();
+		
 		this.dataUpdated = true;
 	}
 
@@ -166,11 +163,10 @@ public class Ball extends MovingImage {
 	 * @return True if there is a player and false if not
 	 */
 	public boolean hasPlayer() {
-		if (playerDribbling == null) {
+		if (playerDribbling == null)
 			return false;
-		} else {
+		else
 			return true;
-		}
 	}
 
 	/**
@@ -201,9 +197,8 @@ public class Ball extends MovingImage {
 			bounceCount++;
 			y = 270;
 			yVelocity = -(yVelocity * 0.7);
-		} else {
+		} else
 			yVelocity += CONSTANT;
-		}
 	}
 
 	/**
@@ -223,19 +218,17 @@ public class Ball extends MovingImage {
 	 * @post Appropriate x, y, and velocities are updated
 	 */
 	public void dribble(double floorY) {
-
 		floorY = 300;
-		if (y >= floorY) {
+		if (y >= floorY)
 			yVelocity = -yVelocity;
-		} else if (y <= playerDribbling.getY() + 15) {
+		else if (y <= playerDribbling.getY() + 15)
 			yVelocity = Math.abs(yVelocity);
-		}
+		
 		y += yVelocity;
-		if (playerDribbling.getDirection()) {
+		if (playerDribbling.getDirection())
 			x = playerDribbling.getX() + 25;
-		} else {
+		else
 			x = playerDribbling.getX() - 10;
-		}
 	}
 
 	/**
@@ -247,11 +240,10 @@ public class Ball extends MovingImage {
 	 *       and velocities are updated
 	 */
 	public void shoot(double hoopx, double hoopy) {
-		if (playerDribbling.playerType == 1 && !playerDribbling.getDirection()) {
+		if (playerDribbling.playerType == 1 && !playerDribbling.getDirection())
 			return;
-		} else if (playerDribbling.playerType == 2 && playerDribbling.getDirection()) {
+		else if (playerDribbling.playerType == 2 && playerDribbling.getDirection())
 			return;
-		}
 
 		boolean close = false;
 		boolean midrange = false;
