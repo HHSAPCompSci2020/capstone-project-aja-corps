@@ -18,32 +18,29 @@ import Graphics.PlayerStats;
  *
  */
 public class Ball extends MovingImage {
-
-	private double xVelocity, yVelocity, shotx, shoty;
-	private boolean dribbling = false;
-	private Player playerDribbling;
 	private boolean shooting;
 	private boolean inAir;
 	private boolean bounce = false;
-
-	private String uniqueID;
 	private boolean dataUpdated;
 	private boolean onGround = true;
+	private boolean dribbling = false;
 
-	private final double CONSTANT = 0.3;
-	private double probability;
 	private int bounceCount = 0;
 	
+	private double xVelocity, yVelocity, shotx, shoty;
+	private double probability;
 	private double factor = 0;
-
-	private double[] equation;
-	private boolean blocked;
+	private final double CONSTANT = 0.3;
 	
+	private double[] equation;
+	
+	private Player playerDribbling;
+	
+	private String uniqueID;
 	private String username;
-//	private static Image ballimg = ImageIO.read(getClass().getClassLoader().getResource("img/basketball.png"));
-
+	
 	/**
-	 * Instantiates a new Ball at initial coordinates (x, y) with the specified size
+	 * Instantiates a new Ball at initial coordinates (x, y) with the specified size of width and heights
 	 * 
 	 * @param x        Initial X-Coordinate of the ball
 	 * @param y        Initial Y-Coordinate of the ball
@@ -58,16 +55,15 @@ public class Ball extends MovingImage {
 		yVelocity = 4;
 		this.uniqueID = uniqueID;
 		this.username = username;
-		
-		//soundEffect = new SoundEffect();
 	}
-	
+
 	/**
 	 * Executes actions that allow the players to block each other's shots
 	 * 
-	 * @param p Player currently shooting the ball
+	 * @param p       Player currently shooting the ball
 	 * @param player2 Opponent who is able to block the shot
-	 * @param floorY The Y coordinate of the floor
+	 * @param floorY  The Y coordinate of the floor
+	 * @pre Players have been instantiated and are not null
 	 * @post The ball is either blocked or continues on its path
 	 */
 	public void block(Player p, Player player2, double floorY) {
@@ -81,7 +77,6 @@ public class Ball extends MovingImage {
 			}
 		} else {
 			if (this.intersects(p) && inAir) {
-//				p.setShooting(false);
 				this.setPlayer(p);
 				this.setDribbling(true);
 				inAir = false;
@@ -96,20 +91,17 @@ public class Ball extends MovingImage {
 	 * 
 	 * @param p      The player that is doing the action upon the ball
 	 * @param floorY The Y-Coordinate of the floor
+	 * @pre Player p is not null
 	 * @post X-coordinate, Y-Coordinate, X velocity, Y velocity, and appropriate
 	 *       booleans are changed according to action
 	 */
 	public void act(Player p, double floorY) {
-	
-		//System.out.println(p.getX());
-		
-		if (this.x < 45) {
+		if (this.x < 45)
 			this.x = 45;
-		}
 
-	if (this.x > 700) {
-		this.x = 700;
-	}
+		if (this.x > 700)
+			this.x = 700;
+		
 		if ((this.intersects(p) && (onGround))) {
 			System.out.println("intersection!");
 			p.setHasBall(true);
@@ -120,8 +112,6 @@ public class Ball extends MovingImage {
 			shooting = false;
 			this.dataUpdated = true;
 		}
-		
-		
 
 		if (playerDribbling != null) {
 			if (dribbling)
@@ -134,35 +124,31 @@ public class Ball extends MovingImage {
 			}
 		}
 
-		if (bounce) {
-//			System.out.println("bouncing");
+		if (bounce)
 			bounce(p);
-		}
 
 		if (y > floorY)
 			moveToGround();
-
-		// if(x > 800)
-		// setDribbling(true);
-
+		
 		this.dataUpdated = true;
 	}
 
 	/**
-	 * Updates the player who is dribbling to null and gets rid of ownership of the ball
+	 * Updates the player who is dribbling to null and gets rid of ownership of the
+	 * ball
 	 * 
-	 * @post Player currently dribbling the ball is null
+	 * @post Player currently dribbling the ball is null and the player is also set to not having the ball
 	 */
 	public void setPlayerDribbling() {
 		this.playerDribbling = null;
 		this.playerDribbling.setHasBall(false);
 	}
-	
+
 	/**
 	 * Updates the dribbling status of the ball
 	 * 
 	 * @param x True if the ball should start dribbling and false if not
-	 * @post The ball stops horizontally moving but vertically by default moves down
+	 * @post The ball stops horizontally moving but vertically by default moves down and begins to dribble if parameter is true
 	 */
 	public void setDribbling(boolean x) {
 		bounceCount = 0;
@@ -179,19 +165,19 @@ public class Ball extends MovingImage {
 	 * @return True if there is a player and false if not
 	 */
 	public boolean hasPlayer() {
-		if (playerDribbling == null) {
+		if (playerDribbling == null)
 			return false;
-		} else {
+		else
 			return true;
-		}
 	}
 
 	/**
 	 * The action of the ball bouncing
 	 * 
 	 * @param p The player that was bouncing the ball
+	 * @pre Player p is not null
 	 * @post The x and y coordinates are updated as well as the appropriate
-	 *       velocities of the ball
+	 *       velocities of the ball as it begins the bouncing motion
 	 */
 	public void bounce(Player p) {
 		if (bounceCount >= 5) {
@@ -214,11 +200,8 @@ public class Ball extends MovingImage {
 			bounceCount++;
 			y = 270;
 			yVelocity = -(yVelocity * 0.7);
-			//soundEffect.soundEffect(0);
-			// System.out.println(yVelocity);
-		} else {
+		} else
 			yVelocity += CONSTANT;
-		}
 	}
 
 	/**
@@ -235,23 +218,20 @@ public class Ball extends MovingImage {
 	 * 
 	 * @param floorY The y coordinate of the floor
 	 * @pre The player dribbling the ball is not null
-	 * @post Appropriate x, y, and velocities are updated
+	 * @post Appropriate x, y, and velocities are updated as the ball begins to dribble
 	 */
 	public void dribble(double floorY) {
-
-		floorY = 300; // hardcoded for now
-		if (y >= floorY) {
+		floorY = 300;
+		if (y >= floorY)
 			yVelocity = -yVelocity;
-			//soundEffect.soundEffect(0);
-		} else if (y <= playerDribbling.getY() + 15) {
+		else if (y <= playerDribbling.getY() + 15)
 			yVelocity = Math.abs(yVelocity);
-		}
+		
 		y += yVelocity;
-		if (playerDribbling.getDirection()) {
+		if (playerDribbling.getDirection())
 			x = playerDribbling.getX() + 25;
-		} else {
+		else
 			x = playerDribbling.getX() - 10;
-		}
 	}
 
 	/**
@@ -259,16 +239,17 @@ public class Ball extends MovingImage {
 	 * 
 	 * @param hoopx The x coordinate of the hoop
 	 * @param hoopy The y coordinate of the hoop
+	 * @pre A player is currently dribbling the ball
 	 * @post The ball is on its trajectory in the arc motion towards the hoop. X, Y,
-	 *       and velocities are updated
+	 *       and velocities are updated. Also, the score is updated in addition to the probability of
+	 *       making a shot.
 	 */
 	public void shoot(double hoopx, double hoopy) {
-		if (playerDribbling.playerType == 1 && !playerDribbling.getDirection()) {
+		if (playerDribbling.playerType == 1 && !playerDribbling.getDirection())
 			return;
-		} else if (playerDribbling.playerType == 2 && playerDribbling.getDirection()) {
+		else if (playerDribbling.playerType == 2 && playerDribbling.getDirection())
 			return;
-		}
-		
+
 		boolean close = false;
 		boolean midrange = false;
 		if (dribbling) {
@@ -277,7 +258,7 @@ public class Ball extends MovingImage {
 			x = shotx;
 			y = shoty;
 			dribbling = false;
-			
+
 			if (playerDribbling.getDirection()) {
 				if (shotx < 275) {
 					xVelocity = 6;
@@ -288,7 +269,7 @@ public class Ball extends MovingImage {
 				} else if (shotx >= 382 && shotx < 487) {
 					xVelocity = 3;
 					probability = 0.5;
-				} else if (shotx >= 487 && playerDribbling.getX() <= 570){
+				} else if (shotx >= 487 && playerDribbling.getX() <= 570) {
 					xVelocity = 2;
 					probability = 0.85;
 					midrange = true;
@@ -296,19 +277,19 @@ public class Ball extends MovingImage {
 					xVelocity = 0.5;
 					probability = 0.9;
 					close = true;
-				} else if(playerDribbling.getX() >= 627) {
+				} else if (playerDribbling.getX() >= 627) {
 					dribbling = true;
 					return;
 				}
 			} else {
-				if(playerDribbling.getX() <= 125) {
+				if (playerDribbling.getX() <= 125) {
 					dribbling = true;
 					return;
 				} else if (playerDribbling.getX() < 210) {
 					close = true;
 					xVelocity = -0.5;
 					probability = 0.9;
-				} else if(shotx <= 275) {
+				} else if (shotx <= 275) {
 					xVelocity = -2;
 					probability = 0.85;
 					midrange = true;
@@ -323,30 +304,25 @@ public class Ball extends MovingImage {
 					probability = 0.25;
 				}
 			}
-			
-			if(close)
+
+			if (close)
 				layupMotion(hoopx, hoopy);
-			else if(midrange)
+			else if (midrange)
 				midrangeMotion(hoopx, hoopy);
 			else
 				calculateParabola(hoopx, hoopy);
-			//if(playerDribbling.getDirection())
 			shooting = true;
 		}
-//		Player p = playerDribbling;
 		if (shooting == true) {
-//			playerDribbling = null;
 			playerDribbling.setHasBall(false);
 			inAir = true;
 			x += xVelocity;
-//			x += 0.5;
 			y = f(x);
 		}
 
 		if (playerDribbling.getDirection() && x >= hoopx) {
 			if (makeShot()) {
-//				PlayerStats.score2++;
-				if(probability <= 0.5)
+				if (probability <= 0.5)
 					playerDribbling.increaseScore(3);
 				else
 					playerDribbling.increaseScore(2);
@@ -356,13 +332,11 @@ public class Ball extends MovingImage {
 				xVelocity = -1.5;
 			}
 			bounce = true;
-//			playerDribbling.setShooting(false);
 			shooting = false;
 			yVelocity = 5;
 		} else if (!playerDribbling.getDirection() && x <= hoopx) {
 			if (makeShot()) {
-//				PlayerStats.score1++;
-				if(probability <= 0.5)
+				if (probability <= 0.5)
 					playerDribbling.increaseScore(3);
 				else
 					playerDribbling.increaseScore(2);
@@ -372,17 +346,12 @@ public class Ball extends MovingImage {
 				xVelocity = 1.5;
 			}
 			bounce = true;
-//			playerDribbling.setShooting(false);
 			shooting = false;
 			yVelocity = 5;
 		}
-		
+
 	}
-	/**
-	 * 
-	 * @param hoopx the hoop at which the shot starts
-	 * @param hoopy the hoop at which the shot ends
-	 */
+
 	private void midrangeMotion(double hoopx, double hoopy) {
 		equation = new double[3];
 		if (playerDribbling.getDirection()) {
@@ -404,7 +373,7 @@ public class Ball extends MovingImage {
 		equation[1] = h;
 		equation[2] = k;
 	}
-	
+
 	private void layupMotion(double hoopx, double hoopy) {
 		equation = new double[3];
 		if (playerDribbling.getDirection()) {
@@ -426,7 +395,7 @@ public class Ball extends MovingImage {
 		equation[1] = h;
 		equation[2] = k;
 	}
-	
+
 	/**
 	 * Finds and gets to see if the ball is currently in the shooting process or not
 	 * 
@@ -436,10 +405,6 @@ public class Ball extends MovingImage {
 		return shooting;
 	}
 
-	/**
-	 * 
-	 * @return returns wether or not the shot will go in
-	 */
 	private boolean makeShot() {
 		double random = (Math.random());
 		probability += factor;
@@ -457,11 +422,6 @@ public class Ball extends MovingImage {
 		double k = equation[2];
 		return (a * Math.pow(x - h, 2) + k);
 	}
-	/**
-	 * 
-	 * @param hoopx the x coord of the hoop
-	 * @param hoopy the y coord of the hoop
-	 */
 
 	private void calculateParabola(double hoopx, double hoopy) {
 		equation = new double[3];
@@ -497,7 +457,7 @@ public class Ball extends MovingImage {
 	 * Sets the player to having possession of the ball
 	 * 
 	 * @param p The player who possesses the ball
-	 * @post The player who owns the ball is updated
+	 * @post The player who owns the ball is updated in addition to the state of the player being updated
 	 */
 	public void setPlayer(Player p) {
 		if (playerDribbling != null)
@@ -527,7 +487,7 @@ public class Ball extends MovingImage {
 	}
 
 	/**
-	 * Syncs the ball with the current ball data object
+	 * Syncs the ball with the current ball data object for firebase purposes
 	 * 
 	 * @param data The ball data object used
 	 * @post Data about ball is updated
@@ -568,7 +528,9 @@ public class Ball extends MovingImage {
 	public boolean isDataChanged() {
 		return dataUpdated;
 	}
+
 	/**
+	 * Finds and gets the state of if the ball is being dribbled or not
 	 * 
 	 * @return returns true if the ball is being dribbled
 	 */
@@ -602,20 +564,20 @@ public class Ball extends MovingImage {
 	public double getY() {
 		return y;
 	}
-	
+
 	/**
 	 * Increases the probability of the player making a shot
 	 * 
-	 * @post the percentage is increased by 20 percent
+	 * @post the percentage of making a shot is increased by 20 percent
 	 */
 	public void increaseProbability() {
 		factor = 0.2;
 	}
-	
+
 	/**
 	 * Returns the probability of making a shot back to normal
 	 * 
-	 * @post the percentage of making a shot is back to normal
+	 * @post the percentage of making a shot is back to normal and not affected by a factor
 	 */
 	public void decreaseProbability() {
 		factor = 0;
@@ -629,7 +591,7 @@ public class Ball extends MovingImage {
 	public boolean isOnGround() {
 		return onGround;
 	}
-	
+
 	/**
 	 * Checks to see if the ball is in the air or not
 	 * 
@@ -638,11 +600,20 @@ public class Ball extends MovingImage {
 	public boolean isInAir() {
 		return inAir;
 	}
-	
+
 	@Override
+	/**
+	 * Draws the ball using image and graphics
+	 * 
+	 * @param g Graphics object used for drawing the image
+	 * @param io ImageObserver object used to read and get the image from folder
+	 * @pre Graphics and ImageObserver objects are not null
+	 * @post Image of the ball is either drawn to the screen or an error message is displayed if the image is not found
+	 */
 	public void draw(Graphics g, ImageObserver io) {
 		try {
-			g.drawImage(ImageIO.read(getClass().getClassLoader().getResource("img/basketball.png")), (int) x, (int) y, (int) width, (int) height, io);
+			g.drawImage(ImageIO.read(getClass().getClassLoader().getResource("img/basketball.png")), (int) x, (int) y,
+					(int) width, (int) height, io);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
