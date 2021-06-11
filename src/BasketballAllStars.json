@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "basketballallstars-35240",
+  "private_key_id": "12b8841b74e42720289c99501d0306b3a9fcb70f",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQC4BlgKRdgxbtsJ\nHhQCuLn/5ZVFhYKXHl01AXriIAOq3QlQoFai/M4M5KdsQv5lYuoQeHOwZVtqlwQr\ncIUvTA5kpw20EmsUVv92OlxEGTgMxm9qwg75spqgydK2oRlJbVZ1I3IoN/zijreS\n9d6UJwfH2Y5MTjd45X+WnX7jyC9i3/nh6YxTR25kgOJ6UUfCeTs5ukl8vocTju0B\nF/hcdYMktEtYksIljVUky3tTw42G4AIagE6D5q9zpYyZkQespTf8BZu5SU/QPCDV\ngaSJa6ldaoWdX1rNyLgutLdYsRLiqX9Fzq8bO+f3jd/77OJDkmR+Kr1aGbea4Z9Z\nInY2ccP3AgMBAAECggEAEM2DfGykMN9OYKa+bQEw+oyb9J0cL3A2UoCwF7WUoCVO\nlG4PexJaPhMitl/nmppNhPN6nMCkeDcRymWbw5XOOqKGPcrwvAq1iLYLdqxW0dPM\nmJLfiy0jsUq8UrCi/nFdU5TI96MlFAqz+Fc624w0yaqzs4PwzLknzTjUPTgqG3zv\n1TEFrUx75RCX4Ir3vEBKROY0k3w90jAk69XKMKiZX5GBt5AeaEb8ERFpdSnksTdW\nt5pMki4DK8PVHq8gK1GCqtgt9luQGBOwiiLNtW4rt1K1/bh+hjimSChuRH/mr8l9\nPDVJZQTimawbv7eFHLOFMF2szP0pMHTLcnmFofaEAQKBgQD9tamKdxSlpwRV9kdU\n3Il+9plRFtYv+v2tzbVN/3EkgoST4KGqDydB105EpOqeCmr1uUcgW9c0NG8NjZQF\nWN/snJShzmgHjYoBtOsrTsvliJvr1lq/AY5s8J8E8kBczqnQ8zIiu8wfF40Lc0a0\nJxm0CZaKxo0MCp+tlBZbjToyhwKBgQC5r6LLLDEFl/1dPLrgyuXfokC8bsVgD8GK\nqraZqOBYzuW8jnOTnxEDNwI9PyHBJmGLDls58YhoWOyIhaVxc9608MYpNcRB8cOM\nvTGEg1tER951exqsR9BY5dciGoo+TixM4Y/834Kf3gFIZDsxWmQS2yFS+cwQSSgb\n5bC4SY2PEQKBgDQ8E6TrcXfNlCnyo6sIINLgCJ7WWdDVFyeSg7KEVhITQSKFDCPM\nLOP0ZSvi3F8fe/gNZmR2JC+eYALlVEVpj+jSMBPEQEzVykUhr41iEr62SovavSI4\nOs+ZFtRY4AF7lyDrATZ/fb4lBigGWtc6eaNEmhcGXAHPqiJ9q8C7qfC/AoGAN25C\n/rvWdoEE1YyHjQuEy9m30YiPyzlo4WhM0lojft9knYE451yYy4jkVjw+a1Z1z/kd\nKpL70YqaMbcTyGZ6mTE3Np4iVD1DzwO7gH9mA2Ag/JkfQUa+34rdSgT6N9dGSj0b\nqrVeXTL81wt00CrXrPlVXVvMmx/7pThQJPNwGsECgYA1nZZyneC+udDObhEQvdiq\nDi6yFQVs0le8I3SiKAizpIzysTpxgr4eHVWYRJz7ic5GGMlmdX/OL8TPAuxpXsmX\nCZZvjeRCnQ3NteIwsQlxP/i0sjkpIS1ziI+XZlYgYcMSBGWP1uvEBSeG7DXB92kK\n71OzG5aUAQF1wREwgOvd2Q==\n-----END PRIVATE KEY-----\n",
+  "client_email": "firebase-adminsdk-my7i1@basketballallstars-35240.iam.gserviceaccount.com",
+  "client_id": "108646422993254652140",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-my7i1%40basketballallstars-35240.iam.gserviceaccount.com"
+}
